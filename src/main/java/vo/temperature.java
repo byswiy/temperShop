@@ -2,18 +2,18 @@ package vo;
 
 import java.time.LocalDateTime;
 
-public class temperature {
+public class Temperature {
 	private double nowTemperature;
 	private double likeTemperature;
 	private String region;
 	private String rcdCloth;
 	private LocalDateTime tempDate;
 	
-	public temperature() {
+	public Temperature() {
 		
 	}
 	
-	public temperature(double nowTemperature, double likeTemperature, String region, String rcdCloth, LocalDateTime tempDate) {
+	public Temperature(double nowTemperature, double likeTemperature, String region, String rcdCloth, LocalDateTime tempDate) {
 		super();
 		this.nowTemperature = nowTemperature;
 		this.likeTemperature = likeTemperature;

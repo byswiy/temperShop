@@ -2,7 +2,7 @@ package vo;
 
 import java.time.LocalDateTime;
 
-public class memberInfo {
+public class MemberInfo {
 	private int userIdx;
 	private String id;
 	private String pw;
@@ -12,11 +12,11 @@ public class memberInfo {
 	private String emial;
 	private LocalDateTime joinDate;
 	
-	public memberInfo() {
+	public MemberInfo() {
 		
 	}
 	
-	public memberInfo(int userIdx, String id, String pw, String name, String tel, String addr, String emial, LocalDateTime joinDate) {
+	public MemberInfo(int userIdx, String id, String pw, String name, String tel, String addr, String emial, LocalDateTime joinDate) {
 		this.userIdx = userIdx;
 		this.id = id;
 		this.pw = pw;

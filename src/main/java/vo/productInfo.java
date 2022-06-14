@@ -2,7 +2,7 @@ package vo;
 
 import java.time.LocalDateTime;
 
-public class productInfo {
+public class ProductInfo {
 	private int prodIdx;
 	private String prodName;
 	private int prodPrice;
@@ -12,11 +12,11 @@ public class productInfo {
 	private String prodImg;
 	private LocalDateTime regDate;
 	
-	public productInfo() {
+	public ProductInfo() {
 		
 	}
 	
-	public productInfo(int prodIdx, String prodName, int prodPrice, int prodStock, char prodSize, String prodColor, String prodImg, LocalDateTime regDate) {
+	public ProductInfo(int prodIdx, String prodName, int prodPrice, int prodStock, char prodSize, String prodColor, String prodImg, LocalDateTime regDate) {
 		this.prodIdx = prodIdx;
 		this.prodName = prodName;
 		this.prodPrice = prodPrice;
