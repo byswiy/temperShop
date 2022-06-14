@@ -9,22 +9,28 @@ public class MemberInfo {
 	private String name;
 	private String tel;
 	private String addr;
-	private String emial;
+	private String email;
 	private LocalDateTime joinDate;
 	
 	public MemberInfo() {
 		
 	}
 	
-	public MemberInfo(int userIdx, String id, String pw, String name, String tel, String addr, String emial, LocalDateTime joinDate) {
+	public MemberInfo(int userIdx, String id, String pw, String name, String tel, String addr, String email, LocalDateTime joinDate) {
 		this.userIdx = userIdx;
 		this.id = id;
 		this.pw = pw;
 		this.name = name;
 		this.tel = tel;
 		this.addr = addr;
-		this.emial = emial;
+		this.email = email;
 		this.joinDate = joinDate;
+	}
+	
+	
+
+	public MemberInfo(String id, String pw, String name, String tel, String addr, String email, LocalDateTime joinDate) {
+		this(0, id, pw, name, tel, addr, email, joinDate);
 	}
 
 	public int getUserIdx() {
