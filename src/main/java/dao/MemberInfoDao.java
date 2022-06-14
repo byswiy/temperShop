@@ -83,4 +83,47 @@ public class MemberInfoDao {
 		
 		return false;
 	}
+	
+	public MemberInfo selectById(String id) {
+		Database db = new Database();
+		
+		Connection conn = db.getConnection();
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		
+		MemberInfo memberInfo = null;
+		
+		try {
+			String sql = "SELECT * FROM temperShop WHERE id=?";
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, id);
+			
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				int userIdx = rs.getInt("userIdx");
+				String pw = rs.getString("pw");
+				String name = rs.getString("name");
+				String tel = rs.getString("tel");
+				String addr = rs.getString("addr");
+				String email = rs.getString("email");
+				String date = rs.getString("joinDate");
+				date = date.substring(0, 19);
+				date = date.replace(' ', 'T');
+				LocalDateTime joinDate = LocalDateTime.parse(date);
+				
+				memberInfo = new MemberInfo(userIdx, id, pw, name, tel, addr, email, joinDate);
+				
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			db.closeResultSet(rs);
+			db.closePstmt(pstmt);
+			db.closeConn(conn);
+		}
+		return memberInfo;
+	}
 }

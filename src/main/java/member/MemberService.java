@@ -29,4 +29,10 @@ public class MemberService {
 			return 400;
 		}
 	}
+	
+	public MemberInfo selectId(String id) {
+		MemberInfoDao dao = new MemberInfoDao();
+		
+		return dao.selectById(id);
+	}
 }
