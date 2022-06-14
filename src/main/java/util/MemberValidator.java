@@ -17,7 +17,7 @@ import vo.MemberInfo;
 
 // 이메일 규칙 - 반드시 @와 .을 포함하도록 한다
 public class MemberValidator {
-	public boolean allValidator(String id, String pw, String name, String tel, String addr, String email) {
+	public boolean allValidator(String id, String pw, String pwChk, String name, String tel, String addr, String email) {
 		
 		// 아이디 파라미터
 		boolean correctId = false;
