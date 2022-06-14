@@ -41,4 +41,9 @@ public class MemberService {
 		
 		return dao.selectById(id);
 	}
+	
+	public void updateExclusionPw(MemberInfo memberInfo) {
+		MemberInfoDao dao = new MemberInfoDao();
+		dao.update(memberInfo);
+	}
 }

@@ -126,4 +126,28 @@ public class MemberInfoDao {
 		}
 		return memberInfo;
 	}
+	
+	public void update(MemberInfo memberInfo) {
+		Database db = new Database();
+		
+		Connection conn = db.getConnection();
+		PreparedStatement pstmt = null;
+		
+		try {
+			String sql = "UPDATE member_info SET tel = ?, addr = ?, email = ? WHERE id = ?";
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, memberInfo.getTel());
+			pstmt.setString(2, memberInfo.getAddr());
+			pstmt.setString(3, memberInfo.getEmail());
+			pstmt.setString(4, memberInfo.getId());
+			
+			pstmt.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			db.closePstmt(pstmt);
+			db.closeConn(conn);
+		}
+	}
 }

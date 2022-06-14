@@ -26,12 +26,15 @@ public class MemberInfo {
 		this.email = email;
 		this.joinDate = joinDate;
 	}
-	
-	
 
 	public MemberInfo(String id, String pw, String name, String tel, String addr, String email, LocalDateTime joinDate) {
 		this(0, id, pw, name, tel, addr, email, joinDate);
 	}
+
+	public MemberInfo(String id, String tel, String addr, String email) {
+		this(0, id, null, null, tel, addr, email, null);
+	}
+	
 
 	public int getUserIdx() {
 		return userIdx;
