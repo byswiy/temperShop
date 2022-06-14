@@ -81,12 +81,12 @@ public class MemberInfo {
 		this.addr = addr;
 	}
 
-	public String getEmial() {
-		return emial;
+	public String getEmail() {
+		return email;
 	}
 
-	public void setEmial(String emial) {
-		this.emial = emial;
+	public void setEmail(String email) {
+		this.email = email;
 	}
 
 	public LocalDateTime getJoinDate() {
