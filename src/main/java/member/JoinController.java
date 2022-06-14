@@ -49,7 +49,7 @@ public class JoinController extends HttpServlet {
 			response.setStatus(status);
 			
 		} catch(BadParameterException e) {
-			// 파라미터 검증에 오류가 생겼을 때 400 상태코드 반환 
+			// 파라미터 검증에 예외가 생겼을 때 400 상태코드 반환 
 			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 		}
 		
