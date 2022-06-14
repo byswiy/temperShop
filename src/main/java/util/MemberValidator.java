@@ -17,13 +17,13 @@ import vo.MemberInfo;
 
 // 이메일 규칙 - 반드시 @와 .을 포함하도록 한다
 public class MemberValidator {
-	public boolean allValidator(MemberInfo memberInfo) {
+	public boolean allValidator(String id, String pw, String name, String tel, String addr, String email) {
 		
 		// 아이디 파라미터
 		boolean correctId = false;
 		
 		// 시작은 반드시 영소문자로 시작하며 영대소문자, 숫자로 이루어진 6~16자 아이디 정규식
-		correctId = memberInfo.getId().matches("^[a-z]{1}[A-Za-z0-9]{5,15}$");
+		correctId = id.matches("^[a-z]{1}[A-Za-z0-9]{5,15}$");
 		
 		if(!correctId) {
 			return false;
