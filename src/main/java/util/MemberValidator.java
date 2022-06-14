@@ -31,4 +31,11 @@ public class MemberValidator {
 		
 		return correctId;
 	}
+	
+	// 회원 정보 비밀번호 수정 시 필요한 validator
+	public boolean updatePwValidator(String pw) {
+		boolean correctPw = false;
+		
+		return correctPw;
+	}
 }

@@ -150,4 +150,26 @@ public class MemberInfoDao {
 			db.closeConn(conn);
 		}
 	}
+	
+	public void updatePassword(String id, String newPw) {
+		Database db = new Database();
+		
+		Connection conn = db.getConnection();
+		PreparedStatement pstmt = null;
+		
+		try {
+			String sql = "UPDATE SET pw = ? WHERE id = ?";
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, newPw);
+			pstmt.setString(2, id);
+			
+			pstmt.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			db.closePstmt(pstmt);
+			db.closeConn(conn);
+		}
+	}
 }

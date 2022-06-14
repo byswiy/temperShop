@@ -46,4 +46,9 @@ public class MemberService {
 		MemberInfoDao dao = new MemberInfoDao();
 		dao.update(memberInfo);
 	}
+	
+	public void updatePw(String id, String newPw) {
+		MemberInfoDao dao = new MemberInfoDao();
+		dao.updatePassword(id, newPw);
+	}
 }
