@@ -17,6 +17,7 @@ import vo.MemberInfo;
 public class JoinController extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		try {
+			request.setCharacterEncoding("UTF-8");
 			// 회원 정보로 입력된 데이터를 꺼내온다
 			String id = request.getParameter("id");
 			String pw = request.getParameter("pw");
