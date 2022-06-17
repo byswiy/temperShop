@@ -60,7 +60,7 @@ public class MemberInfoDao {
 		PreparedStatement pstmt = null;
 		
 		try {
-			String sql = "INSERT INTO temoerShop(id, pw, name, tel, addr, email, joinDate) VALUES(?, ?, ?, ?, ?, ?, ?)";
+			String sql = "INSERT INTO member_info(id, pw, name, tel, addr, email, joinDate) VALUES(?, ?, ?, ?, ?, ?, ?)";
 			
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, memberInfo.getId());
@@ -94,7 +94,7 @@ public class MemberInfoDao {
 		MemberInfo memberInfo = null;
 		
 		try {
-			String sql = "SELECT * FROM temperShop WHERE id=?";
+			String sql = "SELECT * FROM member_info WHERE id=?";
 			
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, id);
@@ -134,13 +134,14 @@ public class MemberInfoDao {
 		PreparedStatement pstmt = null;
 		
 		try {
-			String sql = "UPDATE member_info SET tel = ?, addr = ?, email = ? WHERE id = ?";
+			String sql = "UPDATE member_info SET name=?, tel = ?, addr = ?, email = ? WHERE id = ?";
 			
 			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, memberInfo.getTel());
-			pstmt.setString(2, memberInfo.getAddr());
-			pstmt.setString(3, memberInfo.getEmail());
-			pstmt.setString(4, memberInfo.getId());
+			pstmt.setString(1, memberInfo.getName());
+			pstmt.setString(2, memberInfo.getTel());
+			pstmt.setString(3, memberInfo.getAddr());
+			pstmt.setString(4, memberInfo.getEmail());
+			pstmt.setString(5, memberInfo.getId());
 			
 			pstmt.executeUpdate();
 		} catch (SQLException e) {

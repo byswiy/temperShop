@@ -31,8 +31,8 @@ public class MemberInfo {
 		this(0, id, pw, name, tel, addr, email, joinDate);
 	}
 
-	public MemberInfo(String id, String tel, String addr, String email) {
-		this(0, id, null, null, tel, addr, email, null);
+	public MemberInfo(String id, String name, String tel, String addr, String email) {
+		this(0, id, null, name, tel, addr, email, null);
 	}
 	
 

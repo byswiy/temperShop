@@ -31,7 +31,7 @@ public class LoginController extends HttpServlet {
 			MemberValidator validator = new MemberValidator();
 			
 			// 아이디, 비밀번호 검증
-			if(!validator.allValidator(id, pw, null, null, null, null, null)) {
+			if(!validator.loginValidator(id, pw)) {
 				throw new BadParameterException();
 			}
 			

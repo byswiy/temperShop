@@ -18,7 +18,8 @@ import vo.MemberInfo;
 public class UpdateExclusionPwController extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		try {
-			// 수정할 연락처, 주소, 이메일 데이터를 꺼내온다
+			request.setCharacterEncoding("UTF-8");
+			// 수정할 이름, 연락처, 주소, 이메일 데이터를 꺼내온다
 			String name = request.getParameter("name");
 			String tel = request.getParameter("tel");
 			String addr = request.getParameter("addr");
@@ -26,8 +27,8 @@ public class UpdateExclusionPwController extends HttpServlet {
 			
 			MemberValidator validator = new MemberValidator();
 			
-			// 아이디, 비밀번호 검증
-			if(!validator.allValidator(null, null, null, name, tel, addr, email)) {
+			// 수정할 정보들의 데이터를 검증한다
+			if(!validator.updateValidator(name, tel, addr, email)) {
 				throw new BadParameterException();
 			}
 			
@@ -45,8 +46,11 @@ public class UpdateExclusionPwController extends HttpServlet {
 			}
 			
 			// 회원 정보 수정
-			MemberInfo memberInfo = new MemberInfo(id, tel, addr, email);
+			MemberInfo memberInfo = new MemberInfo(id, name, tel, addr, email);
 			service.updateExclusionPw(memberInfo);
+			
+			// 정상적으로 정보를 수정했다면 200 상태코드를 반환한다
+			response.setStatus(HttpServletResponse.SC_OK);
 			
 		} catch(BadParameterException e) {
 			// 파라미터 검증에 예외가 생겼을 때 400 상태코드 반환 

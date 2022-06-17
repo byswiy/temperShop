@@ -45,7 +45,7 @@ public class MemberValidator {
 
 		// 이메일 정규 표현식 : 영대소문자와 숫자로 시작한다 / @가 반드시 붙고 뒤에 영대소문자와 숫자가 들어갈 수 있다 / 
 		//					   . 이 반드시 붙고 뒤에 영소문자가 2~3개 들어갈 수 있다
-		correctAll = email.matches("^[a-zA-Z0-9]+@[a-zA-Z0-9.-]+\\.[a-z]{1,2}$");	
+		correctAll = email.matches("^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$");	
 		if(!correctAll) {
 			return false;
 		}
@@ -53,10 +53,50 @@ public class MemberValidator {
 		return correctAll;
 	}
 	
+	// 로그인에 필요한 아이디, 비밀번호 validator
+	public boolean loginValidator(String id, String pw) {
+		boolean correctLoginValidator = false;
+
+		correctLoginValidator = id.matches("^(?=.*[a-z])(?=.*\\d)+[a-zA-Z0-9]{5,15}$");
+		if (!correctLoginValidator) {
+			return false;
+		}
+
+		correctLoginValidator = pw.matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)+[a-zA-Z0-9]{7,17}$");
+		if (!correctLoginValidator) {
+			return false;
+		}
+
+		return correctLoginValidator;
+	}
+	
+	
+	// 회원 정보 수정시 필요한 validator
+	public boolean updateValidator(String name, String tel, String addr, String email) {
+		boolean correctUpdateValidator = false;
+		correctUpdateValidator = name.matches("^[가-힣]{1,3}$");
+		if (!correctUpdateValidator) {
+			return false;
+		}
+
+		correctUpdateValidator = email.matches("^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$");
+		if (!correctUpdateValidator) {
+			return false;
+		}
+
+		return correctUpdateValidator;
+	}
+	
 	// 회원 정보 비밀번호 수정 시 필요한 validator
 	public boolean updatePwValidator(String pw) {
 		boolean correctPw = false;
 		
+		correctPw = pw.matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)+[a-zA-Z0-9]{7,17}$");
+		if (!correctPw) {
+			return false;
+		}
+		
 		return correctPw;
 	}
+	
 }
