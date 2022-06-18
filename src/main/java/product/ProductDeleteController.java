@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import dao.ProductInfoDao;
 import vo.ProductInfo;
 
-@WebServlet("/ProductDeleteController")
+@WebServlet("/product/delete")
 public class ProductDeleteController extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// 삭제할 상품 번호를 가져온다

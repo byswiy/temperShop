@@ -16,7 +16,7 @@ import vo.ProductInfo;
 
 @WebServlet("/product/detail")
 public class ProductDetailController extends HttpServlet {
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void dopost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		try {
 			// 상품의 상세 정보를 가져오기 위해 상품 번호를 가져온다
 			if(request.getParameter("prodIdx") == null) {

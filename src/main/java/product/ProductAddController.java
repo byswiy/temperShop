@@ -20,7 +20,7 @@ import vo.ProductInfo;
 @WebServlet("/product/add")
 public class ProductAddController extends HttpServlet {
 	private static final int MAXIUM_FILE_SIZE = 5 * 1024 * 1024;  // 5MB
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		try {
 			// 첨부파일(이미지)를 꺼내온다
 			String path = request.getRealPath("images/product");
