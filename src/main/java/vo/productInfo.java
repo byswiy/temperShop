@@ -7,16 +7,17 @@ public class ProductInfo {
 	private String prodName;
 	private int prodPrice;
 	private int prodStock;
-	private char prodSize;
+	private String prodSize;
 	private String prodColor;
 	private String prodImg;
 	private LocalDateTime regDate;
+	private String prodCategory;
 	
 	public ProductInfo() {
 		
 	}
 	
-	public ProductInfo(int prodIdx, String prodName, int prodPrice, int prodStock, char prodSize, String prodColor, String prodImg, LocalDateTime regDate) {
+	public ProductInfo(int prodIdx, String prodName, int prodPrice, int prodStock, String prodSize, String prodColor, String prodImg, LocalDateTime regDate, String prodCategory) {
 		this.prodIdx = prodIdx;
 		this.prodName = prodName;
 		this.prodPrice = prodPrice;
@@ -25,8 +26,23 @@ public class ProductInfo {
 		this.prodColor = prodColor;
 		this.prodImg = prodImg;
 		this.regDate = regDate;
+		this.prodCategory = prodCategory;
+	}
+	
+	
+
+	public ProductInfo(String prodName, int prodPrice, int prodStock, String prodSize, String prodColor, String prodImg, LocalDateTime regDate, String category) {
+		this(0, prodName, prodPrice, prodStock, prodSize, prodColor, prodImg, regDate, category);
 	}
 
+	public String getCategory() {
+		return prodCategory;
+	}
+
+	public void setCategory(String category) {
+		this.prodCategory = category;
+	}
+	
 	public int getProdIdx() {
 		return prodIdx;
 	}
@@ -59,11 +75,11 @@ public class ProductInfo {
 		this.prodStock = prodStock;
 	}
 
-	public char getProdSize() {
+	public String getProdSize() {
 		return prodSize;
 	}
 
-	public void setProdSize(char prodSize) {
+	public void setProdSize(String prodSize) {
 		this.prodSize = prodSize;
 	}
 
