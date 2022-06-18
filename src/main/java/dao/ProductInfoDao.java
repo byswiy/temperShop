@@ -166,4 +166,25 @@ public class ProductInfoDao {
 		
 		return productInfo;
 	}
+	
+	// 상품 삭제 쿼리
+	public void deleteProductInfo(int prodIdx) {
+		Database db = new Database();
+		
+		Connection conn = db.getConnection();
+		PreparedStatement pstmt = null;
+		
+		try {
+			String sql = "DELETE FROM product_info WHERE prodIdx = ?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, prodIdx);
+			
+			pstmt.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			db.closePstmt(pstmt);
+			db.closeConn(conn);
+		}
+	}
 }
