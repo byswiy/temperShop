@@ -15,7 +15,7 @@ import vo.ProductInfo;
 public class ProductDeleteController extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// 삭제할 상품 번호를 가져온다
-		if(request.getParameter("productId") == null) {
+		if(request.getParameter("prodIdx") == null) {
 			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 			return;
 		}
