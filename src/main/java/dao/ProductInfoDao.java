@@ -125,6 +125,7 @@ public class ProductInfoDao {
 		return productInfoList;
 	}
 	
+	// 상품 번호를 select하는 쿼리
 	public ProductInfo selectProductIdx(int prodIdx) {
 		Database db = new Database();
 		
@@ -186,5 +187,29 @@ public class ProductInfoDao {
 			db.closePstmt(pstmt);
 			db.closeConn(conn);
 		}
+	}
+	
+	public void decreaseStock(int prodIdx) {
+		Database db = new Database();
+
+		Connection conn = db.getConnection();
+		PreparedStatement pstmt = null;
+		
+		try {
+			String sql = "UPDATE product_info SET prodStock = prodStock - 1 WHERE prodIdx = ?";
+			
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setInt(1, prodIdx);
+			
+			pstmt.executeUpdate();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			db.closePstmt(pstmt);
+			db.closeConn(conn);
+		}
+	
 	}
 }
