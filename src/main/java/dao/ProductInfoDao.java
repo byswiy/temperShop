@@ -124,4 +124,46 @@ public class ProductInfoDao {
 		
 		return productInfoList;
 	}
+	
+	public ProductInfo selectProductIdx(int prodIdx) {
+		Database db = new Database();
+		
+		Connection conn = db.getConnection();
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		
+		ProductInfo productInfo = null;
+		
+		try {
+			String sql = "SELECT * FROM product_info WHERE prodIdx = ?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, prodIdx);
+			
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				String prodName = rs.getString("prodName");
+				int prodPrice = rs.getInt("prodPrice");
+				int prodStock = rs.getInt("prodStock");
+				String prodSize = rs.getString("prodSize");
+				String prodColor = rs.getString("prodColor");
+				String prodImg = rs.getString("prodImg");
+				String date = rs.getString("regDate");
+				date = date.substring(0, date.indexOf('.'));
+				date = date.replace(' ', 'T');
+				LocalDateTime regDate = LocalDateTime.parse(date);
+				String prodCategory = rs.getString("prodCategory");
+				
+				productInfo = new ProductInfo(prodIdx, prodName, prodPrice, prodStock, prodSize, prodColor, prodImg, regDate, prodCategory);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}  finally {
+			db.closeResultSet(rs);
+			db.closePstmt(pstmt);
+			db.closeConn(conn);
+		}
+		
+		return productInfo;
+	}
 }
