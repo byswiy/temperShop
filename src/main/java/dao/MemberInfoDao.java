@@ -10,6 +10,7 @@ import util.Database;
 import vo.MemberInfo;
 
 public class MemberInfoDao {
+	// 아이디, 연락처, 이메일을 SELECT하는 쿼리
 	public MemberInfo selectIdOrTelOrEmail(String id, String tel, String email) {
 		Database db = new Database();
 		
@@ -53,6 +54,7 @@ public class MemberInfoDao {
 		return memberInfo;
 	}
 	
+	// 회원 정보를 삽입하는 INSERT 쿼리
 	public boolean insert(MemberInfo memberInfo) {
 		Database db = new Database();
 		
@@ -84,6 +86,7 @@ public class MemberInfoDao {
 		return false;
 	}
 	
+	// 회원 아이디를 사용해서 정보를 SELECT 하는 쿼리
 	public MemberInfo selectById(String id) {
 		Database db = new Database();
 		
@@ -127,6 +130,7 @@ public class MemberInfoDao {
 		return memberInfo;
 	}
 	
+	// 회원 정보를 수정하기 위한 UPDATE 쿼리
 	public void update(MemberInfo memberInfo) {
 		Database db = new Database();
 		
@@ -152,6 +156,7 @@ public class MemberInfoDao {
 		}
 	}
 	
+	// 비밀번호 수정을 위한 UPDATE 쿼리
 	public void updatePassword(String id, String newPw) {
 		Database db = new Database();
 		

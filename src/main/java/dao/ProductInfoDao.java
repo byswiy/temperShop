@@ -12,6 +12,8 @@ import util.Database;
 import vo.ProductInfo;
 
 public class ProductInfoDao {
+	
+	// 상품 정보를 삽입하는 INSERT 쿼리
 	public boolean insertProduct(ProductInfo productInfo) {
 		Database db = new Database();
 		
@@ -44,6 +46,7 @@ public class ProductInfoDao {
 		return false;
 	}
 	
+	// 상품의 수를 가져오기 위한 SELECT 쿼리
 	public int getCount() {
 		Database db = new Database();
 		
@@ -73,6 +76,7 @@ public class ProductInfoDao {
 		return count;
 	}
 	 
+	// pageNumber를 포함한 상품 정보를 모두 가져오는 SELECT 쿼리
 	public List<ProductInfo> selectAll(int pageNumber) {
 		Database db = new Database();
 		
@@ -168,7 +172,7 @@ public class ProductInfoDao {
 		return productInfo;
 	}
 	
-	// 상품 삭제 쿼리
+	// 상품 삭제를 위한 DELETE 쿼리
 	public void deleteProductInfo(int prodIdx) {
 		Database db = new Database();
 		
@@ -189,6 +193,7 @@ public class ProductInfoDao {
 		}
 	}
 	
+	// 상품 재고를 감소 시키는 UPDATE 쿼리
 	public void decreaseStock(int prodIdx) {
 		Database db = new Database();
 

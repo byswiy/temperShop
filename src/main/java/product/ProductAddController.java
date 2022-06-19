@@ -47,7 +47,7 @@ public class ProductAddController extends HttpServlet {
 			dao.insertProduct(productInfo);
 			
 		} catch(BadParameterException e) {
-			//
+			// 상품을 추가하지 못했다면 400 상태코드를 반환한다
 			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 		}
 	}

@@ -8,6 +8,8 @@ import util.Database;
 import vo.BuyInfo;
 
 public class BuyInfoDao {
+	
+	// 구매 정보를 삽입하기 위한 INSERT 쿼리
 	public boolean insertBuyInfo(BuyInfo buyInfo) {
 		Database db = new Database();
 
