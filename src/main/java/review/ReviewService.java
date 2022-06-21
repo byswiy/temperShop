@@ -53,4 +53,11 @@ public class ReviewService {
 		
 		return data;
 	}
+	
+	public boolean addReview(ReviewInfo reviewInfo) {
+		ReviewInfoDao dao = new ReviewInfoDao();
+		boolean result = dao.insertReview(reviewInfo);
+		
+		return result;
+	}
 }

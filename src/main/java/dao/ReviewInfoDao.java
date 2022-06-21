@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import util.Database;
-import vo.ProductInfo;
 import vo.ReviewInfo;
 
 public class ReviewInfoDao {
@@ -90,5 +89,35 @@ public class ReviewInfoDao {
 		}
 		
 		return amount;
+	}
+	
+	// 후기 작성 insert 쿼리
+	public boolean insertReview(ReviewInfo reviewInfo) {
+		Database db = new Database();
+		
+		Connection conn = db.getConnection();
+		PreparedStatement pstmt = null;
+		
+		try {
+			String sql = "INSERT INTO product_review(reviewIdx, member_userIdx, product_prodIdx, contents, insertDate) VALUES (?, ?, ?, ?, ?)";
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setInt(1, reviewInfo.getReviewIdx());
+			pstmt.setInt(2, reviewInfo.getMember_userIdx());
+			pstmt.setInt(3, reviewInfo.getProduct_prodIdx());
+			pstmt.setString(4, reviewInfo.getContents());
+			pstmt.setString(5, reviewInfo.getInsertDate().toString());
+			
+			int count = pstmt.executeUpdate();
+			
+			return count == 1;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+			db.closePstmt(pstmt);
+			db.closeConn(conn);
+		}	
+		return false;
 	}
 }
