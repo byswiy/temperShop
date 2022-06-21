@@ -129,7 +129,7 @@ public class ProductInfoDao {
 		return productInfoList;
 	}
 	
-	// 상품 번호를 select하는 쿼리
+	// 상품 번호를 select해서 상품 정보를 저장하는 쿼리
 	public ProductInfo selectProductIdx(int prodIdx) {
 		Database db = new Database();
 		

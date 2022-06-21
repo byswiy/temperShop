@@ -21,7 +21,7 @@ public class MemberInfoDao {
 		MemberInfo memberInfo = null;
 		
 		try {
-			String sql = "SELECT * FROM temperShop WHERE id=?, tel=?, email=?";
+			String sql = "SELECT * FROM temperShop WHERE id=? AND tel=? AND email=?";
 			
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, id);
@@ -177,5 +177,50 @@ public class MemberInfoDao {
 			db.closePstmt(pstmt);
 			db.closeConn(conn);
 		}
+		
 	}
-}
+	
+	// 회원 번호를 select 해서 회원 정보를 가져오는 쿼리
+	public MemberInfo selectByUserIdx(int userIdx) {
+		Database db = new Database();
+
+		Connection conn = db.getConnection();
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+
+		MemberInfo memberInfo = null;
+
+		try {
+			String sql = "SELECT * FROM member_info WHERE id=?";
+
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, userIdx);
+
+			rs = pstmt.executeQuery();
+
+			if (rs.next()) {
+				String id = rs.getString("id");
+				String pw = rs.getString("pw");
+				String name = rs.getString("name");
+				String tel = rs.getString("tel");
+				String addr = rs.getString("addr");
+				String email = rs.getString("email");
+				String date = rs.getString("joinDate");
+				date = date.substring(0, 19);
+				date = date.replace(' ', 'T');
+				LocalDateTime joinDate = LocalDateTime.parse(date);
+
+				memberInfo = new MemberInfo(userIdx, id, pw, name, tel, addr, email, joinDate);
+
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			db.closeResultSet(rs);
+			db.closePstmt(pstmt);
+			db.closeConn(conn);
+		}
+		return memberInfo;
+	}
+}	
