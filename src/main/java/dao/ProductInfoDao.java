@@ -21,16 +21,17 @@ public class ProductInfoDao {
 		PreparedStatement pstmt = null;
 		
 		try {
-			String sql = "INSERT INTO product_info(prodName, prodPrice, prodStock, prodSize, prodColor, prodImg, regDate, prodCategory) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+			String sql = "INSERT INTO product_info(prodName, prodPrice, prodStock, prodQuantity, prodSize, prodColor, prodCategory, prodImg, regDate) VALUES (?, ?, ?, ?, ?, ?, ?, ?,?)";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, productInfo.getProdName());
 			pstmt.setInt(2, productInfo.getProdPrice());
 			pstmt.setInt(3, productInfo.getProdStock());
-			pstmt.setString(4, productInfo.getProdSize());
-			pstmt.setString(5, productInfo.getProdColor());
-			pstmt.setString(6, productInfo.getProdImg());
-			pstmt.setString(7, productInfo.getRegDate().toString());
-			pstmt.setString(8, productInfo.getCategory());
+			pstmt.setInt(4, productInfo.getProdQuantity());
+			pstmt.setString(5, productInfo.getProdSize());
+			pstmt.setString(6, productInfo.getProdColor());
+			pstmt.setString(7, productInfo.getCategory());
+			pstmt.setString(8, productInfo.getProdImg());
+			pstmt.setString(9, productInfo.getRegDate().toString());
 			
 			int count = pstmt.executeUpdate();
 			
@@ -105,16 +106,17 @@ public class ProductInfoDao {
 				String prodName = rs.getString("prodName");
 				int prodPrice = rs.getInt("prodPrice");
 				int prodStock = rs.getInt("prodStock");
+				int prodQuantity = rs.getInt("prodQuantity");
 				String prodSize = rs.getString("prodSize");
 				String prodColor = rs.getString("prodColor");
+				String prodCategory = rs.getString("prodCategory");
 				String prodImg = rs.getString("prodImg");
 				String date = rs.getString("insertDate");
 				date = date.substring(0, date.indexOf('.'));
 				date = date.replace(' ', 'T');
 				LocalDateTime regDate = LocalDateTime.parse(date);
-				String prodCategory = rs.getString("prodCategory");
 				
-				ProductInfo nthProductInfo = new ProductInfo(prodIdx, prodName, prodPrice, prodStock, prodSize, prodColor, prodImg, regDate, prodCategory);
+				ProductInfo nthProductInfo = new ProductInfo(prodIdx, prodName, prodPrice, prodStock, prodQuantity, prodSize, prodColor, prodCategory, prodImg, regDate);
 				
 				productInfoList.add(nthProductInfo);
 			}
@@ -150,16 +152,17 @@ public class ProductInfoDao {
 				String prodName = rs.getString("prodName");
 				int prodPrice = rs.getInt("prodPrice");
 				int prodStock = rs.getInt("prodStock");
+				int prodQuantity = rs.getInt("prodQuantity");
 				String prodSize = rs.getString("prodSize");
 				String prodColor = rs.getString("prodColor");
+				String prodCategory = rs.getString("prodCategory");
 				String prodImg = rs.getString("prodImg");
-				String date = rs.getString("regDate");
+				String date = rs.getString("insertDate");
 				date = date.substring(0, date.indexOf('.'));
 				date = date.replace(' ', 'T');
 				LocalDateTime regDate = LocalDateTime.parse(date);
-				String prodCategory = rs.getString("prodCategory");
 				
-				productInfo = new ProductInfo(prodIdx, prodName, prodPrice, prodStock, prodSize, prodColor, prodImg, regDate, prodCategory);
+				productInfo = new ProductInfo(prodIdx, prodName, prodPrice, prodStock, prodQuantity, prodSize, prodColor, prodCategory, prodImg, regDate);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();

@@ -30,17 +30,18 @@ public class ProductAddController extends HttpServlet {
 			String prodName = mr.getParameter("prodName");
 			int prodStock = Integer.parseInt(mr.getParameter("prodStock"));
 			int prodPrice = Integer.parseInt(mr.getParameter("prodPrice"));
+			int prodQuantity = Integer.parseInt(mr.getParameter("prodQuantity"));
 			String prodSize = mr.getParameter("prodSize");
 			String prodColor = mr.getParameter("prodColor");
+			String prodCategory = mr.getParameter("prodCategory");
 			String prodImg = mr.getFilesystemName("prodImg");
 			LocalDateTime regDate = LocalDateTime.now();
-			String prodCategory = mr.getParameter("prodCategory");
 			
 			// 1-1 전달 받은 값 검증
 			ProductValidator validator = new ProductValidator();
 
 			// 2. 전달받은 값을 하나의 상품정보로 합친다
-			ProductInfo productInfo = new ProductInfo(prodName, prodPrice, prodStock, prodSize, prodColor, prodImg, regDate, prodCategory);		
+			ProductInfo productInfo = new ProductInfo(prodName, prodPrice, prodStock, prodQuantity, prodSize, prodColor, prodCategory, prodImg, regDate);		
 			
 			// 3. DB에 새로운 상품을 저장한다
 			ProductInfoDao dao = new ProductInfoDao();

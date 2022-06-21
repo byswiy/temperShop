@@ -7,32 +7,34 @@ public class ProductInfo {
 	private String prodName;
 	private int prodPrice;
 	private int prodStock;
+	private int prodQuantity;
 	private String prodSize;
 	private String prodColor;
+	private String prodCategory;
 	private String prodImg;
 	private LocalDateTime regDate;
-	private String prodCategory;
 	
 	public ProductInfo() {
 		
 	}
-	
-	public ProductInfo(int prodIdx, String prodName, int prodPrice, int prodStock, String prodSize, String prodColor, String prodImg, LocalDateTime regDate, String prodCategory) {
+
+	public ProductInfo(int prodIdx, String prodName, int prodPrice, int prodStock, int prodQuantity, String prodSize, String prodColor, String prodCategory, String prodImg, LocalDateTime regDate) {
 		this.prodIdx = prodIdx;
 		this.prodName = prodName;
 		this.prodPrice = prodPrice;
 		this.prodStock = prodStock;
+		this.prodQuantity = prodQuantity;
 		this.prodSize = prodSize;
 		this.prodColor = prodColor;
+		this.prodCategory = prodCategory;
 		this.prodImg = prodImg;
 		this.regDate = regDate;
-		this.prodCategory = prodCategory;
 	}
-	
-	
 
-	public ProductInfo(String prodName, int prodPrice, int prodStock, String prodSize, String prodColor, String prodImg, LocalDateTime regDate, String category) {
-		this(0, prodName, prodPrice, prodStock, prodSize, prodColor, prodImg, regDate, category);
+	
+	
+	public ProductInfo(String prodName, int prodPrice, int prodStock, int prodQuantity, String prodSize, String prodColor, String prodCategory, String prodImg, LocalDateTime regDate) {
+		this(0, prodName, prodPrice, prodStock, prodQuantity, prodSize, prodColor, prodCategory, prodImg, regDate);
 	}
 
 	public String getCategory() {
@@ -105,6 +107,22 @@ public class ProductInfo {
 
 	public void setRegDate(LocalDateTime regDate) {
 		this.regDate = regDate;
+	}
+
+	public int getProdQuantity() {
+		return prodQuantity;
+	}
+
+	public void setProdQuantity(int prodQuantity) {
+		this.prodQuantity = prodQuantity;
+	}
+
+	public String getProdCategory() {
+		return prodCategory;
+	}
+
+	public void setProdCategory(String prodCategory) {
+		this.prodCategory = prodCategory;
 	}
 	
 	

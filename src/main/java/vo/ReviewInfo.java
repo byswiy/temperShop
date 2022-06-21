@@ -13,6 +13,18 @@ public class ReviewInfo {
 		
  	}
 	
+	
+	
+	public ReviewInfo(int reviewIdx, int member_userIdx, int product_prodIdx, String contents, LocalDateTime insertDate) {
+		this.reviewIdx = reviewIdx;
+		this.member_userIdx = member_userIdx;
+		this.product_prodIdx = product_prodIdx;
+		this.contents = contents;
+		this.insertDate = insertDate;
+	}
+
+
+
 	public int getReviewIdx() {
 		return reviewIdx;
 	}

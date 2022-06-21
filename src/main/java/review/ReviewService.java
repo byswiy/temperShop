@@ -60,4 +60,11 @@ public class ReviewService {
 		
 		return result;
 	}
+	
+	public boolean deleteReview(int reviewIdx) {
+		ReviewInfoDao dao = new ReviewInfoDao();
+		boolean result = dao.deleteReviewByReviewIdx(reviewIdx);
+		
+		return result;
+	}
 }

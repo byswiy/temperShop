@@ -35,7 +35,7 @@ public class ReviewInfoDao {
 				int userIdx = rs.getInt("member_userIdx");
 				int prodIdx = rs.getInt("product_prodIdx");
 				String contents = rs.getString("contents");
-				String date = rs.getString("joinDate");
+				String date = rs.getString("insertDate");
 				date = date.substring(0, 19);
 				date = date.replace(' ', 'T');
 				LocalDateTime insertDate = LocalDateTime.parse(date);
@@ -119,5 +119,75 @@ public class ReviewInfoDao {
 			db.closeConn(conn);
 		}	
 		return false;
+	}
+	
+	// reviewIdx를 사용해 해당 후기를 select하는 쿼리
+	public ReviewInfo selectReviewIdx(int reviewIdx) {
+		Database db = new Database();
+		
+		Connection conn = db.getConnection();
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		
+		ReviewInfo reviewInfo = null;
+		
+		try {
+			String sql = "SELECT * FROM product_review WHERE reviewIdx = ?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, reviewIdx);
+			
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				int member_userIdx = rs.getInt("member_userIdx");
+				int product_prodIdx = rs.getInt("product_prodIdx");
+				String contents = rs.getString("contents");
+				String date = rs.getString("insertDate");
+				date = date.substring(0, 19);
+				date = date.replace(' ', 'T');
+				LocalDateTime insertDate = LocalDateTime.parse(date);
+				
+				reviewInfo = new ReviewInfo(reviewIdx, member_userIdx, product_prodIdx, contents, insertDate);
+				
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			db.closeResultSet(rs);
+			db.closePstmt(pstmt);
+			db.closeConn(conn);
+		}
+		
+		return reviewInfo;
+	}
+	
+	// reviewIdx를 사용해 delete하는 쿼리
+	public boolean deleteReviewByReviewIdx(int reviewIdx) {
+		Database db = new Database();
+		
+		Connection conn = db.getConnection();
+		PreparedStatement pstmt = null;
+		
+		boolean result = false;
+		
+		try {
+			String sql = "DELETE FROM product_review WHERE reviewIdx = ?";
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setInt(1, reviewIdx);
+			
+			int count = pstmt.executeUpdate();
+			
+			result = count == 1;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			db.closePstmt(pstmt);
+			db.closeConn(conn);
+		}
+		
+		return result;
 	}
 }
