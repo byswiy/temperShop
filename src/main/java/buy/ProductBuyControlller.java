@@ -21,6 +21,7 @@ public class ProductBuyControlller extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.setCharacterEncoding("UTF-8");
 		
+		// 상품 번호를 가져온다
 		if(request.getParameter("prodIdx") == null) {
 			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 			return;

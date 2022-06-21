@@ -21,17 +21,16 @@ public class ProductInfoDao {
 		PreparedStatement pstmt = null;
 		
 		try {
-			String sql = "INSERT INTO product_info(prodName, prodPrice, prodStock, prodQuantity, prodSize, prodColor, prodCategory, prodImg, regDate) VALUES (?, ?, ?, ?, ?, ?, ?, ?,?)";
+			String sql = "INSERT INTO product_info(prodName, prodPrice, prodStock, prodSize, prodColor, prodCategory, prodImg, regDate) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, productInfo.getProdName());
 			pstmt.setInt(2, productInfo.getProdPrice());
 			pstmt.setInt(3, productInfo.getProdStock());
-			pstmt.setInt(4, productInfo.getProdQuantity());
-			pstmt.setString(5, productInfo.getProdSize());
-			pstmt.setString(6, productInfo.getProdColor());
-			pstmt.setString(7, productInfo.getCategory());
-			pstmt.setString(8, productInfo.getProdImg());
-			pstmt.setString(9, productInfo.getRegDate().toString());
+			pstmt.setString(4, productInfo.getProdSize());
+			pstmt.setString(5, productInfo.getProdColor());
+			pstmt.setString(6, productInfo.getCategory());
+			pstmt.setString(7, productInfo.getProdImg());
+			pstmt.setString(8, productInfo.getRegDate().toString());
 			
 			int count = pstmt.executeUpdate();
 			
@@ -106,7 +105,6 @@ public class ProductInfoDao {
 				String prodName = rs.getString("prodName");
 				int prodPrice = rs.getInt("prodPrice");
 				int prodStock = rs.getInt("prodStock");
-				int prodQuantity = rs.getInt("prodQuantity");
 				String prodSize = rs.getString("prodSize");
 				String prodColor = rs.getString("prodColor");
 				String prodCategory = rs.getString("prodCategory");
@@ -116,7 +114,7 @@ public class ProductInfoDao {
 				date = date.replace(' ', 'T');
 				LocalDateTime regDate = LocalDateTime.parse(date);
 				
-				ProductInfo nthProductInfo = new ProductInfo(prodIdx, prodName, prodPrice, prodStock, prodQuantity, prodSize, prodColor, prodCategory, prodImg, regDate);
+				ProductInfo nthProductInfo = new ProductInfo(prodIdx, prodName, prodPrice, prodStock, prodSize, prodColor, prodCategory, prodImg, regDate);
 				
 				productInfoList.add(nthProductInfo);
 			}
@@ -152,7 +150,6 @@ public class ProductInfoDao {
 				String prodName = rs.getString("prodName");
 				int prodPrice = rs.getInt("prodPrice");
 				int prodStock = rs.getInt("prodStock");
-				int prodQuantity = rs.getInt("prodQuantity");
 				String prodSize = rs.getString("prodSize");
 				String prodColor = rs.getString("prodColor");
 				String prodCategory = rs.getString("prodCategory");
@@ -162,7 +159,7 @@ public class ProductInfoDao {
 				date = date.replace(' ', 'T');
 				LocalDateTime regDate = LocalDateTime.parse(date);
 				
-				productInfo = new ProductInfo(prodIdx, prodName, prodPrice, prodStock, prodQuantity, prodSize, prodColor, prodCategory, prodImg, regDate);
+				productInfo = new ProductInfo(prodIdx, prodName, prodPrice, prodStock, prodSize, prodColor, prodCategory, prodImg, regDate);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -218,6 +215,35 @@ public class ProductInfoDao {
 			db.closePstmt(pstmt);
 			db.closeConn(conn);
 		}
+	}
 	
+	// 상품 정보를 수정하는 UPDATE 쿼리
+	public void updateProductInfo(ProductInfo productInfo) {
+		Database db = new Database();
+
+		Connection conn = db.getConnection();
+		PreparedStatement pstmt = null;
+		
+		try {
+			String sql = "UPDATE product_info SET prodName = ?, prodPrice = ?, prodStock = ?, prodSize = ?, prodColor = ?, prodCategory = ? WHERE prodIdx = ?";
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setString(1, productInfo.getProdName());
+			pstmt.setInt(2, productInfo.getProdPrice());
+			pstmt.setInt(3, productInfo.getProdStock());
+			pstmt.setString(4, productInfo.getProdSize());
+			pstmt.setString(5, productInfo.getProdColor());
+			pstmt.setString(6, productInfo.getCategory());
+			pstmt.setInt(7, productInfo.getProdIdx());
+			
+			pstmt.executeUpdate();
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			db.closePstmt(pstmt);
+			db.closeConn(conn);
+		}
 	}
 }

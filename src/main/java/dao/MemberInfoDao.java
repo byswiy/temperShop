@@ -223,4 +223,29 @@ public class MemberInfoDao {
 		}
 		return memberInfo;
 	}
+	
+	public boolean deleteId(String id) {
+		Database db = new Database();
+
+		Connection conn = db.getConnection();
+		PreparedStatement pstmt = null;
+		
+		
+		try {
+			String sql = "DELETE FROM member_info WHERE id = ?";
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setString(1, id);
+			
+			int count = pstmt.executeUpdate();
+			
+			return count == 1;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			db.closePstmt(pstmt);
+			db.closeConn(conn);
+		}
+		return false;
+	}
 }	

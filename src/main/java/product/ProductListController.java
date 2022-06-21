@@ -3,6 +3,7 @@ package product;
 import java.io.IOException;
 import java.util.List;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -39,6 +40,10 @@ public class ProductListController extends HttpServlet {
 		
 		// 요청 정보안에 상품 정보 저장
 		request.setAttribute("productList", productInfoList);
+		
+		// 상품 목록을 보여주는 jsp로 이동하도록 한다
+		RequestDispatcher rd = request.getRequestDispatcher("##");
+		rd.forward(request, response);
 		
 	}
 

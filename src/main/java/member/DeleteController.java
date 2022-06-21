@@ -21,13 +21,15 @@ public class DeleteController extends HttpServlet {
 
 		// 회원 탈퇴
 		MemberService service = new MemberService();
-		service.deleteMemberInfo(id);
+		boolean result = service.deleteMemberInfo(id);
 
-		// 회원 정보 세션 삭제
-		session.invalidate();
-
-		// 정상적으로 회원 탈퇴가 되었다면 200 상태코드 반환
-		response.setStatus(HttpServletResponse.SC_OK);
+		if(result) {
+			// 회원 정보 세션 삭제
+			session.invalidate();
+			
+			// 정상적으로 회원 탈퇴가 되었다면 200 상태코드 반환
+			response.setStatus(HttpServletResponse.SC_OK);
+		}
 	}
 
 }

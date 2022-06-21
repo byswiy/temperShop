@@ -36,10 +36,10 @@ public class MemberService {
 		return dao.selectById(id);
 	}
 	
-	public MemberInfo deleteMemberInfo(String id) {
+	public boolean deleteMemberInfo(String id) {
 		MemberInfoDao dao = new MemberInfoDao();
 		
-		return dao.selectById(id);
+		return dao.deleteId(id);
 	}
 	
 	public void updateExclusionPw(MemberInfo memberInfo) {

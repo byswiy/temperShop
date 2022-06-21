@@ -30,11 +30,19 @@ public class ProductInfo {
 		this.prodImg = prodImg;
 		this.regDate = regDate;
 	}
+	
+	public ProductInfo(int prodIdx, String prodName, int prodPrice, int prodStock, String prodSize, String prodColor, String prodCategory, String prodImg, LocalDateTime regDate) {
+		this(prodIdx, prodName, prodPrice, prodStock, 0, prodSize, prodColor, prodCategory, prodImg, regDate);
+	}
 
+	// productAddController
+	public ProductInfo(String prodName, int prodPrice, int prodStock,  String prodSize, String prodColor, String prodCategory, String prodImg, LocalDateTime regDate) {
+		this(0, prodName, prodPrice, prodStock, 0, prodSize, prodColor, prodCategory, prodImg, regDate);
+	}
 	
 	
-	public ProductInfo(String prodName, int prodPrice, int prodStock, int prodQuantity, String prodSize, String prodColor, String prodCategory, String prodImg, LocalDateTime regDate) {
-		this(0, prodName, prodPrice, prodStock, prodQuantity, prodSize, prodColor, prodCategory, prodImg, regDate);
+	public ProductInfo(int prodIdx, String prodName, int prodPrice, int prodStock, String prodSize, String prodColor, String prodCategory) {
+		this(prodIdx, prodName, prodPrice, prodStock, 0,  prodSize, prodColor, prodCategory, null, null);
 	}
 
 	public String getCategory() {
@@ -109,14 +117,6 @@ public class ProductInfo {
 		this.regDate = regDate;
 	}
 
-	public int getProdQuantity() {
-		return prodQuantity;
-	}
-
-	public void setProdQuantity(int prodQuantity) {
-		this.prodQuantity = prodQuantity;
-	}
-
 	public String getProdCategory() {
 		return prodCategory;
 	}
@@ -124,6 +124,15 @@ public class ProductInfo {
 	public void setProdCategory(String prodCategory) {
 		this.prodCategory = prodCategory;
 	}
+
+	public int getProdQuantity() {
+		return prodQuantity;
+	}
+
+	public void setProdQuantity(int prodQuantity) {
+		this.prodQuantity = prodQuantity;
+	}
+	
 	
 	
 }

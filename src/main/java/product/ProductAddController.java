@@ -28,9 +28,14 @@ public class ProductAddController extends HttpServlet {
 			
 			// 상품 정보를 꺼내온다
 			String prodName = mr.getParameter("prodName");
+			
+			if(mr.getParameter("prodPrice") == null || mr.getParameter("prodStock") == null) {
+				response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+				return;
+			}
+			
 			int prodStock = Integer.parseInt(mr.getParameter("prodStock"));
 			int prodPrice = Integer.parseInt(mr.getParameter("prodPrice"));
-			int prodQuantity = Integer.parseInt(mr.getParameter("prodQuantity"));
 			String prodSize = mr.getParameter("prodSize");
 			String prodColor = mr.getParameter("prodColor");
 			String prodCategory = mr.getParameter("prodCategory");
@@ -41,12 +46,14 @@ public class ProductAddController extends HttpServlet {
 			ProductValidator validator = new ProductValidator();
 
 			// 2. 전달받은 값을 하나의 상품정보로 합친다
-			ProductInfo productInfo = new ProductInfo(prodName, prodPrice, prodStock, prodQuantity, prodSize, prodColor, prodCategory, prodImg, regDate);		
+			ProductInfo productInfo = new ProductInfo(prodName, prodPrice, prodStock, prodSize, prodColor, prodCategory, prodImg, regDate);		
 			
 			// 3. DB에 새로운 상품을 저장한다
 			ProductInfoDao dao = new ProductInfoDao();
 			dao.insertProduct(productInfo);
 			
+			// 상품 추가에 성공했다면 상품 목록 첫 페이지로 이동하도록 한다
+			response.sendRedirect("##");
 		} catch(BadParameterException e) {
 			// 상품을 추가하지 못했다면 400 상태코드를 반환한다
 			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);

@@ -18,32 +18,26 @@ import vo.ProductInfo;
 public class ProductDetailController extends HttpServlet {
 	protected void dopost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		try {
-			// 상품의 상세 정보를 가져오기 위해 상품 번호를 가져온다
-			if(request.getParameter("prodIdx") == null) {
-				throw new BadParameterException();
-			}
+			// request에 저장했던 상품의 정보를 꺼내와서 사용하도록 한다
+			ProductInfo productInfo = (ProductInfo) request.getAttribute("productList");
 			
-			int prodIdx = Integer.parseInt(request.getParameter("prodIdx"));
+			// 상품 구매 수량을 꺼내온다
+			int prodQuantity = Integer.parseInt(request.getParameter("prodQuantity"));
+			productInfo.setProdQuantity(prodQuantity);
 			
-			// 상품 정보 조회
-			ProductInfoDao dao = new ProductInfoDao();
-			ProductInfo productInfo = dao.selectProductIdx(prodIdx);
-			
-			// 존재하지 않는 상품아이디를 입력했을 경우 204 상태 코드 반환
-    		if(productInfo == null) {
-    			response.setStatus(HttpServletResponse.SC_NO_CONTENT);
-    			return;
-    		}
-    		
     		// 상품 정보를 json 형태로 반환
-    		String data = "{\"prodName\":\"(1)\",\"prodPrice\":\"(2)\",\"prodStock\":(3),\"prodSize\":(4),\"prodColor\":\"(5)\",\"prodImg\":\"(6)\"}";
+    		String data = "{\"prodIdx\":\"(1)\",\"prodName\":\"(2)\",\"prodPrice\":\"(3)\",\"prodStock\":(4),\"prodQuantity\":(5),"
+    				     + "\"prodSize\":(6),\"prodColor\":\"(7)\",\"prodCategory\":\"(8)\",\"prodImg\":\"(9)\"}";
     		
-    		data = data.replace("(1)", productInfo.getProdName());
-    		data = data.replace("(2)", String.valueOf(productInfo.getProdPrice()));
-    		data = data.replace("(3)", productInfo.getProdStock() + "");
-    		data = data.replace("(4)", productInfo.getProdSize());
-    		data = data.replace("(5)", productInfo.getProdColor());
-    		data = data.replace("(5)", productInfo.getProdImg());
+    		data = data.replace("(1)", String.valueOf(productInfo.getProdIdx()));
+    		data = data.replace("(2)", productInfo.getProdName());
+    		data = data.replace("(3)", String.valueOf(productInfo.getProdPrice()));
+    		data = data.replace("(4)", productInfo.getProdStock() + "");
+    		data = data.replace("(4)", productInfo.getProdQuantity() + "");
+    		data = data.replace("(5)", productInfo.getProdSize());
+    		data = data.replace("(6)", productInfo.getProdColor());
+    		data = data.replace("(7)", productInfo.getProdCategory());
+    		data = data.replace("(8)", productInfo.getProdImg());
     		
     		response.setContentType("application/json;charset=UTF-8");
     		

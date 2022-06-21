@@ -15,14 +15,8 @@ import vo.ProductInfo;
 public class ProductDeleteController extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// 삭제할 상품 번호를 가져온다
-		if(request.getParameter("prodIdx") == null) {
-			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-			return;
-		}
-		int prodIdx = Integer.parseInt(request.getParameter("prodIdx")); 
-		
-		ProductInfoDao dao = new ProductInfoDao();
-		ProductInfo productInfo = dao.selectProductIdx(prodIdx);
+		ProductInfo productInfo = (ProductInfo) request.getAttribute("productList");
+		int prodIdx = productInfo.getProdIdx();
 		
 		// 이미지 파일 경로도 삭제해준다
 		if(productInfo.getProdImg() == null) {
@@ -33,6 +27,7 @@ public class ProductDeleteController extends HttpServlet {
 			file.delete();
 		}
 		
+		ProductInfoDao dao = new ProductInfoDao();
 		dao.deleteProductInfo(prodIdx);
 		
 		// 상품 삭제에 성공했다면 200 상태코드 반환
