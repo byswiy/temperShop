@@ -2,14 +2,14 @@ package vo;
 
 import java.time.LocalDateTime;
 
-public class BuyInfo {
+public class PurchaseInfo {
 	private int buyIdx;
 	private int userIdx;
 	private int prodIdx;
 	private int cost;
 	private LocalDateTime buyDate;
 	
-	public BuyInfo(int buyIdx, int userIdx, int prodIdx, int cost, LocalDateTime buyDate) {
+	public PurchaseInfo(int buyIdx, int userIdx, int prodIdx, int cost, LocalDateTime buyDate) {
 		this.buyIdx = buyIdx;
 		this.userIdx = userIdx;
 		this.prodIdx = prodIdx;
@@ -18,7 +18,7 @@ public class BuyInfo {
 	}
 	
 	
-	public BuyInfo(int userIdx, int prodIdx, int cost, LocalDateTime buyDate) {
+	public PurchaseInfo(int userIdx, int prodIdx, int cost, LocalDateTime buyDate) {
 		this(0, userIdx, prodIdx, cost, buyDate);
 	}
 

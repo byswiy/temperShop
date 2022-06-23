@@ -1,11 +1,5 @@
-/buy/
+/Purchase/
 /cart/
 /dao/
-/exception/
-/member/
-/product/
-/review/
-/util/
 /vo/
-/notice/
-/temperature/
+/review/

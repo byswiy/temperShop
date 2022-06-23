@@ -1,4 +1,4 @@
-package buy;
+package Purchase;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
@@ -12,12 +12,12 @@ import javax.servlet.http.HttpSession;
 
 import dao.BuyInfoDao;
 import dao.ProductInfoDao;
-import vo.BuyInfo;
+import vo.PurchaseInfo;
 import vo.MemberInfo;
 import vo.ProductInfo;
 
-@WebServlet("/ProductBuyControlller")
-public class ProductBuyControlller extends HttpServlet {
+@WebServlet("/purchase")
+public class PurchaseController extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.setCharacterEncoding("UTF-8");
 		
@@ -31,12 +31,18 @@ public class ProductBuyControlller extends HttpServlet {
 		HttpSession session = request.getSession();
 		MemberInfo loginUserInfo = (MemberInfo) session.getAttribute("loginUserInfo");
 		
+		// 상품 구매시 필요한 주문자 정보
+		String name = loginUserInfo.getName();
+		String tel = loginUserInfo.getTel();
+		String email = loginUserInfo.getEmail();
+		String addr = loginUserInfo.getAddr();
+		
+		// 상품 구매 시 필요한 데이터
 		int userIdx = loginUserInfo.getUserIdx();
 		int prodIdx = Integer.parseInt(request.getParameter("prodIdx"));
 		int cost = Integer.parseInt(request.getParameter("cost"));
 		
 		ProductInfoDao dao = new ProductInfoDao();
-		
 		ProductInfo productInfo = dao.selectProductIdx(prodIdx);
 		// 재고가 0일 경우 403 상태코드를 반환한다
 		if(productInfo.getProdStock() == 0) {
@@ -46,7 +52,7 @@ public class ProductBuyControlller extends HttpServlet {
 		
 		dao.decreaseStock(prodIdx);
 		
-		BuyInfo buyInfo = new BuyInfo(userIdx, prodIdx, cost, LocalDateTime.now());
+		PurchaseInfo buyInfo = new PurchaseInfo(userIdx, prodIdx, cost, LocalDateTime.now());
 		
 		BuyInfoDao buyListDao = new BuyInfoDao();
 		boolean result = buyListDao.insertBuyInfo(buyInfo);

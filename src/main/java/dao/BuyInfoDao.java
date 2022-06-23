@@ -5,12 +5,12 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 import util.Database;
-import vo.BuyInfo;
+import vo.PurchaseInfo;
 
 public class BuyInfoDao {
 	
 	// 구매 정보를 삽입하기 위한 INSERT 쿼리
-	public boolean insertBuyInfo(BuyInfo buyInfo) {
+	public boolean insertBuyInfo(PurchaseInfo buyInfo) {
 		Database db = new Database();
 
 		Connection conn = db.getConnection();
