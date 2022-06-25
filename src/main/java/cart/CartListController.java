@@ -19,7 +19,7 @@ import vo.ProductInfo;
 public class CartListController extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// 장바구니 목록을 구현할 정보를 가져온다
-		// 세션에서 정보를 가져온다
+		// request에서 정보를 가져온다
 		HttpSession session = request.getSession();
 		CartInfo cartInfo = (CartInfo) session.getAttribute("cartInfo");
 
@@ -40,6 +40,7 @@ public class CartListController extends HttpServlet {
 		
 		
 		CartListInfo cartList = new CartListInfo();
+		cartList.setCartIdx(cartIdx);
 		cartList.setMember_userIdx(member_userIdx);
 		cartList.setProdIdx(product_prodIdx);
 		cartList.setProdName(prodName);
@@ -50,8 +51,8 @@ public class CartListController extends HttpServlet {
 		cartList.setProdImg(prodImg);
 		
 		
-		// join한 데이터를 하나의 정보로 합쳐 세션에 저장한다
-		session.setAttribute("cartListInfo", cartList);
+		// join한 데이터를 하나의 정보로 합쳐 request에 저장한다
+		request.setAttribute("cartListInfo", cartList);
 		
 		// 장바구니 목록에 대한 정보를 json으로 불러와 저장한다
 		CartService service = new CartService();

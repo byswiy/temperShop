@@ -7,6 +7,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import dao.ProductInfoDao;
 import exception.BadParameterException;
@@ -23,19 +24,26 @@ public class ProductUpdateController extends HttpServlet {
 				return;
 			}
 			
-			// 수정할 상품의 정보를 request에서 꺼내온다
-			int prodIdx = Integer.parseInt(request.getParameter("prodIdx"));
-			String prodName = request.getParameter("prodName");
-			int prodPrice = Integer.parseInt(request.getParameter("prodPrice"));
-			int prodStock = Integer.parseInt(request.getParameter("prodStock"));
-			String prodSize = request.getParameter("prodSize");
-			String prodColor = request.getParameter("prodColor");
-			String prodCategory = request.getParameter("prodCategory");
+			// 수정할 상품의 정보를 세션에서 꺼내온다
+			HttpSession session = request.getSession();
+			ProductInfo productInfoList = (ProductInfo) session.getAttribute("productInfoList");
+			
+			int prodIdx = productInfoList.getProdIdx();
+			int prodPrice = productInfoList.getProdPrice();
+			int prodStock = productInfoList.getProdStock();
+			String prodSize = productInfoList.getProdSize();
+			String prodColor = productInfoList.getProdColor();
 			
 			// 전달 받은 값 검증
 			ProductValidator validator = new ProductValidator();
 			
-			ProductInfo productInfo = new ProductInfo(prodIdx, prodName, prodPrice, prodStock, prodSize, prodColor, prodCategory);
+			ProductInfo productInfo = new ProductInfo();
+			productInfo.setProdIdx(prodIdx);
+			productInfo.setProdPrice(prodPrice);
+			productInfo.setProdStock(prodStock);
+			productInfo.setProdSize(prodSize);
+			productInfo.setProdColor(prodColor);
+			
 			
 			ProductInfoDao dao = new ProductInfoDao();
 			dao.updateProductInfo(productInfo);

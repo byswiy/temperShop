@@ -14,7 +14,7 @@ import exception.BadParameterException;
 import util.MemberValidator;
 import vo.MemberInfo;
 
-@WebServlet("/member/updatePw")
+@WebServlet("/member/update_pw")
 public class UpdatePwController extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		try {

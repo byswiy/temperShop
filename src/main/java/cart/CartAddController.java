@@ -31,7 +31,7 @@ public class CartAddController extends HttpServlet {
 		
 		if(result) {
 			// 장바구니 추가에 성공했다면 200 상태코드 반환
-			// 세션에 정보를 저장한다
+			// session에 정보를 저장한다
 			HttpSession session = request.getSession();
 			session.setAttribute("cartInfo", result);
 			

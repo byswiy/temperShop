@@ -21,16 +21,17 @@ public class ProductInfoDao {
 		PreparedStatement pstmt = null;
 		
 		try {
-			String sql = "INSERT INTO product_info(prodName, prodPrice, prodStock, prodSize, prodColor, prodCategory, prodImg, regDate) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+			String sql = "INSERT INTO product_info(prodName, prodPrice, prodStock, prodQuantity, prodSize, prodColor, prodCategory, prodImg, regDate) VALUES (?, ?, ?, ?, ?, ?, ?, ?. ?)";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, productInfo.getProdName());
 			pstmt.setInt(2, productInfo.getProdPrice());
 			pstmt.setInt(3, productInfo.getProdStock());
-			pstmt.setString(4, productInfo.getProdSize());
-			pstmt.setString(5, productInfo.getProdColor());
-			pstmt.setString(6, productInfo.getCategory());
-			pstmt.setString(7, productInfo.getProdImg());
-			pstmt.setString(8, productInfo.getRegDate().toString());
+			pstmt.setInt(4, productInfo.getProdQuantity());
+			pstmt.setString(5, productInfo.getProdSize());
+			pstmt.setString(6, productInfo.getProdColor());
+			pstmt.setString(7, productInfo.getCategory());
+			pstmt.setString(8, productInfo.getProdImg());
+			pstmt.setString(9, productInfo.getRegDate().toString());
 			
 			int count = pstmt.executeUpdate();
 			
@@ -109,7 +110,7 @@ public class ProductInfoDao {
 				String prodColor = rs.getString("prodColor");
 				String prodCategory = rs.getString("prodCategory");
 				String prodImg = rs.getString("prodImg");
-				String date = rs.getString("insertDate");
+				String date = rs.getString("regDate");
 				date = date.substring(0, date.indexOf('.'));
 				date = date.replace(' ', 'T');
 				LocalDateTime regDate = LocalDateTime.parse(date);
@@ -201,7 +202,7 @@ public class ProductInfoDao {
 		PreparedStatement pstmt = null;
 		
 		try {
-			String sql = "UPDATE product_info SET prodStock = prodStock - 1 WHERE prodIdx = ?";
+			String sql = "UPDATE product_info SET prodStock = prodStock - prodQuantity WHERE prodIdx = ?";
 			
 			pstmt = conn.prepareStatement(sql);
 			
@@ -225,16 +226,14 @@ public class ProductInfoDao {
 		PreparedStatement pstmt = null;
 		
 		try {
-			String sql = "UPDATE product_info SET prodName = ?, prodPrice = ?, prodStock = ?, prodSize = ?, prodColor = ?, prodCategory = ? WHERE prodIdx = ?";
+			String sql = "UPDATE product_info SET prodPrice = ?, prodStock = ?, prodSize = ?, prodColor = ? WHERE prodIdx = ?";
 			pstmt = conn.prepareStatement(sql);
 			
-			pstmt.setString(1, productInfo.getProdName());
-			pstmt.setInt(2, productInfo.getProdPrice());
-			pstmt.setInt(3, productInfo.getProdStock());
-			pstmt.setString(4, productInfo.getProdSize());
-			pstmt.setString(5, productInfo.getProdColor());
-			pstmt.setString(6, productInfo.getCategory());
-			pstmt.setInt(7, productInfo.getProdIdx());
+			pstmt.setInt(1, productInfo.getProdPrice());
+			pstmt.setInt(2, productInfo.getProdStock());
+			pstmt.setString(3, productInfo.getProdSize());
+			pstmt.setString(4, productInfo.getProdColor());
+			pstmt.setInt(5, productInfo.getProdIdx());
 			
 			pstmt.executeUpdate();
 			

@@ -11,10 +11,10 @@ import vo.ProductInfo;
 import vo.ReviewInfo;
 
 public class ReviewService {
-	public String loadReviewInfo() {
+	public String loadReviewInfo(int pageNumber) {
 		// 후기에 관한 정보를 불러온다
 		ReviewInfoDao dao = new ReviewInfoDao();
-		List<ReviewInfo> reviewInfoList = dao.selectReviewInfo();
+		List<ReviewInfo> reviewInfoList = dao.selectReviewInfo(pageNumber);
 		
 		MemberInfo memberInfo = new MemberInfo();
 		int userIdx = memberInfo.getUserIdx();
@@ -64,6 +64,13 @@ public class ReviewService {
 	public boolean deleteReview(int reviewIdx) {
 		ReviewInfoDao dao = new ReviewInfoDao();
 		boolean result = dao.deleteReviewByReviewIdx(reviewIdx);
+		
+		return result;
+	}
+	
+	public boolean updateReview(ReviewInfo newReviewInfo) {
+		ReviewInfoDao dao = new ReviewInfoDao();
+		boolean result = dao.updateReviewInfo(newReviewInfo);
 		
 		return result;
 	}

@@ -16,8 +16,11 @@ public class ReviewListController extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// 후기를 불러오는 컨트롤러
 		// 상품 후기 목록에 대한 정보를 json으로 불러와 저장한다
+		// 공지사항의 목록을 불러온다
+		int pageNumber = Integer.parseInt(request.getParameter("pageNumber"));
+		
 		ReviewService service = new ReviewService();
-		String data = service.loadReviewInfo();
+		String data = service.loadReviewInfo(pageNumber);
 		
 		// JOSN을 전달한다.
 		response.setContentType("text/json;application=UTF-8");

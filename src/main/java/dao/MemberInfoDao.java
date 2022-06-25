@@ -21,7 +21,7 @@ public class MemberInfoDao {
 		MemberInfo memberInfo = null;
 		
 		try {
-			String sql = "SELECT * FROM temperShop WHERE id=? AND tel=? AND email=?";
+			String sql = "SELECT * FROM member_info WHERE id=? AND tel=? AND email=?";
 			
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, id);
@@ -164,7 +164,7 @@ public class MemberInfoDao {
 		PreparedStatement pstmt = null;
 		
 		try {
-			String sql = "UPDATE SET pw = ? WHERE id = ?";
+			String sql = "UPDATE member_info SET pw = ? WHERE id = ?";
 			
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, newPw);

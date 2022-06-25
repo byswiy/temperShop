@@ -7,6 +7,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import dao.ProductInfoDao;
 import vo.ProductInfo;
@@ -15,7 +16,9 @@ import vo.ProductInfo;
 public class ProductDeleteController extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// 삭제할 상품 번호를 가져온다
-		ProductInfo productInfo = (ProductInfo) request.getAttribute("productList");
+		HttpSession session = request.getSession();
+		ProductInfo productInfo = (ProductInfo) session.getAttribute("productInfoList");
+		
 		int prodIdx = productInfo.getProdIdx();
 		
 		// 이미지 파일 경로도 삭제해준다

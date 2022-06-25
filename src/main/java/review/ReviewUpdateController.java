@@ -17,18 +17,19 @@ public class ReviewUpdateController extends HttpServlet {
 		int reviewIdx = Integer.parseInt(request.getParameter("reviewIdx"));
 		String contents = request.getParameter("contents");
 		
-		ReviewInfo noticeInfo = new ReviewInfo();
+		ReviewInfo reviewInfo = new ReviewInfo();
+		reviewInfo.setReviewIdx(reviewIdx);
+		reviewInfo.setContents(contents);
 		
-		NoticeService service = new NoticeService();
+		ReviewService service = new ReviewService();
 		
-		boolean result = service.updateNoticeInfo(noticeInfo);
+		boolean result = service.updateReview(reviewInfo);
 		
 		if(result) {
-			// 공지사항을 성공적으로 수정했다면
-			// 상태코드 200으로 응답
+			// 후기 수정에 성공했다면 상태코드 200 반환
+			response.setStatus(HttpServletResponse.SC_OK);
 		} else {
-			// 공지사항을 성공적으로 수정하지 못했다면
-			// 상태 코드 400으로 응답
+			// 후기 수정에 실패했다면 상태코드 400 반환
 			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 		}
 	}

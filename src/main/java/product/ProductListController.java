@@ -28,7 +28,7 @@ public class ProductListController extends HttpServlet {
 		int amountPage = dao.getCount();
 		
 		// 페이지 조회에 실패했을 경우
-		int startIndex = (pageNumber - 1) * 8;
+		int startIndex = (pageNumber - 1) * 9;
 		if(startIndex >= amountPage) {
 			// 없는 페이지 번호로 접근해서 상품 목록을 조회하지 못했을 때 204 상태코드 반환
 			response.setStatus(HttpServletResponse.SC_NO_CONTENT);

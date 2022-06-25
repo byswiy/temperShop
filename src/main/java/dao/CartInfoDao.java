@@ -121,7 +121,7 @@ public class CartInfoDao {
 		PreparedStatement pstmt = null;
 
 		try {
-			String sql = "DELETE FROM product_review WHERE reviewIdx = ?";
+			String sql = "DELETE FROM cart_info WHERE cartIdx = ?";
 			pstmt = conn.prepareStatement(sql);
 
 			pstmt.setInt(1, cartIdx);

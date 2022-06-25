@@ -41,10 +41,6 @@ public class ProductInfo {
 	}
 	
 	
-	public ProductInfo(int prodIdx, String prodName, int prodPrice, int prodStock, String prodSize, String prodColor, String prodCategory) {
-		this(prodIdx, prodName, prodPrice, prodStock, 0,  prodSize, prodColor, prodCategory, null, null);
-	}
-
 	public String getCategory() {
 		return prodCategory;
 	}
