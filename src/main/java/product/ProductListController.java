@@ -9,6 +9,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import dao.ProductInfoDao;
 import vo.ProductInfo;
@@ -38,12 +39,10 @@ public class ProductListController extends HttpServlet {
 		// 상품의 데이터를 List로 묶어주고 상품의 목록을 불러온다
 		List<ProductInfo> productInfoList = dao.selectAll(pageNumber);
 		
-		// 요청 정보안에 상품 정보 저장
-		request.setAttribute("productList", productInfoList);
-		
 		// 상품 목록을 보여주는 jsp로 이동하도록 한다
-		RequestDispatcher rd = request.getRequestDispatcher("##");
-		rd.forward(request, response);
+		response.setStatus(HttpServletResponse.SC_OK);
+//		RequestDispatcher rd = request.getRequestDispatcher("##");
+//		rd.forward(request, response);
 		
 	}
 

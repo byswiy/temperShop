@@ -16,24 +16,27 @@ public class ReviewService {
 		ReviewInfoDao dao = new ReviewInfoDao();
 		List<ReviewInfo> reviewInfoList = dao.selectReviewInfo(pageNumber);
 		
-		MemberInfo memberInfo = new MemberInfo();
-		int userIdx = memberInfo.getUserIdx();
+		int member_userIdx = 0;
+		int product_prodIdx = 0;
 		
+		for(ReviewInfo reviewInfo : reviewInfoList) {
+			member_userIdx = reviewInfo.getMember_userIdx();
+			product_prodIdx = reviewInfo.getProduct_prodIdx();
+		}
+		
+		MemberInfo memberInfo = new MemberInfo();
 		MemberInfoDao memberDao = new MemberInfoDao();
-		memberInfo = memberDao.selectByUserIdx(userIdx);
+		memberInfo = memberDao.selectByUserIdx(member_userIdx);
 		
 		ProductInfo productInfo = new ProductInfo();
-		int prodIdx = productInfo.getProdIdx();
-		
 		ProductInfoDao prodDao = new ProductInfoDao();
-		productInfo = prodDao.selectProductIdx(prodIdx);
+		productInfo = prodDao.selectProductIdx(product_prodIdx);
 		
 		int amount = dao.getAmountReview();
 		
 		String data = "{\"amount\": " + amount + ",";
 		data += "\"reviewInfoList\":[";
 		for(ReviewInfo reviewInfo : reviewInfoList) {
-			int reviewIdx = reviewInfo.getReviewIdx();
 			String id = memberInfo.getId();
 			String prodSize = productInfo.getProdSize();
 			String prodColor = productInfo.getProdColor();
@@ -44,9 +47,8 @@ public class ReviewService {
 			// 이때 이 \ 때문에 자바스크립트가 전달 받은 공지사항 목록을 JSON으로 변환할 수 없게 됨
 //			contents = contents.replace("\\", "\\\\");
 			
-			data = data + "{\"reviewIdx\": " + reviewIdx + ",\"id\":\"" + id + "\",\"prodSize\":\"" + prodSize + ",\"prodColor\":\"" + prodColor +
-					      ",\"contents\":\"" + contents + "\",\"insertDate\":\"" + insertDate + "\"},";
-			
+			data = data + "{\"id\":\"" + id + "\",\"prodSize\":\"" + prodSize + "\",\"prodColor\":\"" + prodColor +
+					      "\",\"contents\":\"" + contents + "\",\"insertDate\":\"" + insertDate + "\"},";
 		}
 		data = data.substring(0, data.length()-1);
 		data = data + "]}";
@@ -68,10 +70,4 @@ public class ReviewService {
 		return result;
 	}
 	
-	public boolean updateReview(ReviewInfo newReviewInfo) {
-		ReviewInfoDao dao = new ReviewInfoDao();
-		boolean result = dao.updateReviewInfo(newReviewInfo);
-		
-		return result;
-	}
 }

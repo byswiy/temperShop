@@ -15,7 +15,7 @@ import vo.ReviewInfo;
 
 @WebServlet("/review/add")
 public class ReviewAddController extends HttpServlet {
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.setCharacterEncoding("UTF-8");
 
 		HttpSession session = request.getSession();
@@ -32,6 +32,8 @@ public class ReviewAddController extends HttpServlet {
 		// 공지사항 테이블에 저장
 		ReviewService service = new ReviewService();
 		boolean result = service.addReview(reviewInfo);
+		
+		response.setStatus(HttpServletResponse.SC_OK);
 		if (result) {
 			// 후기 목록 페이지로 이동
 		} else {

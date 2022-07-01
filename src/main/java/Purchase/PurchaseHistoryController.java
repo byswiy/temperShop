@@ -36,17 +36,20 @@ public class PurchaseHistoryController extends HttpServlet {
 		
 		// 구매 내역에 필요한 데이터를 꺼내온다
 		String purchaseId = memberInfo.getId();
+		String purchaseShopName = productInfo.getProdShopName();
 		String purchaseName = productInfo.getProdName();
 		int purchasePrice = productInfo.getProdPrice();
 		int purchaseQuantity = productInfo.getProdQuantity();
 		String purchaseSize = productInfo.getProdSize();
 		String purchaseColor = productInfo.getProdColor();
+		String purchaseType = productInfo.getProdType();
 		LocalDateTime purchaseDate = purchaseInfo.getPurchaseDate();
 		
-		PurchaseListInfo purchaseListInfo = new PurchaseListInfo(purchaseId, purchaseName, purchasePrice, purchaseQuantity, purchaseSize, purchaseColor, purchaseDate);
+		PurchaseListInfo purchaseListInfo = new PurchaseListInfo(purchaseId, purchaseShopName, purchaseName, purchasePrice, purchaseQuantity, purchaseSize, purchaseColor, purchaseType, purchaseDate);
 		
-		session.setAttribute("purchaseListInfo", purchaseListInfo);
+		request.setAttribute("purchaseListInfo", purchaseListInfo);
 		
+		response.setStatus(HttpServletResponse.SC_OK);
 		
 	}
 

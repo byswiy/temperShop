@@ -191,7 +191,7 @@ public class MemberInfoDao {
 		MemberInfo memberInfo = null;
 
 		try {
-			String sql = "SELECT * FROM member_info WHERE id=?";
+			String sql = "SELECT * FROM member_info WHERE userIdx=?";
 
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setInt(1, userIdx);

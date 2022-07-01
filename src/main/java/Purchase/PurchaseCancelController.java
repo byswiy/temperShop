@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import dao.PurchaseInfoDao;
 
-@WebServlet("/CancelPurchaseController")
+@WebServlet("/purchase/cancel")
 public class PurchaseCancelController extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		if(request.getParameter("purchaseIdx") == null) {
@@ -18,10 +18,10 @@ public class PurchaseCancelController extends HttpServlet {
 			return;
 		}
 		
-		int purchaseIndx = Integer.parseInt(request.getParameter("purchaseIdx"));
+		int purchaseIdx = Integer.parseInt(request.getParameter("purchaseIdx"));
 		
 		PurchaseInfoDao dao = new PurchaseInfoDao();
-		boolean result = dao.deletePurchaseIdx(purchaseIndx);
+		boolean result = dao.deletePurchaseIdx(purchaseIdx);
 		
 		if(result) {
 			// 200 상태 코드 전달

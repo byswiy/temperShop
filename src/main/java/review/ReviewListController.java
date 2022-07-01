@@ -23,7 +23,7 @@ public class ReviewListController extends HttpServlet {
 		String data = service.loadReviewInfo(pageNumber);
 		
 		// JOSN을 전달한다.
-		response.setContentType("text/json;application=UTF-8");
+		response.setContentType("application/json;charset=UTF-8");
 		PrintWriter out = response.getWriter();
 		
 		out.print(data);

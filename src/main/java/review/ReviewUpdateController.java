@@ -8,11 +8,14 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import dao.ReviewInfoDao;
 import vo.ReviewInfo;
 
 @WebServlet("/review/update")
 public class ReviewUpdateController extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		request.setCharacterEncoding("UTF-8");
+		
 		// 수정할 후기의 정보를 가져온다
 		int reviewIdx = Integer.parseInt(request.getParameter("reviewIdx"));
 		String contents = request.getParameter("contents");
@@ -21,9 +24,9 @@ public class ReviewUpdateController extends HttpServlet {
 		reviewInfo.setReviewIdx(reviewIdx);
 		reviewInfo.setContents(contents);
 		
-		ReviewService service = new ReviewService();
+		ReviewInfoDao dao = new ReviewInfoDao();
 		
-		boolean result = service.updateReview(reviewInfo);
+		boolean result = dao.updateReviewInfo(reviewInfo);
 		
 		if(result) {
 			// 후기 수정에 성공했다면 상태코드 200 반환

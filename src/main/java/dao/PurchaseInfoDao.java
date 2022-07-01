@@ -17,7 +17,7 @@ public class PurchaseInfoDao {
 		PreparedStatement pstmt = null;
 		
 		try {
-			String sql = "INSERT INTO buy_info(member_userIdx, product_prodIdx, cart_cartIdx, cost, message, purchaseDate) VALUES (?, ?, ?, ?, ?, ?)";
+			String sql = "INSERT INTO purchase_info(member_userIdx, product_prodIdx, cart_cartIdx, cost, message, purchaseDate) VALUES (?, ?, ?, ?, ?, ?)";
 
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setInt(1, purchaseInfo.getMember_userIdx());
@@ -45,8 +45,6 @@ public class PurchaseInfoDao {
 		Connection conn = db.getConnection();
 		PreparedStatement pstmt = null;
 		
-		boolean result = false;
-		
 		try {
 			String sql = "DELETE FROM purchase_info WHERE purchaseIdx = ?";
 			pstmt = conn.prepareStatement(sql);
@@ -55,7 +53,7 @@ public class PurchaseInfoDao {
 			
 			int count = pstmt.executeUpdate();
 			
-			result = count == 1;
+			return count == 1;
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -64,6 +62,6 @@ public class PurchaseInfoDao {
 			db.closeConn(conn);
 		}
 		
-		return result;
+		return false;
 	}
 }

@@ -19,7 +19,7 @@ public class ReviewInfoDao {
 		PreparedStatement pstmt = null;
 		
 		try {
-			String sql = "INSERT INTO product_review(member_userIdx, product_prodIdx, contents, insertDate) VALUES (?, ?, ?, ?)";
+			String sql = "INSERT INTO review_info(member_userIdx, product_prodIdx, contents, insertDate) VALUES (?, ?, ?, ?)";
 			pstmt = conn.prepareStatement(sql);
 			
 			pstmt.setInt(1, reviewInfo.getMember_userIdx());
@@ -49,10 +49,10 @@ public class ReviewInfoDao {
 		List<ReviewInfo> reviewInfoList = new ArrayList<>();
 		
 		try {
-			String sql = "SELECT * FROM product_review WHERE ORDER BY id DESC LIMIT ?, 5";
+			String sql = "SELECT * FROM review_info ORDER BY reviewIdx DESC LIMIT ?, 5";
 			pstmt = conn.prepareStatement(sql);
 			
-			pstmt.setInt(1, (pageNumber-1)*10);
+			pstmt.setInt(1, (pageNumber-1)*5);
 			
 			rs = pstmt.executeQuery();
 			
@@ -89,7 +89,7 @@ public class ReviewInfoDao {
 		
 		int amount = 0;
 		
-		String sql = "SELECT COUNT(*) AS amount FROM product_review";
+		String sql = "SELECT COUNT(*) AS amount FROM review_info";
 		try {
 			pstmt = conn.prepareStatement(sql);
 			rs = pstmt.executeQuery();
@@ -114,7 +114,7 @@ public class ReviewInfoDao {
 		Connection conn = db.getConnection();
 		PreparedStatement pstmt = null;
 		
-		String sql = "DELETE FROM product_review WHERE reviewIdx = ? ";
+		String sql = "DELETE FROM review_info WHERE reviewIdx = ? ";
 		
 		boolean result = false;
 		
@@ -135,24 +135,22 @@ public class ReviewInfoDao {
 		return result;
 	}
 	
-	public boolean updateReviewInfo(ReviewInfo newReviewInfo) {
+	public boolean updateReviewInfo(ReviewInfo reviewInfo) {
 		Database db = new Database();
 		
 		Connection conn = db.getConnection();
 		PreparedStatement pstmt = null;
 		
-		boolean result = false;
-		
-		String sql = "UPDATE product_review SET contents =  ? WHERE reviewIdx = ?"; 
+		String sql = "UPDATE review_info SET contents=? WHERE reviewIdx = ?";
 		
 		try {
 			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, newReviewInfo.getContents());
-			pstmt.setInt(2, newReviewInfo.getReviewIdx());
+			pstmt.setString(1, reviewInfo.getContents());
+			pstmt.setInt(2, reviewInfo.getReviewIdx());
 			
 			int count = pstmt.executeUpdate();
 			
-			result = count == 1;
+			return count == 1;
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
@@ -160,6 +158,6 @@ public class ReviewInfoDao {
 			db.closeConn(conn);
 		}
 	
-		return result;
+		return false;
 	}
 }

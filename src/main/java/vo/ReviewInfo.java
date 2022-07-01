@@ -22,11 +22,9 @@ public class ReviewInfo {
 	}
 	
 	public ReviewInfo(int member_userIdx, int product_prodIdx, String contents, LocalDateTime insertDate) {
-		this.member_userIdx = member_userIdx;
-		this.product_prodIdx = product_prodIdx;
-		this.contents = contents;
-		this.insertDate = insertDate;
+		this(0, member_userIdx, product_prodIdx, contents, insertDate);
 	}
+	
 
 	public int getReviewIdx() {
 		return reviewIdx;

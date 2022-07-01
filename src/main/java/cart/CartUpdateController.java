@@ -19,26 +19,32 @@ public class CartUpdateController extends HttpServlet {
 		request.setCharacterEncoding("UTF-8");
 
 		HttpSession session = request.getSession();
-		CartListInfo cartInfo = (CartListInfo) session.getAttribute("cartListInfo");
+		CartListInfo cartInfo = (CartListInfo) session.getAttribute("cartList");
+		
+		// 수정할 장바구니 번호를 가져온다
+		int cartIdx = Integer.parseInt(request.getParameter("cartIdx"));
 
 		// 수정할 상품의 데이터를 가져온다
-		int cartQuantity = Integer.parseInt(request.getParameter("cartQuantity")); // -> DB를 사용해서 수정하도록 함
-
+		int beforeQuantity = cartInfo.getProdQuantity(); // -> DB를 사용해서 수정하도록 함
+		int afterQuantity = Integer.parseInt(request.getParameter("afterQuantity"));
+		
 		String beforeProdSize = cartInfo.getProdSize();
-		String afterProdSize = request.getParameter("prodSize");
-
-		boolean result = !afterProdSize.equals(beforeProdSize);
-
+		String afterProdSize = request.getParameter("afterProdSize");
+		
+		boolean result = beforeQuantity != afterQuantity || !beforeProdSize.equals(afterProdSize);
+		
 		if(result) {
+			cartInfo.setProdQuantity(afterQuantity);
 			cartInfo.setProdSize(afterProdSize);
+			
+			// 구매할 때 사용하기
 			session.setAttribute("cart", cartInfo);
 			
 			response.setStatus(HttpServletResponse.SC_OK);
-		} else if(beforeProdSize.equals(afterProdSize)) {
-			// 수정할 상품의 사이즈가 수정하기 전과 동일하다면 예외발생 -> 
-			response.setStatus(HttpServletResponse.SC_OK);
+			
+		} else {
+			response.setStatus(HttpServletResponse.SC_CONFLICT);
 		}
-
 	}
 
 }

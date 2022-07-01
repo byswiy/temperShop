@@ -4,22 +4,30 @@ import java.time.LocalDateTime;
 
 public class PurchaseListInfo {
 	private String purchaseId;
+	private String purchaseShopName;
 	private String purchaseName;
 	private int purchasePrice;
 	private int purchaseQuantity;
 	private String purchaseSize;
 	private String purchaseColor;
+	private String purchaseType;
 	private LocalDateTime purchaseDate;
 	
-	public PurchaseListInfo(String purchaseId, String purchaseName, int purchasePrice, int purchaseQuantity, String purchaseSize, String purchaseColor, LocalDateTime purchaseDate) {
+	public PurchaseListInfo(String purchaseId, String purchaseShopName, String purchaseName, int purchasePrice,
+							int purchaseQuantity, String purchaseSize, String purchaseColor, String purchaseType,
+							LocalDateTime purchaseDate) {
 		this.purchaseId = purchaseId;
+		this.purchaseShopName = purchaseShopName;
 		this.purchaseName = purchaseName;
 		this.purchasePrice = purchasePrice;
 		this.purchaseQuantity = purchaseQuantity;
 		this.purchaseSize = purchaseSize;
 		this.purchaseColor = purchaseColor;
+		this.purchaseType = purchaseType;
 		this.purchaseDate = purchaseDate;
 	}
+	
+	
 	
 	public String getPurchaseId() {
 		return purchaseId;
@@ -62,6 +70,30 @@ public class PurchaseListInfo {
 	}
 	public void setPurchaseDate(LocalDateTime purchaseDate) {
 		this.purchaseDate = purchaseDate;
+	}
+
+
+
+	public String getPurchaseShopName() {
+		return purchaseShopName;
+	}
+
+
+
+	public void setPurchaseShopName(String purchaseShopName) {
+		this.purchaseShopName = purchaseShopName;
+	}
+
+
+
+	public String getPurchaseType() {
+		return purchaseType;
+	}
+
+
+
+	public void setPurchaseType(String purchaseType) {
+		this.purchaseType = purchaseType;
 	}
 	
 	

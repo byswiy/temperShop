@@ -16,7 +16,8 @@ import vo.ReviewInfo;
 public class CartService {
 	
 	public String loadCartInfo(HttpServletRequest request) {
-		CartListInfo cartInfoList = (CartListInfo) request.getAttribute("cartListInfo");
+		HttpSession session = request.getSession();
+		CartListInfo cartInfoList = (CartListInfo) session.getAttribute("cartListInfo");
 		
 		List<CartListInfo> cartList = new ArrayList<>();
 		cartList.add(cartInfoList);

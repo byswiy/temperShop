@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 
 public class ProductInfo {
 	private int prodIdx;
+	private String prodShopName;
 	private String prodName;
 	private int prodPrice;
 	private int prodStock;
@@ -11,6 +12,7 @@ public class ProductInfo {
 	private String prodSize;
 	private String prodColor;
 	private String prodCategory;
+	private String prodType;
 	private String prodImg;
 	private LocalDateTime regDate;
 	
@@ -18,8 +20,9 @@ public class ProductInfo {
 		
 	}
 
-	public ProductInfo(int prodIdx, String prodName, int prodPrice, int prodStock, int prodQuantity, String prodSize, String prodColor, String prodCategory, String prodImg, LocalDateTime regDate) {
+	public ProductInfo(int prodIdx, String prodShopName, String prodName, int prodPrice, int prodStock, int prodQuantity, String prodSize, String prodColor, String prodCategory, String prodType, String prodImg, LocalDateTime regDate) {
 		this.prodIdx = prodIdx;
+		this.prodShopName = prodShopName;
 		this.prodName = prodName;
 		this.prodPrice = prodPrice;
 		this.prodStock = prodStock;
@@ -27,17 +30,22 @@ public class ProductInfo {
 		this.prodSize = prodSize;
 		this.prodColor = prodColor;
 		this.prodCategory = prodCategory;
+		this.prodType = prodType; 
 		this.prodImg = prodImg;
 		this.regDate = regDate;
 	}
 	
-	public ProductInfo(int prodIdx, String prodName, int prodPrice, int prodStock, String prodSize, String prodColor, String prodCategory, String prodImg, LocalDateTime regDate) {
-		this(prodIdx, prodName, prodPrice, prodStock, 0, prodSize, prodColor, prodCategory, prodImg, regDate);
+	public ProductInfo(int prodIdx,  String prodShopName, String prodName, int prodPrice, int prodStock, String prodSize, String prodColor, String prodCategory, String prodImg, LocalDateTime regDate) {
+		this(prodIdx, prodShopName, prodName, prodPrice, prodStock, 0, prodSize, prodColor, prodCategory, null, prodImg, regDate);
+	}
+	
+	public ProductInfo(int prodIdx,  String prodShopName, String prodName, int prodPrice, int prodStock, String prodSize, String prodColor, String prodCategory, String prodImg) {
+		this(prodIdx, prodShopName, prodName, prodPrice, prodStock, 0, prodSize, prodColor, prodCategory, null, prodImg, null);
 	}
 
 	// productAddController
-	public ProductInfo(String prodName, int prodPrice, int prodStock,  String prodSize, String prodColor, String prodCategory, String prodImg, LocalDateTime regDate) {
-		this(0, prodName, prodPrice, prodStock, 0, prodSize, prodColor, prodCategory, prodImg, regDate);
+	public ProductInfo(String prodShopName, String prodName, int prodPrice, int prodStock,  String prodSize, String prodColor, String prodCategory, String prodType, String prodImg, LocalDateTime regDate) {
+		this(0, prodShopName, prodName, prodPrice, prodStock, 0, prodSize, prodColor, prodCategory, prodType, prodImg, regDate);
 	}
 	
 	
@@ -55,6 +63,14 @@ public class ProductInfo {
 
 	public void setProdIdx(int prodIdx) {
 		this.prodIdx = prodIdx;
+	}
+	
+	public String getProdShopName() {
+		return prodShopName;
+	}
+
+	public void setProdShopName(String prodShopName) {
+		this.prodShopName = prodShopName;
 	}
 
 	public String getProdName() {
@@ -119,6 +135,14 @@ public class ProductInfo {
 
 	public void setProdCategory(String prodCategory) {
 		this.prodCategory = prodCategory;
+	}
+	
+	public String getProdType() {
+		return prodType;
+	}
+
+	public void setProdType(String prodType) {
+		this.prodType = prodType;
 	}
 
 	public int getProdQuantity() {
