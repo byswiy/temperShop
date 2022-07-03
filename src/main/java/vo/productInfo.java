@@ -35,6 +35,10 @@ public class ProductInfo {
 		this.regDate = regDate;
 	}
 	
+	public ProductInfo(int prodIdx,  String prodShopName, String prodName, int prodPrice, int prodStock, String prodSize, String prodColor, String prodCategory, String prodType, String prodImg, LocalDateTime regDate) {
+		this(prodIdx, prodShopName, prodName, prodPrice, prodStock, 0, prodSize, prodColor, prodCategory, prodType, prodImg, regDate);
+	}
+	
 	public ProductInfo(int prodIdx,  String prodShopName, String prodName, int prodPrice, int prodStock, String prodSize, String prodColor, String prodCategory, String prodImg, LocalDateTime regDate) {
 		this(prodIdx, prodShopName, prodName, prodPrice, prodStock, 0, prodSize, prodColor, prodCategory, null, prodImg, regDate);
 	}
