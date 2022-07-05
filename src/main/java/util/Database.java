@@ -13,7 +13,7 @@ public class Database {
 		try {
 			Class.forName("org.mariadb.jdbc.Driver");
 			
-			conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/temperShop?user=root&password=1234");
+			conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/tempershop?user=root&password=1234");
 			
 			
 		} catch (ClassNotFoundException | SQLException e) {

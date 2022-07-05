@@ -24,18 +24,24 @@ public class JoinController extends HttpServlet {
 			String pwChk = request.getParameter("pwChk");
 			String name = request.getParameter("name");
 			String tel = request.getParameter("tel");
+			String postalCode = request.getParameter("postalCode");
 			String addr = request.getParameter("addr");
 			String email = request.getParameter("email");
 			LocalDateTime joinDate = LocalDateTime.now();
 			
 			// 꺼내온 데이터를 검증한다
 			MemberValidator validator = new MemberValidator();
-			if(!validator.allValidator(id, pw, pwChk, name, tel, addr, email)) {
-				throw new BadParameterException();
-			}
+			if(!validator.idValidator(id))							throw new BadParameterException();
+			else if(!validator.pwValidator(pw)) 					throw new BadParameterException();
+			else if(!pw.equals(pwChk)) 								throw new BadParameterException();
+			else if(!validator.nameValidator(name)) 				throw new BadParameterException();
+			else if(!validator.telValidator(tel)) 					throw new BadParameterException();
+			else if(!validator.postalCodeValidator(postalCode))		throw new BadParameterException();
+			else if(!validator.addrValidator(addr)) 				throw new BadParameterException();
+			else if(!validator.emailValidator(email))				throw new BadParameterException();
 			
 			// 데이터를 하나의 정보로 합친다
-			MemberInfo memberInfo = new MemberInfo(id, pw, name, tel, addr, email, joinDate);
+			MemberInfo memberInfo = new MemberInfo(id, pw, name, tel, postalCode, addr, email, joinDate);
 			
 			MemberService service = new MemberService();
 			

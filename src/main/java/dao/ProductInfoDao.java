@@ -80,7 +80,7 @@ public class ProductInfoDao {
 	}
 	 
 	// pageNumber를 포함한 상품 정보를 모두 가져오는 SELECT 쿼리
-	public List<ProductInfo> selectAll(int pageNumber) {
+	public List<ProductInfo> selectAll(int pageNumber, String prodType, String prodCategory, String prodSize, String prodColor, int prodPrice) {
 		Database db = new Database();
 		
 		Connection conn = db.getConnection();
@@ -90,7 +90,19 @@ public class ProductInfoDao {
 		List<ProductInfo> productInfoList = new ArrayList<>();
 		
 		try {
-			String sql = "SELECT * FROM product_info ORDER BY regDate DESC LIMIT ?, 9";
+			String sql = "SELECT * FROM product_info";
+			
+			if(prodSize != null && prodCategory != null && prodType != null) {
+				sql += " WHERE prodType = '" + prodType + "' AND prodCategory = '" + prodCategory + "' And prodSize = '" + prodSize + "'";
+			} else if(prodCategory != null && prodType != null) {
+				sql += " WHERE prodType = '" + prodType + "' AND prodCategory = '" + prodCategory + "'";
+			} else if(prodType != null) {
+				sql += " WHERE prodType = '" + prodType + "'";
+			} else if(prodColor != null) {
+				sql += " WHERE prodColor = '" + prodType + "'";
+			}
+			
+			sql += " ORDER BY regDate DESC LIMIT ?, 9";
 			
 			// 9가 의미하는 것은 한 페이지에 보여줘야할 상품의 수 1번 페이지라면 1-1 = 0 0*9 => 0
 			int startIndex = (pageNumber - 1) * 9;
@@ -107,18 +119,14 @@ public class ProductInfoDao {
 				int prodIdx = rs.getInt("prodIdx");
 				String prodShopName = rs.getString("prodShopName");
 				String prodName = rs.getString("prodName");
-				int prodPrice = rs.getInt("prodPrice");
 				int prodStock = rs.getInt("prodStock");
-				String prodSize = rs.getString("prodSize");
-				String prodColor = rs.getString("prodColor");
-				String prodCategory = rs.getString("prodCategory");
 				String prodImg = rs.getString("prodImg");
 				String date = rs.getString("regDate");
 				date = date.substring(0, date.indexOf('.'));
 				date = date.replace(' ', 'T');
 				LocalDateTime regDate = LocalDateTime.parse(date);
 				
-				ProductInfo nthProductInfo = new ProductInfo(prodIdx, prodShopName, prodName, prodPrice, prodStock, prodSize, prodColor, prodCategory, prodImg, regDate);
+				ProductInfo nthProductInfo = new ProductInfo(prodIdx, prodShopName, prodName, prodPrice, prodStock, prodSize, prodColor, prodCategory, prodType, prodImg, regDate);
 				
 				productInfoList.add(nthProductInfo);
 			}
@@ -278,4 +286,5 @@ public class ProductInfoDao {
 		}
 		return false;
 	}
+	
 }

@@ -20,7 +20,7 @@ public class LoginController extends HttpServlet {
 		HttpSession session = request.getSession();
 		session.removeAttribute("loginUserInfo");
 		
-		response.sendRedirect("/##");
+		response.sendRedirect("/temperShop/product/product_list.jsp");
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -31,9 +31,8 @@ public class LoginController extends HttpServlet {
 			MemberValidator validator = new MemberValidator();
 			
 			// 아이디, 비밀번호 검증
-			if(!validator.loginValidator(id, pw)) {
-				throw new BadParameterException();
-			}
+			if(!validator.idValidator(id))							throw new BadParameterException();
+			else if(!validator.pwValidator(pw)) 						throw new BadParameterException();
 			
 			MemberInfo loginInfo = new MemberInfo();
 			loginInfo.setId(id);

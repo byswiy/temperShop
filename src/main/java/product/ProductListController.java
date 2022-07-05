@@ -36,8 +36,20 @@ public class ProductListController extends HttpServlet {
 			return;
 		}
 		
+		String prodType = request.getParameter("prodType");
+		String prodCategory = request.getParameter("prodCategory");
+		String prodSize = request.getParameter("prodSize");
+		
+		
+		
+		
+		FilterService service = new FilterService();
+		ProductInfo productInfo = new ProductInfo();
+		
+		productInfo = service.typeFilter(getServletInfo());
+		
 		// 상품의 데이터를 List로 묶어주고 상품의 목록을 불러온다
-		List<ProductInfo> productInfoList = dao.selectAll(pageNumber);
+		List<ProductInfo> productInfoList = dao.selectAll(pageNumber, prodType, prodCategory, prodSize);
 		
 		// 상품 목록을 보여주는 jsp로 이동하도록 한다
 		response.setStatus(HttpServletResponse.SC_OK);

@@ -42,12 +42,21 @@ public class PurchaseController extends HttpServlet {
 			}
 			
 			int cost = productInfo.getProdPrice();
+			
+			int prodQuantity = productInfo.getProdQuantity();
+			
+			int totalCost = cost * prodQuantity;
+			
 			String message = request.getParameter("message");
 			LocalDateTime purchaseDate = LocalDateTime.now();
 			
 			dao.decreaseStock(product_prodIdx);
 			
-			PurchaseInfo purchaseInfo = new PurchaseInfo(member_userIdx, product_prodIdx, cost, message, purchaseDate);
+			
+			
+			
+			
+			PurchaseInfo purchaseInfo = new PurchaseInfo(member_userIdx, product_prodIdx, totalCost, message, purchaseDate);
 			
 			PurchaseInfoDao purchaseDao = new PurchaseInfoDao();
 			purchaseDao.insertPurchaseInfo(purchaseInfo);

@@ -15,89 +15,23 @@ package util;
 
 // 이메일 규칙 - 반드시 @와 .을 포함하도록 한다
 public class MemberValidator {
-	public boolean allValidator(String id, String pw, String pwChk, String name, String tel, String addr, String email) {
-		
-		boolean correctAll = false;
+	public boolean idValidator(String id) {
+		boolean correctId = false;
 
 		// 아이디 정규표현식 : 하나 이상의 영소문자와 숫자 / 아이디는 영대소문자와 숫자를 사용 / 길이는 6~16자
-		correctAll = id.matches(Validator.ID_VALIDATOR);
-		if(!correctAll) {
+		correctId = id.matches("^(?=.*[a-z])(?=.*\\d)+[a-zA-Z0-9]{5,15}$");
+		if (!correctId) {
 			return false;
 		}
 		
-		// 비밀번호 정규표현식 : 하나 이상의 영대소문자와 숫자 / 비밀번호는 영대소문자와 숫자를 사용 / 길이는 8~18자
-		correctAll = pw.matches(Validator.PW_VALIDATOR);
-		if(!correctAll) {
-			return false;
-		}
-
-		// 이름 정규표현식 : 한글만 사용 / 길이는 2~4자
-		correctAll = name.matches(Validator.NAME_VALIDATOR);
-		if(!correctAll) {
-			return false;
-		}
-
-		// 연락처 : 형식은 010-0000-0000과 같은 형식을 맞추도록한다
-		correctAll = tel.matches("^\\d{3}-\\d{3,4}-\\d{4}$");
-		if(!correctAll) {
-			return false;
-		}
-
-		// 주소 : 한글과 숫자만 가능
-		correctAll = addr.matches("^[가-힣0-9|]+$");
-		if(!correctAll) {
-			return false;
-		}
-
-		// 이메일 정규 표현식 : 영대소문자와 숫자로 시작한다 / @가 반드시 붙고 뒤에 영대소문자와 숫자가 들어갈 수 있다 / 
-		//					   . 이 반드시 붙고 뒤에 영소문자가 2~3개 들어갈 수 있다
-		correctAll = email.matches(Validator.EMAIL_VALIDATOR);	
-		if(!correctAll) {
-			return false;
-		}
-
-		return correctAll;
+		return correctId;
 	}
 	
-	// 로그인에 필요한 아이디, 비밀번호 validator
-	public boolean loginValidator(String id, String pw) {
-		boolean correctLoginValidator = false;
-
-		correctLoginValidator = id.matches(Validator.ID_VALIDATOR);
-		if (!correctLoginValidator) {
-			return false;
-		}
-
-		correctLoginValidator = pw.matches(Validator.PW_VALIDATOR);
-		if (!correctLoginValidator) {
-			return false;
-		}
-
-		return correctLoginValidator;
-	}
-	
-	
-	// 회원 정보 수정시 필요한 validator
-	public boolean updateValidator(String name, String tel, String addr, String email) {
-		boolean correctUpdateValidator = false;
-		correctUpdateValidator = name.matches(Validator.NAME_VALIDATOR);
-		if (!correctUpdateValidator) {
-			return false;
-		}
-
-		correctUpdateValidator = email.matches(Validator.EMAIL_VALIDATOR);
-		if (!correctUpdateValidator) {
-			return false;
-		}
-
-		return correctUpdateValidator;
-	}
-	
-	// 회원 정보 비밀번호 수정 시 필요한 validator
-	public boolean updatePwValidator(String pw) {
+	public boolean pwValidator(String pw) {
 		boolean correctPw = false;
-		
-		correctPw = pw.matches(Validator.PW_VALIDATOR);
+
+		// 비밀번호 정규표현식 : 하나 이상의 영대소문자와 숫자 / 비밀번호는 영대소문자와 숫자를 사용 / 길이는 8~18자
+		correctPw = pw.matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)+[a-zA-Z0-9]{7,17}$");
 		if (!correctPw) {
 			return false;
 		}
@@ -105,4 +39,65 @@ public class MemberValidator {
 		return correctPw;
 	}
 	
+	// 이름 정규표현식 : 한글만 사용 / 길이는 2~4자
+	public boolean nameValidator(String name) {
+		boolean correctName = false;
+
+		correctName = name.matches("^[가-힣]{1,3}$");
+		if (!correctName) {
+			return false;
+		}
+		
+		return correctName;
+	}
+	
+	// 연락처 : 형식은 010-0000-0000과 같은 형식을 맞추도록한다
+	public boolean telValidator(String tel) {
+		boolean correctTel = false;
+
+		correctTel = tel.matches("^\\d{3}-\\d{3,4}-\\d{4}$");
+		if (!correctTel) {
+			return false;
+		}
+		
+		return correctTel;
+	}
+	
+	// 우편번호 : 5자 숫자만 가능
+	public boolean postalCodeValidator(String postalCode) {
+		boolean correctPostalCode = false;
+
+		correctPostalCode = postalCode.length() == 5;
+		if (!correctPostalCode) {
+			return false;
+		}
+		
+		return correctPostalCode;
+	}
+	
+	// 주소 : 한글과 숫자만 가능
+	public boolean addrValidator(String addr) {
+		boolean correctAddre = false;
+
+		correctAddre = addr.matches("^[0-9가-힣\\s]+$");
+		if (!correctAddre) {
+			return false;
+		}
+		
+		return correctAddre;
+	}
+	
+	// 이메일 정규 표현식 : 영대소문자와 숫자로 시작한다 / @가 반드시 붙고 뒤에 영대소문자와 숫자가 들어갈 수 있다 /
+	// . 이 반드시 붙고 뒤에 영소문자가 2~3개 들어갈 수 있다
+	public boolean emailValidator(String email) {
+		boolean correctEmail = false;
+
+		correctEmail = email.matches("^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$");
+		if (!correctEmail) {
+			return false;
+		}
+		
+		return correctEmail;
+	}
+
 }

@@ -1,4 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -12,26 +14,7 @@
 </head>
 <body>
     
-    <div class="container">
-      <header class="blog-header py-3">
-        <div class="row flex-nowrap justify-content-between align-items-center">
-          <div class="col-4 pt-1">
-            <i class="bi bi-thermometer-sun"></i>
-          </div>
-          <div class="col-4 text-center">
-            <a class="blog-header-logo text-dark" href="#">temperShop</a>
-          </div>
-          <div class="col-4 d-flex justify-content-end align-items-center">
-            <ul class="nav col-12 col-lg-auto mb-2 justify-content-center mb-md-0">
-                <li><button class="nav-link px-2 link-dark" type="button" name="login" id="login_btn">login</button></li>
-                <li><button class="nav-link px-2 link-dark" type="button" name="sign-up" id="sign-up">sign-up</button></li>
-                <li><button class="nav-link px-2 link-dark" type="button" name="cart" id="cart">cart</button></li>
-                <li><button class="nav-link px-2 link-dark" type="button" name="myPage" id="myPage">myPage</button></li>
-              </ul>
-          </div>
-        </div>
-    </header>
-    </div>
+    <%@ include file="../includes/header_nav.jsp" %>
     
     <main class="container">
       
@@ -258,6 +241,14 @@
     <script>
     	$("#login_btn").on("click", function() {
     		location.href="/temperShop/login/login.jsp";
+    	})
+    	
+    	$("#sign-up").on("click", function() {
+    		location.href="/temperShop/sign_up/terms.jsp";
+    	})
+    	
+    	$("#logout").on("click", function() {
+    		location.href="/temperShop/member/login";
     	})
     </script>
     

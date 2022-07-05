@@ -12,9 +12,10 @@
 </head>
 <body class="text-center">
     <main class="form-signin">
-      <form>
+      <form action="/temperShop/sign_up/sign_up.jsp">
         <h1 class="h1 mb-3 fw-normal">이용약관</h1>
     
+    	<!-- 이용약관 -->
         <div class="checkbox_group">
             <p class="allprivate">
                 <input type="checkbox" id="check_all" >
@@ -22,9 +23,9 @@
                     temperShop 이용약관, 개인정보 수집 및 이용에 모두 동의합니다.
                 </label>
             </p>
-            
             <p class="private">
-            <label for="check_1">
+            	<input type="checkbox" id="check_1" class="normal">	
+            	<label for="check_1">
                     개인정보 처리방침 동의(필수)
                 </label> 
                 <div class="terms_box" tabindex="0" id="divService">
@@ -56,9 +57,9 @@
                     </div>
                 </div>
             </p>
-                
             <p class="service">
-                <label for="check_2">서비스 이용약관 동의(필수)</label>
+            	<input type="checkbox" id="check_2" class="normal">
+            	<label for="check_2">서비스 이용약관 동의(필수)</label>
                 <div class="terms_box" tabindex="0" id="divService">
                     <div class="article">
                         <h6 class="article__title">여러분을 환영합니다.</h6>
@@ -89,34 +90,39 @@
                 </div>
             </p>
           </div>
-        <button class="w-100 btn btn-lg btn-secondary" type="submit" style="visibility: hidden;">회원가입 다음단계</button>
+        <input class="w-100 btn btn-lg btn-secondary" type="submit" value="회원가입 다음단계">
       </form>
     </main>
-</body>
-
-<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
-<script>
-    // 체크박스 전체 선택
-$(".checkbox_group").on("click", "#check_all", function () {
-    if($(this).parents(".checkbox_group").find('input').prop("checked", $(this).is(":checked"))) {
-        $("button[type=submit]").css("visibility","");
-    } else if($("#check_all").prop("checked", $(this).is(":checked"))) {
-        $("button[type=submit]").css("visibility","hidden");
-    }
-});
-
-// 체크박스 개별 선택
-/*
-$(".checkbox_group").on("click", ".normal", function() {
-    let is_checked = true;
-
-    $(".checkbox_group .normal").each(function(){
-        is_checked = is_checked && $(this).is(":checked");
-    });
     
-    $("#check_all").prop("checked", is_checked);
-});
-*/
+    <script src="../js/jquery-3.6.0.min.js"></script>
+	<script>
+  	// 체크박스 전체 선택
+  		$(".checkbox_group").on("click", "#check_all", function () {
+  		    $(this).parents(".checkbox_group").find('input').prop("checked", $(this).is(":checked"));
+  		});
 
-</script>
+  		// 체크박스 개별 선택
+  		$(".checkbox_group").on("click", ".normal", function() {
+  		    var is_checked = true;
+
+  		    $(".checkbox_group .normal").each(function(){
+  		        is_checked = is_checked && $(this).is(":checked");
+  		    });
+
+  		    $("#check_all").prop("checked", is_checked);
+  		});
+  		
+  		$("input[type=submit]").on("click", function(){
+  			let check_1 = $("#check_1").prop("checked");
+  			let check_2 = $("#check_2").prop("checked");
+  		
+  			if(!check_1 || !check_2) {
+  				alert("이용 약관 동의와 개인 정보 수집 및 이용동의가 체크되야합니다.");
+  				return false;
+  			}
+  			
+  		}); 
+  		
+	</script>
+</body>
 </html>

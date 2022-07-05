@@ -56,13 +56,14 @@ public class CartListController extends HttpServlet {
 			String prodName = productInfo.getProdName();
 			int prodPrice = productInfo.getProdPrice();
 			int prodQuantity = cart.getQuantity();
+			int totoalPrice = prodPrice * prodQuantity;
 			String prodSize = productInfo.getProdSize();
 			String prodColor = productInfo.getProdColor();
 			String prodType = productInfo.getProdType();
 			String prodImg = productInfo.getProdImg();
 			
 			CartListInfo cartList = new CartListInfo(member_userIdx, product_prodIdx, prodShopName, prodName,
-					                    prodPrice, prodQuantity, prodSize, prodColor, prodType, prodImg);
+					                                 totoalPrice, prodQuantity, prodSize, prodColor, prodType, prodImg);
 			
 			cartListInfo.add(cartList);
 		}

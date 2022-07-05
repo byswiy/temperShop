@@ -8,6 +8,7 @@ public class MemberInfo {
 	private String pw;
 	private String name;
 	private String tel;
+	private String postalCode;
 	private String addr;
 	private String email;
 	private LocalDateTime joinDate;
@@ -16,23 +17,30 @@ public class MemberInfo {
 		
 	}
 	
-	public MemberInfo(int userIdx, String id, String pw, String name, String tel, String addr, String email, LocalDateTime joinDate) {
+	
+
+	public MemberInfo(int userIdx, String id, String pw, String name, String tel, String postalCode, String addr,
+			String email, LocalDateTime joinDate) {
+		super();
 		this.userIdx = userIdx;
 		this.id = id;
 		this.pw = pw;
 		this.name = name;
 		this.tel = tel;
+		this.postalCode = postalCode;
 		this.addr = addr;
 		this.email = email;
 		this.joinDate = joinDate;
 	}
 
-	public MemberInfo(String id, String pw, String name, String tel, String addr, String email, LocalDateTime joinDate) {
-		this(0, id, pw, name, tel, addr, email, joinDate);
+
+
+	public MemberInfo(String id, String pw, String name, String tel, String postalCode, String addr, String email, LocalDateTime joinDate) {
+		this(0, id, pw, name, tel, postalCode, addr, email, joinDate);
 	}
 
-	public MemberInfo(String id, String name, String tel, String addr, String email) {
-		this(0, id, null, name, tel, addr, email, null);
+	public MemberInfo(String id, String name, String tel, String postalCode, String addr, String email) {
+		this(0, id, null, name, tel, postalCode, addr, email, null);
 	}
 	
 
@@ -82,6 +90,16 @@ public class MemberInfo {
 
 	public void setAddr(String addr) {
 		this.addr = addr;
+	}
+	
+	
+
+	public String getPostalCode() {
+		return postalCode;
+	}
+
+	public void setPostalCode(String postalCode) {
+		this.postalCode = postalCode;
 	}
 
 	public String getEmail() {

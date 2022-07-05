@@ -13,17 +13,20 @@ import vo.ProductInfo;
 @WebServlet("/product/filter")
 public class ProductFilterController extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String prodType = request.getParameter("prodType");
-		String prodCategory = request.getParameter("prodCategory");
+
+		
+		FilterService filter = new FilterService();
 		
 		ProductInfo productInfo = new ProductInfo();
-		
-		Filter filter = new Filter();
 		productInfo = filter.typeFilter(prodType);
 		
-		productInfo = filter.categoryFilter(prodType, prodCategory);
+		String selectProdType = productInfo.getProdType();
 		
+		productInfo = filter.categoryFilter(selectProdType, prodCategory);
+		
+		String selectProdCategory = productInfo.getCategory();
+		
+		productInfo = filter.sizeFilter(selectProdType, selectProdCategory, prodSize);
 		
 	}
-
 }

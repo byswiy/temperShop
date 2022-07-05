@@ -34,13 +34,14 @@ public class MemberInfoDao {
 				int userIdx = rs.getInt("userIdx");
 				String pw = rs.getString("pw");
 				String name = rs.getString("name");
+				String postalCode = rs.getString("postalCode");
 				String addr = rs.getString("addr");
 				String date = rs.getString("joinDate");
 				date = date.substring(0, 19);
 				date = date.replace(' ', 'T');
 				LocalDateTime joinDate = LocalDateTime.parse(date);
 				
-				memberInfo = new MemberInfo(userIdx, id, pw, name, tel, addr, email, joinDate);
+				memberInfo = new MemberInfo(userIdx, id, pw, name, tel, postalCode, addr, email, joinDate);
 				
 			}
 			
@@ -62,16 +63,17 @@ public class MemberInfoDao {
 		PreparedStatement pstmt = null;
 		
 		try {
-			String sql = "INSERT INTO member_info(id, pw, name, tel, addr, email, joinDate) VALUES(?, ?, ?, ?, ?, ?, ?)";
+			String sql = "INSERT INTO member_info(id, pw, name, tel, postalCode, addr, email, joinDate) VALUES(?, ?, ?, ?, ?, ?, ?, ?)";
 			
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, memberInfo.getId());
 			pstmt.setString(2, memberInfo.getPw());
 			pstmt.setString(3, memberInfo.getName());
 			pstmt.setString(4, memberInfo.getTel());
-			pstmt.setString(5, memberInfo.getAddr());
-			pstmt.setString(6, memberInfo.getEmail());
-			pstmt.setString(7, memberInfo.getJoinDate().toString());
+			pstmt.setString(5, memberInfo.getPostalCode());
+			pstmt.setString(6, memberInfo.getAddr());
+			pstmt.setString(7, memberInfo.getEmail());
+			pstmt.setString(8, memberInfo.getJoinDate().toString());
 			
 			int count = pstmt.executeUpdate();
 			
@@ -109,6 +111,7 @@ public class MemberInfoDao {
 				String pw = rs.getString("pw");
 				String name = rs.getString("name");
 				String tel = rs.getString("tel");
+				String postalCode = rs.getString("postalCode");
 				String addr = rs.getString("addr");
 				String email = rs.getString("email");
 				String date = rs.getString("joinDate");
@@ -116,7 +119,7 @@ public class MemberInfoDao {
 				date = date.replace(' ', 'T');
 				LocalDateTime joinDate = LocalDateTime.parse(date);
 				
-				memberInfo = new MemberInfo(userIdx, id, pw, name, tel, addr, email, joinDate);
+				memberInfo = new MemberInfo(userIdx, id, pw, name, tel, postalCode, addr, email, joinDate);
 				
 			}
 			
@@ -203,6 +206,7 @@ public class MemberInfoDao {
 				String pw = rs.getString("pw");
 				String name = rs.getString("name");
 				String tel = rs.getString("tel");
+				String postalCode = rs.getString("postalCode");
 				String addr = rs.getString("addr");
 				String email = rs.getString("email");
 				String date = rs.getString("joinDate");
@@ -210,7 +214,7 @@ public class MemberInfoDao {
 				date = date.replace(' ', 'T');
 				LocalDateTime joinDate = LocalDateTime.parse(date);
 
-				memberInfo = new MemberInfo(userIdx, id, pw, name, tel, addr, email, joinDate);
+				memberInfo = new MemberInfo(userIdx, id, pw, name, tel, postalCode, addr, email, joinDate);
 
 			}
 

@@ -5,37 +5,65 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.3/font/bootstrap-icons.css">
     <link rel="stylesheet" href="../css/login.css">
+    <title>Document</title>
 </head>
-<body>
-    <div class="modal modal-signin position-static d-block py-5" tabindex="-1" role="dialog" id="modalSignin">
-        <div class="modal-dialog" role="document">
-          <div class="modal-content rounded-5 shadow">
-            <div class="modal-header p-5 pb-4 border-bottom-0">
-              <!-- <h5 class="modal-title">Modal title</h5> -->
-              <h2 class="fw-bold mb-0">Sign up for free</h2>
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-      
-            <div class="modal-body p-5 pt-0">
-              <form class="">
-                <div class="form-floating mb-3">
-                  <input type="email" class="form-control rounded-4" id="floatingInput" placeholder="name@example.com">
-                  <label for="floatingInput">Email address</label>
-                </div>
-                <div class="form-floating mb-3">
-                  <input type="password" class="form-control rounded-4" id="floatingPassword" placeholder="Password">
-                  <label for="floatingPassword">Password</label>
-                </div>
-                <button class="w-100 mb-2 btn btn-lg rounded-4 btn-primary" type="submit">Sign up</button>
-                <small class="text-muted">By clicking Sign up, you agree to the terms of use.</small>
-              </form>
-            </div>
-          </div>
+<body class="text-center">
+    
+    <main class="login">
+      <form>
+        <a href="/temperShop/product/product_list.jsp"><i class="bi bi-shop-window"></i>temperShop</a>
+
+        <h2 class="text">로그인</h2>
+    
+        <div class="form-floating">
+          <input type="email" class="form-control" id="id" name="id" placeholder="name@example.com">
+          <label for="floatingInput">아아디</label>
         </div>
-      </div>
-</body>
+        <div class="form-floating">
+          <input type="password" class="form-control" id="pw" name="pw" placeholder="Password">
+          <label for="floatingPassword">비밀번호</label>
+        </div>
+    
+        <input class="btn btn-lg btn-primary" type="submit" id="login-btn" value="로그인">
+      </form>
+    </main>
+    
+    <script src="../js/jquery-3.6.0.min.js"></script>
+  	<script>
+  	// 로그인 버튼을 눌렀을 때 이동
+  	$("#login-btn").on("click", function(event) {
+  		event.preventDefault();
+  		
+  		let $id = $("#id");
+  		let $pw = $("#pw");
+  	
+  		let id = $id.val();
+  		let pw = $pw.val();
+  	
+  		$.ajax({
+  			url: "/temperShop/member/login",
+  			type: "POST",
+  			data: "id="+id+"&pw="+pw,
+  			success: function() {
+  				// 로그인에 성공했다면 200 상태코드를 반환하고
+  				// main(index) 페이지로 돌아간다
+  				alert("로그인에 성공했습니다! 쇼핑몰 페이지로 돌아갑니다");
+  				location.href = "/temperShop/product/product_list.jsp";
+  			},
+  			error: function(response) {
+  				// 파라미터가 규칙에 맞지 않을 때 400 반환
+  				if(response.status == 400) {
+  					alert("아이디와 비밀번호를 정확히 입력해주세요");
+  				} else if(response.status == 401) {
+  					// 아이디나 비밀번호가 일치하지 않을 때 401 반환
+  					alert("아이디와 비밀번호를 확인해주세요");
+  				}
+  			}
+  		});
+  	});
+  	</script>
+    </body>
 </html>

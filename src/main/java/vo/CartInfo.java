@@ -6,7 +6,9 @@ public class CartInfo {
 	private int product_prodIdx;
 	private int quantity;
 	
-	
+	public CartInfo() {
+		
+	}
 	
 	public CartInfo(int cartIdx, int member_userIdx, int product_prodIdx, int quantity) {
 		this.cartIdx = cartIdx;
