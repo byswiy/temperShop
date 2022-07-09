@@ -46,9 +46,13 @@ public class ProductAddController extends HttpServlet {
 			
 			// 1-1 전달 받은 값 검증
 			ProductValidator validator = new ProductValidator();
-			if(!validator.allValidator(prodName, prodPrice, prodStock, prodSize, prodColor, prodCategory)) {
-				throw new BadParameterException();
-			}
+			if(!validator.prodShopNameValidator(prodShopName))							throw new BadParameterException();
+			else if(!validator.prodNameValidator(prodName)) 							throw new BadParameterException();
+			else if(!validator.prodStockOrProdPriceValidator(prodStock, prodPrice))		throw new BadParameterException();
+			else if(!validator.prodSizeValidator(prodSize)) 							throw new BadParameterException();
+			else if(!validator.prodColorValidator(prodColor)) 							throw new BadParameterException();
+			else if(!validator.prodCategoryValidator(prodCategory))						throw new BadParameterException();
+			else if(!validator.prodTypeValidator(prodType)) 							throw new BadParameterException();
 
 			// 2. 전달받은 값을 하나의 상품정보로 합친다
 			ProductInfo productInfo = new ProductInfo(prodShopName, prodName, prodPrice, prodStock, prodSize, prodColor, prodCategory, prodType, prodImg, regDate);		
@@ -59,7 +63,7 @@ public class ProductAddController extends HttpServlet {
 			
 			response.setStatus(HttpServletResponse.SC_OK);
 			// 상품 추가에 성공했다면 상품 목록 첫 페이지로 이동하도록 한다
-//			response.sendRedirect("##");
+			response.sendRedirect("http://localhost/temperShop/product/list?pageNumber=1");
 		} catch(BadParameterException e) {
 			// 상품을 추가하지 못했다면 400 상태코드를 반환한다
 			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);

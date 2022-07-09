@@ -1,4 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -12,53 +13,47 @@
 </head>
 <body>
     
-    <div class="container">
-      <header class="blog-header py-3">
-        <div class="row flex-nowrap justify-content-between align-items-center">
-          <div class="col-4 pt-1">
-            <i class="bi bi-thermometer-sun"></i>
-          </div>
-          <div class="col-4 text-center">
-            <a class="blog-header-logo text-dark" href="#">temperShop</a>
-          </div>
-          <div class="col-4 d-flex justify-content-end align-items-center">
-            <ul class="nav col-12 col-lg-auto mb-2 justify-content-center mb-md-0">
-                <li><a href="#" class="nav-link px-2 link-dark">login</a></li>
-                <li><a href="#" class="nav-link px-2 link-dark">sing-up</a></li>
-                <li><a href="#" class="nav-link px-2 link-dark">cart</a></li>
-                <li><a href="#" class="nav-link px-2 link-dark">myPage</a></li>
-              </ul>
-          </div>
-        </div>
-    </header>
-    </div>
+    <%@ include file="../includes/header_nav.jsp" %>
     
     <main class="container">
       
-      <div class="mb-4 img-wrap">
-        <div class="image_wrap">
-          <img src="https://search.pstatic.net/sunny/?src=https%3A%2F%2Fmedia.gettyimages.com%2Fvectors%2Fsummer-holiday-vector-id1132163504%3Fk%3D20%26m%3D1132163504%26s%3D612x612%26w%3D0%26h%3Dajh-kLrrYNtYyNIXN50uviXgzRYIWIOPrRTZHkurkc4%3D&type=a340" alt="">
-        </div>
-        <div class="image_text">
-          <p><strong>현재 온도 : </strong></p>
-          <p><strong>온도에 맞게 추천된 옷 : </strong></p>
-        </div>
-      </div>
+      <%@ include file="../includes/header.jsp" %>
 
       <hr>
 
       <div class="container px-4 py-5">
         <div class="row align-items-center g-5">
           <div class="col-10 col-sm-8 col-lg-6">
-            <img src="https://search.pstatic.net/common/?src=https%3A%2F%2Fshopping-phinf.pstatic.net%2Fmain_8401410%2F84014102631.jpg&type=a340" class="d-block mx-lg-auto img-fluid" alt="Bootstrap Themes" width="700" height="500" loading="lazy">
+          	<c:set var="imgFile" value="${productInfo.prodImg }" />
+            <img src="http://localhost/temperShop/images/product/${imgFile }" id="prodImg" class="d-block mx-lg-auto img-fluid" alt="Bootstrap Themes" width="450" height="250" loading="lazy">
           </div>
           <div class="col-lg-6">
-            <h1 class="display-5 fw-bold lh-1 mb-3">Responsive left-aligned hero with image</h1>
-            <p class="lead">Quickly design and customize responsive mobile-first sites with Bootstrap, the world’s most popular front-end open source toolkit, featuring Sass variables and mixins, responsive grid system, extensive prebuilt components, and powerful JavaScript plugins.</p>
-            <div class="d-grid gap-2 d-md-flex justify-content-md-start">
-              <button type="button" class="btn btn-primary btn-lg px-4 me-md-2">Primary</button>
-              <button type="button" class="btn btn-outline-secondary btn-lg px-4">Default</button>
-            </div>
+            <h4 class="fw-bold lh-1 mb-3" id="prodShopName">${productInfo.prodShopName }</h4>
+            <h3 class="fw-bold lh-1 mb-3" id="prodName">${productInfo.prodName }</h3>
+            <p class="lead" id="prodPrice">가격 : ${productInfo.prodPrice }</p>
+            <p class="lead" id="prodSize">사이즈 : ${productInfo.prodSize }</p>
+            <p class="lead" id="prodColor">색상 : ${productInfo.prodColor }</p>
+            <label for="prodQuantity" >구매 수량 :
+              <input type="number" id="prodQuantity" name="prodQuantity" style="margin-bottom: 30px;">
+            </label>
+            
+            <%-- 로그인이 되어있어 있지 않다면 --%>
+           	<c:if test="${loginUserInfo eq null }">
+           		<br>
+           		<a href="/temperShop/login/login.jsp"><button type="button" class="btn btn-primary btn-lg px-4 me-md-2">구매 하기</button></a>
+           		<a href="/temperShop/login/login.jsp"><button type="button" class="btn btn-primary btn-lg px-4 me-md-2">장바구니</button></a>
+           	</c:if>
+           	
+           	<%-- 로그인이 되어있다면 --%>
+			<c:if test="${loginUserInfo ne null }">
+				<br>
+				<button type="button" class="btn btn-primary btn-lg px-4 " id="buy_btn">구매 하기</button>
+				<button type="button" class="btn btn-primary btn-lg px-4 " id="cart_btn">장바구니</button>
+				<c:if test="${loginUserInfo.id eq 'admin00'}">
+					<button type="button" class="btn btn-secondary btn-lg px-4 me-md-2" id="update_btn">상품 수정</button>
+           			<button type="button" class="btn btn-danger btn-lg px-4 me-md-2" id="delete_btn">상품 삭제</button>
+				</c:if>
+			</c:if>
           </div>
         </div>
       </div>
@@ -72,4 +67,51 @@
       </p>
     </footer>
     </body>
+
+    <script src="../js/jquery-3.6.0.min.js"></script>
+    <script>
+    	// 상품 구매 페이지로 이동
+    	$("#buy_btn").on("click", function() {
+    		let prodQuantity = $("#prodQuantity").val();
+    		
+    		$.ajax({
+    			url: "/temperShop/purchase",
+    			type: "POST",
+    			data: "prodIdx="+${productInfo.prodIdx}+"&prodQuantity="+prodQuantity,
+    			success: function() {
+    				location.href= "/temperShop/purchase/purchase_form.jsp";
+    			},
+    			error: function() {
+    				
+    			}
+    		});
+    		
+    	});
+    </script>
+    <script>
+    	let prodIdx = ${param.prodIdx};
+    
+    	// 상품 삭제 페이지로 이동
+    	$("#delete_btn").on("click", function() {
+    		
+    		$.ajax({
+    			url: "/temperShop/product/delete",
+    			type: "POST",
+    			data: "prodIdx=" + prodIdx,
+    			success: function() {
+    				alert("상품을 삭제했습니다.");
+    				
+    				location.href = "/temperShop/product/list";
+    			},
+    			error: function() {
+    				
+    			}
+    		});
+    	});
+    	
+    	// 상품 수정 페이지로 이동
+    	$("#update_btn").on("click", function() {
+    		location.href = "/temperShop/product/product_update.jsp?prodIdx=" + prodIdx;
+    	});
+    </script>
 </html>

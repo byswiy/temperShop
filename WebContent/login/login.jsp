@@ -51,7 +51,7 @@
   				// 로그인에 성공했다면 200 상태코드를 반환하고
   				// main(index) 페이지로 돌아간다
   				alert("로그인에 성공했습니다! 쇼핑몰 페이지로 돌아갑니다");
-  				location.href = "/temperShop/product/product_list.jsp";
+  				location.href = "/temperShop/product/list?pageNumber=1";
   			},
   			error: function(response) {
   				// 파라미터가 규칙에 맞지 않을 때 400 반환

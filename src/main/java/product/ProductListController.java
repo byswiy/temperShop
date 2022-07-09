@@ -29,32 +29,29 @@ public class ProductListController extends HttpServlet {
 		int amountPage = dao.getCount();
 		
 		// 페이지 조회에 실패했을 경우
-		int startIndex = (pageNumber - 1) * 9;
+		int startIndex = (pageNumber - 1) * 12;
 		if(startIndex >= amountPage) {
 			// 없는 페이지 번호로 접근해서 상품 목록을 조회하지 못했을 때 204 상태코드 반환
 			response.setStatus(HttpServletResponse.SC_NO_CONTENT);
 			return;
 		}
 		
-		String prodType = request.getParameter("prodType");
-		String prodCategory = request.getParameter("prodCategory");
-		String prodSize = request.getParameter("prodSize");
+//		String prodType = request.getParameter("prodType");
+//		String prodCategory = request.getParameter("prodCategory");
+//		String prodSize = request.getParameter("prodSize");
+//		String prodColor = request.getParameter("prodColor");
 		
-		
-		
-		
-		FilterService service = new FilterService();
-		ProductInfo productInfo = new ProductInfo();
-		
-		productInfo = service.typeFilter(getServletInfo());
 		
 		// 상품의 데이터를 List로 묶어주고 상품의 목록을 불러온다
-		List<ProductInfo> productInfoList = dao.selectAll(pageNumber, prodType, prodCategory, prodSize);
+//		List<ProductInfo> productInfoList = dao.selectAll(pageNumber, prodType, prodCategory, prodSize, prodColor);
+		List<ProductInfo> productInfoList = dao.selectAll(pageNumber);
 		
-		// 상품 목록을 보여주는 jsp로 이동하도록 한다
-		response.setStatus(HttpServletResponse.SC_OK);
-//		RequestDispatcher rd = request.getRequestDispatcher("##");
-//		rd.forward(request, response);
+		// 요청 정보를 가져와 request에 저장하도록 한다
+		request.setAttribute("amount", amountPage);
+		request.setAttribute("productList", productInfoList);
+		
+		RequestDispatcher rd = request.getRequestDispatcher("/product/product_list.jsp");
+		rd.forward(request, response);
 		
 	}
 

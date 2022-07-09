@@ -3,6 +3,7 @@ package Purchase;
 import java.io.IOException;
 import java.time.LocalDateTime;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -23,15 +24,15 @@ public class PurchaseController extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.setCharacterEncoding("UTF-8");
 		// 상품 상세보기에서 구매하기 버튼을 눌렀을 때 (장바구니 거치지 않음)
-		if(request.getParameter("cart_cartIdx") == "") {
+		if(request.getParameter("cart_cartIdx") == null) {
 			// 세션에 담긴 로그인한 사용자의 정보를 가져온다
 			HttpSession session = request.getSession();
 			MemberInfo loginUserInfo = (MemberInfo) session.getAttribute("loginUserInfo");
-			ProductInfo productInfo = (ProductInfo) session.getAttribute("productList");
+			ProductInfo productInfo = (ProductInfo) session.getAttribute("prodDetail");
 			
 			// 상품 구매 시 필요한 데이터
 			int member_userIdx = loginUserInfo.getUserIdx();
-			int product_prodIdx = productInfo.getProdIdx();
+			int product_prodIdx = Integer.parseInt(request.getParameter("prodIdx"));
 			
 			ProductInfoDao dao = new ProductInfoDao();
 			productInfo = dao.selectProductIdx(product_prodIdx);
@@ -41,30 +42,26 @@ public class PurchaseController extends HttpServlet {
 				return;
 			}
 			
-			int cost = productInfo.getProdPrice();
+			int price = productInfo.getProdPrice();
 			
-			int prodQuantity = productInfo.getProdQuantity();
-			
-			int totalCost = cost * prodQuantity;
+			int prodQuantity = Integer.parseInt(request.getParameter("prodQuantity"));
+			int cost = price * prodQuantity;
 			
 			String message = request.getParameter("message");
 			LocalDateTime purchaseDate = LocalDateTime.now();
 			
 			dao.decreaseStock(product_prodIdx);
 			
-			
-			
-			
-			
-			PurchaseInfo purchaseInfo = new PurchaseInfo(member_userIdx, product_prodIdx, totalCost, message, purchaseDate);
+			PurchaseInfo purchaseInfo = new PurchaseInfo(member_userIdx, product_prodIdx, cost, message, purchaseDate);
 			
 			PurchaseInfoDao purchaseDao = new PurchaseInfoDao();
 			purchaseDao.insertPurchaseInfo(purchaseInfo);
 			
 			session.setAttribute("purchaseInfo", purchaseInfo);
 			
-			// 상품 구매에 성공했다면 상태코드 200 반환
-			response.setStatus(HttpServletResponse.SC_OK);
+//			RequestDispatcher rd = request.getRequestDispatcher("/purchase/purchase_form.jsp");
+//    		rd.forward(request, response);
+    		
 		} else {
 			// 장바구니에서 구매하기 버튼을 눌렀을 때
 			int cart_cartIdx = Integer.parseInt(request.getParameter("cart_cartIdx"));

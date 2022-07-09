@@ -11,11 +11,12 @@ public class PurchaseListInfo {
 	private String purchaseSize;
 	private String purchaseColor;
 	private String purchaseType;
+	private String purchaseImg;
 	private LocalDateTime purchaseDate;
 	
 	public PurchaseListInfo(String purchaseId, String purchaseShopName, String purchaseName, int purchasePrice,
 							int purchaseQuantity, String purchaseSize, String purchaseColor, String purchaseType,
-							LocalDateTime purchaseDate) {
+							String purchaseImg, LocalDateTime purchaseDate) {
 		this.purchaseId = purchaseId;
 		this.purchaseShopName = purchaseShopName;
 		this.purchaseName = purchaseName;
@@ -24,6 +25,7 @@ public class PurchaseListInfo {
 		this.purchaseSize = purchaseSize;
 		this.purchaseColor = purchaseColor;
 		this.purchaseType = purchaseType;
+		this.purchaseImg = purchaseImg;
 		this.purchaseDate = purchaseDate;
 	}
 	
@@ -88,6 +90,18 @@ public class PurchaseListInfo {
 
 	public String getPurchaseType() {
 		return purchaseType;
+	}
+
+	
+
+	public String getPurchaseImg() {
+		return purchaseImg;
+	}
+
+
+
+	public void setPurchaseImg(String purchaseImg) {
+		this.purchaseImg = purchaseImg;
 	}
 
 

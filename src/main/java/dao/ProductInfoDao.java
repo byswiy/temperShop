@@ -80,7 +80,7 @@ public class ProductInfoDao {
 	}
 	 
 	// pageNumber를 포함한 상품 정보를 모두 가져오는 SELECT 쿼리
-	public List<ProductInfo> selectAll(int pageNumber, String prodType, String prodCategory, String prodSize, String prodColor, int prodPrice) {
+	public List<ProductInfo> selectAll(int pageNumber) {
 		Database db = new Database();
 		
 		Connection conn = db.getConnection();
@@ -90,22 +90,10 @@ public class ProductInfoDao {
 		List<ProductInfo> productInfoList = new ArrayList<>();
 		
 		try {
-			String sql = "SELECT * FROM product_info";
-			
-			if(prodSize != null && prodCategory != null && prodType != null) {
-				sql += " WHERE prodType = '" + prodType + "' AND prodCategory = '" + prodCategory + "' And prodSize = '" + prodSize + "'";
-			} else if(prodCategory != null && prodType != null) {
-				sql += " WHERE prodType = '" + prodType + "' AND prodCategory = '" + prodCategory + "'";
-			} else if(prodType != null) {
-				sql += " WHERE prodType = '" + prodType + "'";
-			} else if(prodColor != null) {
-				sql += " WHERE prodColor = '" + prodType + "'";
-			}
-			
-			sql += " ORDER BY regDate DESC LIMIT ?, 9";
+			String sql = "SELECT * FROM product_info ORDER BY regDate DESC LIMIT ?, 12";
 			
 			// 9가 의미하는 것은 한 페이지에 보여줘야할 상품의 수 1번 페이지라면 1-1 = 0 0*9 => 0
-			int startIndex = (pageNumber - 1) * 9;
+			int startIndex = (pageNumber - 1) * 12;
 
 			pstmt = conn.prepareStatement(sql);
 			
@@ -119,7 +107,12 @@ public class ProductInfoDao {
 				int prodIdx = rs.getInt("prodIdx");
 				String prodShopName = rs.getString("prodShopName");
 				String prodName = rs.getString("prodName");
+				int prodPrice = rs.getInt("prodPrice");
 				int prodStock = rs.getInt("prodStock");
+				String prodSize = rs.getString("prodSize");
+				String prodColor = rs.getString("prodColor");
+				String prodCategory = rs.getString("prodCategory");
+				String prodType = rs.getString("prodType");
 				String prodImg = rs.getString("prodImg");
 				String date = rs.getString("regDate");
 				date = date.substring(0, date.indexOf('.'));
@@ -140,6 +133,69 @@ public class ProductInfoDao {
 		
 		return productInfoList;
 	}
+	
+	// pageNumber를 포함한 상품 정보를 모두 가져오는 SELECT 쿼리
+//		public List<ProductInfo> selectAll(int pageNumber, String prodType, String prodCategory, String prodSize, String prodColor) {
+//			Database db = new Database();
+//			
+//			Connection conn = db.getConnection();
+//			PreparedStatement pstmt = null;
+//			ResultSet rs = null;
+//			
+//			List<ProductInfo> productInfoList = new ArrayList<>();
+//			
+//			try {
+//				String sql = "SELECT * FROM product_info";
+//				
+//				if(prodSize != null && prodCategory != null && prodType != null) {
+//					sql += " WHERE prodType = '" + prodType + "' AND prodCategory = '" + prodCategory + "' And prodSize = '" + prodSize + "'";
+//				} else if(prodCategory != null && prodType != null) {
+//					sql += " WHERE prodType = '" + prodType + "' AND prodCategory = '" + prodCategory + "'";
+//				} else if(prodType != null) {
+//					sql += " WHERE prodType = '" + prodType + "'";
+//				} else if(prodColor != null) {
+//					sql += " WHERE prodColor = '" + prodType + "'";
+//				}
+//				
+//				sql += " ORDER BY regDate DESC LIMIT ?, 9";
+//				
+//				// 9가 의미하는 것은 한 페이지에 보여줘야할 상품의 수 1번 페이지라면 1-1 = 0 0*9 => 0
+//				int startIndex = (pageNumber - 1) * 9;
+//
+//				pstmt = conn.prepareStatement(sql);
+//				
+//				pstmt.setInt(1, startIndex);
+//				
+//				rs = pstmt.executeQuery();
+//				
+//				// 결과가 있을 수도 있고 없을 수도 있기 때문에
+//				// while을 사용해서 결과가 있을 때까지 동작하도록 한다
+//				while(rs.next()) {
+//					int prodIdx = rs.getInt("prodIdx");
+//					String prodShopName = rs.getString("prodShopName");
+//					String prodName = rs.getString("prodName");
+//					int prodPrice = rs.getInt("prodPrice");
+//					int prodStock = rs.getInt("prodStock");
+//					String prodImg = rs.getString("prodImg");
+//					String date = rs.getString("regDate");
+//					date = date.substring(0, date.indexOf('.'));
+//					date = date.replace(' ', 'T');
+//					LocalDateTime regDate = LocalDateTime.parse(date);
+//					
+//					ProductInfo nthProductInfo = new ProductInfo(prodIdx, prodShopName, prodName, prodPrice, prodStock, prodSize, prodColor, prodCategory, prodType, prodImg, regDate);
+//					
+//					productInfoList.add(nthProductInfo);
+//				}
+//			} catch (SQLException e) {
+//				e.printStackTrace();
+//			} finally {
+//				db.closeResultSet(rs);
+//				db.closePstmt(pstmt);
+//				db.closeConn(conn);
+//			}
+//			
+//			return productInfoList;
+//		}
 	
 	// 상품 번호를 select해서 상품 정보를 저장하는 쿼리
 	public ProductInfo selectProductIdx(int prodIdx) {
@@ -174,7 +230,7 @@ public class ProductInfoDao {
 				date = date.replace(' ', 'T');
 				LocalDateTime regDate = LocalDateTime.parse(date);
 				
-				productInfo = new ProductInfo(prodIdx, prodShopName,  prodName, prodPrice, prodStock, prodQuantity, prodSize, prodColor, prodCategory, prodImg, prodImg, regDate);
+				productInfo = new ProductInfo(prodIdx, prodShopName, prodName, prodPrice, prodStock, prodQuantity, prodSize, prodColor, prodCategory, prodType, prodImg, regDate);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -233,25 +289,28 @@ public class ProductInfoDao {
 	}
 	
 	// 상품 정보를 수정하는 UPDATE 쿼리
-	public boolean updateProductInfo(ProductInfo productInfo) {
+	public void updateProductInfo(ProductInfo productInfo) {
 		Database db = new Database();
 
 		Connection conn = db.getConnection();
 		PreparedStatement pstmt = null;
 		
 		try {
-			String sql = "UPDATE product_info SET prodPrice = ?, prodStock = ?, prodSize = ?, prodColor = ? WHERE prodIdx = ?";
+			String sql = "UPDATE product_info SET prodName = ?, prodPrice = ?, prodStock = ?,"
+					                           + "prodSize = ?, prodColor = ?, prodCategory = ?, prodType = ? WHERE prodIdx = ?";
 			pstmt = conn.prepareStatement(sql);
 			
-			pstmt.setInt(1, productInfo.getProdPrice());
-			pstmt.setInt(2, productInfo.getProdStock());
-			pstmt.setString(3, productInfo.getProdSize());
-			pstmt.setString(4, productInfo.getProdColor());
-			pstmt.setInt(5, productInfo.getProdIdx());
+			pstmt.setString(1, productInfo.getProdName());
+			pstmt.setInt(2, productInfo.getProdPrice());
+			pstmt.setInt(3, productInfo.getProdStock());
+			pstmt.setString(4, productInfo.getProdSize());
+			pstmt.setString(5, productInfo.getProdColor());
+			pstmt.setString(6, productInfo.getProdCategory());
+			pstmt.setString(7, productInfo.getProdType());
+			pstmt.setInt(8, productInfo.getProdIdx());
 			
-			int count = pstmt.executeUpdate();
+			pstmt.executeUpdate();
 			
-			return count == 1;
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -259,7 +318,6 @@ public class ProductInfoDao {
 			db.closePstmt(pstmt);
 			db.closeConn(conn);
 		}
-		return false;
 	}
 	
 	public boolean updateQuantity(ProductInfo productInfo) {

@@ -58,11 +58,10 @@
                     </div>
                 </div>
                 <div class="form-group" id="divAddr">
-                    <label for="inputAddr" class="col-lg-2 control-label" style="width: 62px;">
-                        주소
-                        
+                    <label for="inputAddr" class="col-lg-2 control-label" style="width: 62px;">주소
+                        <input type="button" onclick="sample4_execDaumPostcode()" value="우편번호 찾기" style="margin-left: 20px;">
                     </label>
-                    <input type="button" onclick="sample4_execDaumPostcode()" value="우편번호 찾기" style="margin-left: 20px;">
+                    
                     <div class="col-lg-10">
                         <input type="text" class="form-control addr" id="sample4_postcode" data-rule-required="true" placeholder="우편변호" maxlength="11">
                         <input type="text" class="form-control addr" id="sample4_roadAddress" data-rule-required="true" placeholder="도로명주소" maxlength="11">

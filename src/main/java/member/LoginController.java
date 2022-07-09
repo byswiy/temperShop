@@ -20,7 +20,7 @@ public class LoginController extends HttpServlet {
 		HttpSession session = request.getSession();
 		session.removeAttribute("loginUserInfo");
 		
-		response.sendRedirect("/temperShop/product/product_list.jsp");
+		response.sendRedirect("/temperShop/product/list?pageNumber=1");
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

@@ -19,7 +19,8 @@ public class PurchaseInfo {
 		
 	}
 	
-	public PurchaseInfo(int member_userIdx, int product_prodIdx, int cart_cartIdx, int cost, String message, LocalDateTime purchaseDate) {
+	public PurchaseInfo(int purchaseIdx, int member_userIdx, int product_prodIdx, int cart_cartIdx, int cost, String message, LocalDateTime purchaseDate) {
+		this.purchaseIdx = purchaseIdx;
 		this.member_userIdx = member_userIdx;
 		this.product_prodIdx = product_prodIdx;
 		this.cart_cartIdx = cart_cartIdx;
@@ -28,8 +29,12 @@ public class PurchaseInfo {
 		this.purchaseDate = purchaseDate;
 	}
 	
+	public PurchaseInfo(int member_userIdx, int product_prodIdx, int cart_cartIdx,  int cost, String message, LocalDateTime purchaseDate) {
+		this(0, member_userIdx, product_prodIdx, cart_cartIdx, cost, message, purchaseDate);
+	}
+	
 	public PurchaseInfo(int member_userIdx, int product_prodIdx,  int cost, String message, LocalDateTime purchaseDate) {
-		this(member_userIdx, product_prodIdx, 0, cost, message, purchaseDate);
+		this(0, member_userIdx, product_prodIdx, 0, cost, message, purchaseDate);
 	}
 	
 	public int getPurchaseIdx() {

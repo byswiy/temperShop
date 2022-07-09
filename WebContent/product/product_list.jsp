@@ -1,6 +1,15 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
+<%
+	// 페이지네이션에 사용할 end 속성의 값 계산
+	int amount = (int) request.getAttribute("amount");
+	int end = (int) Math.ceil(amount / 12.0);
+
+	request.setAttribute("end", end);
+%>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -18,15 +27,7 @@
     
     <main class="container">
       
-      <div class="mb-4 img-wrap">
-        <div class="image_wrap">
-          <img src="https://search.pstatic.net/sunny/?src=https%3A%2F%2Fmedia.gettyimages.com%2Fvectors%2Fsummer-holiday-vector-id1132163504%3Fk%3D20%26m%3D1132163504%26s%3D612x612%26w%3D0%26h%3Dajh-kLrrYNtYyNIXN50uviXgzRYIWIOPrRTZHkurkc4%3D&type=a340" alt="">
-        </div>
-        <div class="image_text">
-          <p><strong>현재 온도 : </strong></p>
-          <p><strong>온도에 맞게 추천된 옷 : </strong></p>
-        </div>
-      </div>
+      <%@ include file="../includes/header.jsp" %>
 
       <h3 class="filter fst-italic">Filter</h3>
 
@@ -36,9 +37,9 @@
 
       <select class="form-select prodType" aria-label="Default select example">
           <option selected>구분</option>
-          <option value="1">Top</option>
-          <option value="2">Bottom</option>
-          <option value="3">Dress</option>
+          <option value="top">Top</option>
+          <option value="bottom">Bottom</option>
+          <option value="dress">Dress</option>
       </select>
 
       <span>></span>
@@ -76,158 +77,31 @@
       </select>
 
       <hr>
-
-      <div class="card" style="max-width: 24%;">
-        <a href="##"><img src="https://search.pstatic.net/common/?src=https%3A%2F%2Fshopping-phinf.pstatic.net%2Fmain_8401410%2F84014102631.jpg&type=a340" width="200" hight="250" class="card-img-top" alt="..."></a>
-        <div class="card-body">
-          <a href=""><h6 class="card-title">[미쏘]</h6></a>
-          <p class="card-text">
-            <span>상품 명 : </span><br><br>
-            <strong><span>상품 가격 : </span><br></strong>
-          </p>
-        </div>
-      </div>
-
-      <div class="card" style="max-width: 24%;">
-        <a href="##"><img src="https://search.pstatic.net/common/?src=https%3A%2F%2Fshopping-phinf.pstatic.net%2Fmain_8401410%2F84014102631.jpg&type=a340" width="200" hight="250" class="card-img-top" alt="..."></a>
-        <div class="card-body">
-          <a href=""><h6 class="card-title">[미쏘]</h6></a>
-          <p class="card-text">
-            <span>상품 명 : </span><br><br>
-            <strong><span>상품 가격 : </span><br></strong>
-          </p>
-        </div>
-      </div>
-
-      <div class="card" style="max-width: 24%;">
-        <a href="##"><img src="https://search.pstatic.net/common/?src=https%3A%2F%2Fshopping-phinf.pstatic.net%2Fmain_8401410%2F84014102631.jpg&type=a340" width="200" hight="250" class="card-img-top" alt="..."></a>
-        <div class="card-body">
-          <a href=""><h6 class="card-title">[미쏘]</h6></a>
-          <p class="card-text">
-            <span>상품 명 : </span><br><br>
-            <strong><span>상품 가격 : </span><br></strong>
-          </p>
-        </div>
-      </div>
-
-      <div class="card" style="max-width: 24%;">
-        <a href="##"><img src="https://search.pstatic.net/common/?src=https%3A%2F%2Fshopping-phinf.pstatic.net%2Fmain_8401410%2F84014102631.jpg&type=a340" width="200" hight="250" class="card-img-top" alt="..."></a>
-        <div class="card-body">
-          <a href=""><h6 class="card-title">[미쏘]</h6></a>
-          <p class="card-text">
-            <span>상품 명 : </span><br><br>
-            <strong><span>상품 가격 : </span><br></strong>
-          </p>
-        </div>
-      </div>
-
-      <div class="card" style="max-width: 24%;">
-        <a href="##"><img src="https://search.pstatic.net/common/?src=https%3A%2F%2Fshopping-phinf.pstatic.net%2Fmain_8401410%2F84014102631.jpg&type=a340" width="200" hight="250" class="card-img-top" alt="..."></a>
-        <div class="card-body">
-          <a href=""><h6 class="card-title">[미쏘]</h6></a>
-          <p class="card-text">
-            <span>상품 명 : </span><br><br>
-            <strong><span>상품 가격 : </span><br></strong>
-          </p>
-        </div>
-      </div>
-
-      <div class="card" style="max-width: 24%;">
-        <a href="##"><img src="https://search.pstatic.net/common/?src=https%3A%2F%2Fshopping-phinf.pstatic.net%2Fmain_8401410%2F84014102631.jpg&type=a340" width="200" hight="250" class="card-img-top" alt="..."></a>
-        <div class="card-body">
-          <a href=""><h6 class="card-title">[미쏘]</h6></a>
-          <p class="card-text">
-            <span>상품 명 : </span><br><br>
-            <strong><span>상품 가격 : </span><br></strong>
-          </p>
-        </div>
-      </div>
-
-      <div class="card" style="max-width: 24%;">
-        <a href="##"><img src="https://search.pstatic.net/common/?src=https%3A%2F%2Fshopping-phinf.pstatic.net%2Fmain_8401410%2F84014102631.jpg&type=a340" width="200" hight="250" class="card-img-top" alt="..."></a>
-        <div class="card-body">
-          <a href=""><h6 class="card-title">[미쏘]</h6></a>
-          <p class="card-text">
-            <span>상품 명 : </span><br><br>
-            <strong><span>상품 가격 : </span><br></strong>
-          </p>
-        </div>
-      </div>
-
-      <div class="card" style="max-width: 24%;">
-        <a href="##"><img src="https://search.pstatic.net/common/?src=https%3A%2F%2Fshopping-phinf.pstatic.net%2Fmain_8401410%2F84014102631.jpg&type=a340" width="200" hight="250" class="card-img-top" alt="..."></a>
-        <div class="card-body">
-          <a href=""><h6 class="card-title">[미쏘]</h6></a>
-          <p class="card-text">
-            <span>상품 명 : </span><br><br>
-            <strong><span>상품 가격 : </span><br></strong>
-          </p>
-        </div>
-      </div>
-
-      
-      <div class="card" style="max-width: 24%;">
-        <a href="##"><img src="https://search.pstatic.net/common/?src=https%3A%2F%2Fshopping-phinf.pstatic.net%2Fmain_8401410%2F84014102631.jpg&type=a340" width="200" hight="250" class="card-img-top" alt="..."></a>
-        <div class="card-body">
-          <a href=""><h6 class="card-title">[미쏘]</h6></a>
-          <p class="card-text">
-            <span>상품 명 : </span><br><br>
-            <strong><span>상품 가격 : </span><br></strong>
-          </p>
-        </div>
-      </div>
-
-      <div class="card" style="max-width: 24%;">
-        <a href="##"><img src="https://search.pstatic.net/common/?src=https%3A%2F%2Fshopping-phinf.pstatic.net%2Fmain_8401410%2F84014102631.jpg&type=a340" width="200" hight="250" class="card-img-top" alt="..."></a>
-        <div class="card-body">
-          <a href=""><h6 class="card-title">[미쏘]</h6></a>
-          <p class="card-text">
-            <span>상품 명 : </span><br><br>
-            <strong><span>상품 가격 : </span><br></strong>
-          </p>
-        </div>
-      </div>
-
-      <div class="card" style="max-width: 24%;">
-        <a href="##"><img src="https://search.pstatic.net/common/?src=https%3A%2F%2Fshopping-phinf.pstatic.net%2Fmain_8401410%2F84014102631.jpg&type=a340" width="200" hight="250" class="card-img-top" alt="..."></a>
-        <div class="card-body">
-          <a href=""><h6 class="card-title">[미쏘]</h6></a>
-          <p class="card-text">
-            <span>상품 명 : </span><br><br>
-            <strong><span>상품 가격 : </span><br></strong>
-          </p>
-        </div>
-      </div>
-
-      <div class="card" style="max-width: 24%;">
-        <a href="##"><img src="https://search.pstatic.net/common/?src=https%3A%2F%2Fshopping-phinf.pstatic.net%2Fmain_8401410%2F84014102631.jpg&type=a340" width="200" hight="250" class="card-img-top" alt="..."></a>
-        <div class="card-body">
-          <a href=""><h6 class="card-title">[미쏘]</h6></a>
-          <p class="card-text">
-            <span>상품 명 : </span><br><br>
-            <strong><span>상품 가격 : </span><br></strong>
-          </p>
-        </div>
-      </div>
-
+		
+	  <!-- 상품 목록 구성 -->	
+	  <c:forEach var="products" items="${productList }">
+		  <div class="card" style="max-width: 24%;">
+	        <a href="##"><img src="http://localhost/temperShop/images/product/${products.prodImg }" class="card-img-top" alt="..." style="height: 310px;"></a>
+	        <div class="card-body">
+	          <a href=""><h6 class="card-title">${products.prodShopName }</h6></a>
+	          <p class="card-text">
+	            <span>상품 명 : ${products.prodName }</span><br>
+	            <strong><span>상품 가격 : ${products.prodPrice }원</span><br></strong><br>
+	            <a href="http://localhost/temperShop/product/detail?prodIdx=${products.prodIdx }"><button type="button" class="btn btn-secondary" id="detail_btn">상세정보</button></a>
+	          </p>
+	        </div>
+	      </div>
+	  </c:forEach>
+	  
+	  <nav aria-label="Page navigation example">
+	  	<ul class="pagination justify-content-center">
+	  		<c:forEach begin="1" end="${end }" var="number">
+				<li class="page-item"><a class="page-link" href="http://localhost/temperShop/product/list?pageNumber=${number }">${number }</a></li>
+			</c:forEach>
+		</ul>
+	  </nav>
+      </main>
       <hr>
-
-      <nav aria-label="Page navigation example">
-        <ul class="pagination justify-content-center">
-          <li class="page-item disabled">
-            <a class="page-link">Previous</a>
-          </li>
-          <li class="page-item"><a class="page-link" href="#">1</a></li>
-          <li class="page-item"><a class="page-link" href="#">2</a></li>
-          <li class="page-item"><a class="page-link" href="#">3</a></li>
-          <li class="page-item"><a class="page-link" href="#">4</a></li>
-          <li class="page-item"><a class="page-link" href="#">5</a></li>
-          <li class="page-item">
-            <a class="page-link" href="#">Next</a>
-          </li>
-        </ul>
-      </nav>
-    </main>
     
     <footer class="blog-footer">
       <p>Blog template built for <a href="https://getbootstrap.com/">Bootstrap</a> by <a href="https://twitter.com/mdo">@mdo</a>.</p>
@@ -239,17 +113,8 @@
     
     <script src="../js/jquery-3.6.0.min.js"></script>
     <script>
-    	$("#login_btn").on("click", function() {
-    		location.href="/temperShop/login/login.jsp";
-    	})
-    	
-    	$("#sign-up").on("click", function() {
-    		location.href="/temperShop/sign_up/terms.jsp";
-    	})
-    	
-    	$("#logout").on("click", function() {
-    		location.href="/temperShop/member/login";
-    	})
+    	$("#detail_btn").on("click", function() {
+    		location.href="/temperShop/product/product_detail.jsp";
+    	});
     </script>
-    
 </html>

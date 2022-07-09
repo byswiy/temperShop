@@ -1,6 +1,8 @@
 package member;
 
 import java.io.IOException;
+
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -22,15 +24,18 @@ public class UpdateExclusionPwController extends HttpServlet {
 			// 수정할 이름, 연락처, 주소, 이메일 데이터를 꺼내온다
 			String name = request.getParameter("name");
 			String tel = request.getParameter("tel");
+			String postalCode = request.getParameter("postalCode");
 			String addr = request.getParameter("addr");
 			String email = request.getParameter("email");
 			
 			MemberValidator validator = new MemberValidator();
 			
 			// 수정할 정보들의 데이터를 검증한다
-			if(!validator.updateValidator(name, tel, addr, email)) {
-				throw new BadParameterException();
-			}
+			if(!validator.nameValidator(name))						throw new BadParameterException();
+			else if(!validator.telValidator(tel)) 					throw new BadParameterException();
+			else if(!validator.postalCodeValidator(postalCode)) 	throw new BadParameterException();
+			else if(!validator.addrValidator(addr)) 				throw new BadParameterException();
+			else if(!validator.emailValidator(email))				throw new BadParameterException();
 			
 			// 세션에 저장했던 아이디를 꺼내온다
 			HttpSession session = request.getSession();
@@ -40,18 +45,16 @@ public class UpdateExclusionPwController extends HttpServlet {
 			// 수정할 연락처와 이메일이 사용중인지 확인
 			// 사용중인 데이터가 있다면 409 상태코드 반환
 			MemberService service = new MemberService();
-			if(service.existIdOrTelOrEmail(id, tel, email)) {
+			if(service.existTelOrEmail(id, tel, email)) {
 				response.setStatus(HttpServletResponse.SC_CONFLICT);
 				return;
 			}
 			
 			// 회원 정보 수정
-			MemberInfo memberInfo = new MemberInfo(id, name, tel, addr, email);
+			MemberInfo memberInfo = new MemberInfo(id, name, tel, postalCode, addr, email);
 			service.updateExclusionPw(memberInfo);
 			
-			// 정상적으로 정보를 수정했다면 200 상태코드를 반환한다
-			response.setStatus(HttpServletResponse.SC_OK);
-			
+			session.setAttribute("loginUserInfo", memberInfo);
 		} catch(BadParameterException e) {
 			// 파라미터 검증에 예외가 생겼을 때 400 상태코드 반환 
 			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);

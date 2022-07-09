@@ -46,8 +46,11 @@ public class ProductInfo {
 	public ProductInfo(int prodIdx,  String prodShopName, String prodName, int prodPrice, int prodStock, String prodSize, String prodColor, String prodCategory, String prodImg) {
 		this(prodIdx, prodShopName, prodName, prodPrice, prodStock, 0, prodSize, prodColor, prodCategory, null, prodImg, null);
 	}
+	
+	public ProductInfo(int prodIdx, String prodName, int prodPrice, int prodStock, String prodSize, String prodColor, String prodCategory, String prodType) {
+		this(prodIdx, null, prodName, prodPrice, prodStock, 0, prodSize, prodColor, prodCategory, prodType, null, null);
+	}
 
-	// productAddController
 	public ProductInfo(String prodShopName, String prodName, int prodPrice, int prodStock,  String prodSize, String prodColor, String prodCategory, String prodType, String prodImg, LocalDateTime regDate) {
 		this(0, prodShopName, prodName, prodPrice, prodStock, 0, prodSize, prodColor, prodCategory, prodType, prodImg, regDate);
 	}

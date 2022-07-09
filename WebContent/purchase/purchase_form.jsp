@@ -1,4 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+
+${purchaseInfo }
+
 <!DOCTYPE html>
 <html lang="ko"><head>
     <meta charset="utf-8">
@@ -68,44 +71,37 @@
             <strong>$20</strong>
           </li>
         </ul>
-
-        <form class="card p-2">
-          <div class="input-group">
-            <input type="text" class="form-control" placeholder="Promo code">
-            <button type="submit" class="btn btn-secondary">Redeem</button>
-          </div>
-        </form>
       </div>
       <div class="col-md-7 col-lg-8">
         <h3 class="mb-3">배송 정보</h3><hr>
         <h4 style="display: inline-block;">주문자 정보</h4>&nbsp;&nbsp;
-        <button type="button" style="border: 0.5px solid black;">정보 변경</button>
-        </h4>
-        <form class="needs-validation" novalidate="">
+        <button type="button" style="border: 0.5px solid black;" id="update_btn">정보 변경</button>
+        
+        <form class="needs-validation" action="" method="post">
           <div class="row g-3">
             <div class="col-12">
               <label for="name" class="form-label">이름</label>
-              <input type="text" class="form-control" id="name" name="name" value="" required>
+              <input type="text" class="form-control" id="name" name="name" value="${loginUserInfo.name }" required>
             </div>
 
             <div class="col-12">
                 <label for="tel" class="form-label">휴대폰 번호</label>
-                <input type="text" class="form-control" id="tel" name="tel" value="" required>
+                <input type="text" class="form-control" id="tel" name="tel" value="${loginUserInfo.tel }" required>
               </div>
 
             <div class="col-12">
               <label for="email" class="form-label">이메일</label>
-              <input type="email" class="form-control" id="email" name="email" value="" required>
+              <input type="email" class="form-control" id="email" name="email" value="${loginUserInfo.email }" required>
             </div>
 
             <div class="col-12">
               <label for="postalCode" class="form-label">우편번호</label>
-              <input type="text" class="form-control" id="postalCode" name="postalCode" placeholder="" required="" required>
+              <input type="text" class="form-control" id="postalCode" name="postalCode" value="${loginUserInfo.postalCode }" required>
             </div>
 
             <div class="col-12">
               <label for="address" class="form-label">주소</label>
-              <input type="text" class="form-control" id="address" name="address" placeholder="" required>
+              <input type="text" class="form-control" id="address" name="address" value="${loginUserInfo.addr }" required>
             </div>
 
             <div class="col-12">
@@ -127,18 +123,19 @@
 
           <h4 class="mb-3">결제</h4>
           <h5 class="mb-3" style="display: inline-block;">결제 금액 : </h5>
-          <input id="cost" name="cost" type="text" class="form-cost" value="">
+          <input id="cost" name="cost" type="text" class="form-cost" value="${purchaseInfo.cost }">
 
           <div class="my-3">
             <div class="form-check">
               <input id="credit" name="paymentMethod" type="radio" class="form-check-input" checked="" required="">
               <label class="form-check-label" for="credit">Credit card</label>
             </div>
-
+		  </div>
+		  
           <hr class="my-4">
 
           <button class="btn btn-secondary btn-lg" type="submit">목록페이지로 돌아가기</button>
-          <button class="w-50 btn btn-primary btn-lg" type="submit">결제하기</button>
+          <button class="w-50 btn btn-primary btn-lg" type="submit" id="pay_btn">결제하기</button>
         </form>
       </div>
     </div>
@@ -146,9 +143,35 @@
 </div>
 
 
-    <script src="/docs/5.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
-
-      <script src="form-validation.js"></script>
-  
-
+    <script src="../js/jquery-3.6.0.min.js"></script>
+	<script>
+		$("#update_btn").on("click", function(){
+			alert("정보수정을 위해 회원정보 수정 페이지로 이동합니다.")
+			location.href="/temperShop/myPage/member_update.jsp";
+		});
+		
+	</script>
+	<script> 
+		let $message = $("#message");
+		let message = $message.val();
+		
+		// 배송메세지가 null이 아니라면 메세지 수정 컨트롤러로 이동할 수 있도록 한다
+		$("#pay_btn").on("click", function(event){
+			event.preventDefault();
+			if(message != '') {	
+				$.ajax({
+					url: "/tempeShop/update/message",
+					type: "post",
+					data: "message="+message,
+					success: function() {
+						location.href="/temperShop/purchase/purchase.jsp";
+					}
+				})
+			} else {
+				location.href="/temperShop/purchase/purchase.jsp";
+			}
+		})
+		
+		
+	</script>
 </body></html>

@@ -67,7 +67,7 @@ public class MemberValidator {
 	public boolean postalCodeValidator(String postalCode) {
 		boolean correctPostalCode = false;
 
-		correctPostalCode = postalCode.length() == 5;
+		correctPostalCode = postalCode.length() == 5 || postalCode.length() == 4 ;
 		if (!correctPostalCode) {
 			return false;
 		}
