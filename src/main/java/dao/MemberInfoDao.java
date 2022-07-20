@@ -21,7 +21,7 @@ public class MemberInfoDao {
 		MemberInfo memberInfo = null;
 
 		try {
-			String sql = "SELECT * FROM member_info WHERE tel=? AND email=?";
+			String sql = "SELECT * FROM member_info WHERE tel=? AND email=? AND id = ?";
 
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, id);

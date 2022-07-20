@@ -119,3 +119,30 @@ a {
     height: calc(100vh - 77px);
     font-size: 25px;
 }
+
+li button {
+	border: none;
+	background-color: white;
+}
+
+.container main {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.main_cart {
+	display: flex;
+	width: 100%;
+	margin-left: 84px;
+    font-size: 44px;
+}
+
+button {
+    border: none
+}
+
+td {
+	vertical-align: middle;
+}

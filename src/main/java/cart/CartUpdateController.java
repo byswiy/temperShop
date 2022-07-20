@@ -11,7 +11,7 @@ import javax.servlet.http.HttpSession;
 
 import dao.CartInfoDao;
 import vo.CartInfo;
-import vo.CartListInfo;
+import vo.MemberInfo;
 
 @WebServlet("/cart/update")
 
@@ -25,7 +25,12 @@ public class CartUpdateController extends HttpServlet {
 		int cartIdx = Integer.parseInt(request.getParameter("cartIdx"));
 
 		// 수정할 상품의 데이터를 가져온다
-		int quantity = Integer.parseInt(request.getParameter("quantity")); // -> DB를 사용해서 수정하도록 함
+		int quantity = Integer.parseInt(request.getParameter("quantity"));
+		
+		HttpSession session = request.getSession();
+		MemberInfo memberInfo = (MemberInfo) session.getAttribute("loginUserInfo");
+		
+		int userIdx = memberInfo.getUserIdx();
 		
 		CartInfo cartInfo = new CartInfo();
 		cartInfo.setCartIdx(cartIdx);
@@ -35,10 +40,7 @@ public class CartUpdateController extends HttpServlet {
 		boolean result = dao.updateCartInfo(cartInfo);
 		
 		if(result) {
-			HttpSession session = request.getSession();
-			session.setAttribute("cart", cartInfo);
-			
-			response.setStatus(HttpServletResponse.SC_OK);
+			response.sendRedirect("http://localhost/temperShop/cart/list?userIdx="+userIdx);
 		} else {
 			response.setStatus(HttpServletResponse.SC_CONFLICT);
 		}

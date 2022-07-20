@@ -84,7 +84,6 @@
               <option value="반팔">반팔</option>
               <option value="얇은 셔츠">얇은 셔츠</option>
               <option value="얇은 가디건">얇은 가디건</option>
-              <option value="긴팔">긴팔</option>
               <option value="얇은 니트">얇은 니트</option>
             </select>
         </div>
@@ -134,7 +133,6 @@
                                   "<option value=\"반팔\">반팔</option>" +
                                   "<option value=\"얇은 셔츠\">얇은 셔츠</option>" +
                                   "<option value=\"얇은 가디건\">얇은 가디건</option>" +
-                                  "<option value=\"긴팔\">긴팔</option>" +
                                   "<option value=\"얇은 니트\">얇은 니트</option>" +
                                   "</select>"
                                   );

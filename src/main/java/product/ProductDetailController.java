@@ -1,7 +1,6 @@
 package product;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -32,7 +31,6 @@ public class ProductDetailController extends HttpServlet {
     		session.setAttribute("prodDetail", productInfo);
     		
     		request.setAttribute("productInfo", productInfo);
-    		
     		RequestDispatcher rd = request.getRequestDispatcher("/product/product_detail.jsp");
     		rd.forward(request, response);
     		

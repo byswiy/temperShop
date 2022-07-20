@@ -9,13 +9,12 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import dao.ReviewInfoDao;
 import vo.ReviewJoinPurchase;
 
-@WebServlet("/review/list")
-public class ReviewListController extends HttpServlet {
+@WebServlet("/review/filter")
+public class ReviewFilterController extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		int reviewPage = 1;
 		
@@ -23,9 +22,11 @@ public class ReviewListController extends HttpServlet {
 			reviewPage = Integer.parseInt(request.getParameter("reviewPage"));
 		}
 		
+		String userId = request.getParameter("id");
+		
 		// 페이지의 갯수를 가져올 Dao
 		ReviewInfoDao dao = new ReviewInfoDao();
-		int amountPage = dao.getAmountReview();
+		int amountPage = dao.getAmountReviewId(userId);
 		
 		// 페이지 조회에 실패했을 경우
 		int startIndex = (reviewPage - 1) * 10;
@@ -34,7 +35,8 @@ public class ReviewListController extends HttpServlet {
 			response.setStatus(HttpServletResponse.SC_NO_CONTENT);
 			return;
 		}
-		List<ReviewJoinPurchase> reviewInfoList = dao.selectReviewInfo(reviewPage);
+		
+		List<ReviewJoinPurchase> reviewInfoList = dao.selectReviewInfoId(userId);
 		
 		request.setAttribute("amount", amountPage);
 		request.setAttribute("reviewList", reviewInfoList);
@@ -42,4 +44,5 @@ public class ReviewListController extends HttpServlet {
 		RequestDispatcher rd = request.getRequestDispatcher("/review/review_list.jsp");
 		rd.forward(request, response);
 	}
+
 }

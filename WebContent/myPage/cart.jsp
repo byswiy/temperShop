@@ -9,6 +9,9 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
     <link rel="stylesheet" href="../css/cart.css">
     <title>Document</title>
+    <style>
+   
+    </style>
 </head>
 <body>
     
@@ -33,13 +36,13 @@
               </a>
             </li>
             <li>
-              <a href="/temperShop/myPage/cart.jsp" class="nav-link link-dark">
+              <a href="/temperShop/cart/list?userIdx=${loginUserInfo.userIdx }" class="nav-link link-dark">
                 <i class="bi bi-person-lines-fill"></i>&nbsp;
                 장바구니
               </a>
             </li>
             <li>
-              <a href="/temperShop/myPage/purchase_history.jsp" class="nav-link link-dark">
+              <a href="/temperShop/purchase/history?userIdx=${loginUserInfo.userIdx }" class="nav-link link-dark">
                 <i class="bi bi-bag-check"></i>&nbsp;
                 구매 내역
               </a>
@@ -65,115 +68,53 @@
           </ul>
         </div>
 
-        <table class="table">
-          <thead>
-            <tr>
-              <th scope="col">상품 이미지</th>
-              <th scope="col">상품 명</th>
-              <th scope="col">상품 가격</th>
-              <th scope="col">구매 수량</th>
-              <th scope="col">구매 가격</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <th scope="row">1</th>
-              <td>Mark</td>
-              <td>Otto</td>
-              <td>@mdo</td>
-              <td>@mdo</td>
-              <th scope="row">
-                <button type="button" class="btn btn-primary" style="width: 65px;">구매</button>
-                <button type="button" class="btn btn-secondary" style="width: 138px;">구매 수량 수정</button>
-                <button type="button" class="btn btn-danger" style="width: 65px;">삭제</button>
-                
-              </th>
-            </tr>
-            
-            <tr>
-              <th scope="row">1</th>
-              <td>Mark</td>
-              <td>Otto</td>
-              <td>@mdo</td>
-              <td>@mdo</td>
-              <th scope="row">
-                <button type="button" class="btn btn-primary" style="width: 65px;">구매</button>
-                <button type="button" class="btn btn-secondary" style="width: 138px;">구매 수량 수정</button>
-                <button type="button" class="btn btn-danger" style="width: 65px;">삭제</button>
-              </th>
-            </tr>
-
-            <tr>
-              <th scope="row">1</th>
-              <td>Mark</td>
-              <td>Otto</td>
-              <td>@mdo</td>
-              <td>@mdo</td>
-              <th scope="row">
-                <button type="button" class="btn btn-primary" style="width: 65px;">구매</button>
-                <button type="button" class="btn btn-secondary" style="width: 138px;">구매 수량 수정</button>
-                <button type="button" class="btn btn-danger" style="width: 65px;">삭제</button>
-              </th>
-            </tr>
-
-            <tr>
-              <th scope="row">1</th>
-              <td>Mark</td>
-              <td>Otto</td>
-              <td>@mdo</td>
-              <td>@mdo</td>
-              <th scope="row">
-                <button type="button" class="btn btn-primary" style="width: 65px;">구매</button>
-                <button type="button" class="btn btn-secondary" style="width: 138px;">구매 수량 수정</button>
-                <button type="button" class="btn btn-danger" style="width: 65px;">삭제</button>
-              </th>
-            </tr>
-
-            <tr>
-              <th scope="row">1</th>
-              <td>Mark</td>
-              <td>Otto</td>
-              <td>@mdo</td>
-              <td>@mdo</td>
-              <th scope="row">
-                <button type="button" class="btn btn-primary" style="width: 65px;">구매</button>
-                <button type="button" class="btn btn-secondary" style="width: 138px;">구매 수량 수정</button>
-                <button type="button" class="btn btn-danger" style="width: 65px;">삭제</button>
-              </th>
-            </tr>
-
-            <tr>
-              <th scope="row">1</th>
-              <td>Mark</td>
-              <td>Otto</td>
-              <td>@mdo</td>
-              <td>@mdo</td>
-              <th scope="row">
-                <button type="button" class="btn btn-primary" style="width: 65px;">구매</button>
-                <button type="button" class="btn btn-secondary" style="width: 138px;">구매 수량 수정</button>
-                <button type="button" class="btn btn-danger" style="width: 65px;">삭제</button>
-              </th>
-            </tr>
-          </tbody>
-        </table>
+		<main>
+			<div class="main_cart">장바구니</div>
+			
+			<hr>
+			
+			<table class="table" style="width: 100%;">
+            <thead>
+              <tr>
+                <th scope="col">상품 이미지</th>
+                <th scope="col">상품 명</th>
+                <th scope="col">상품 가격</th>
+                <th scope="col" style="width: 95px">구매 수량</th>
+              </tr>
+            </thead>
+            <tbody>
+            <c:forEach var="cart" items="${cartList }">
+              <tr>
+                 <th scope="row"><img src="http://localhost/temperShop/images/product/${cart.prodImg }" style="width: 145px;"></th>
+                  <td>${cart.prodName }</td>
+	              <td>${cart.prodPrice }</td>
+	              <td>
+	              	<input type="number" value="${cart.quantity }" style="width: 55%">
+	              </td>
+                <th style="text-align: end; vertical-align: middle;">
+                  <form action="/temperShop/purchase?cartIdx=${cart.cartIdx}&purchaseQuantity=${cart.quantity }" method="post" style="display: inline-block;">
+                    <button type="submit" style="background-color: white; color: #4B75EB;">구매</button>|
+                  </form>
+                  <form action="/temperShop/cart/update?cartIdx=${cart.cartIdx}&quantity=${cart.quantity }" method="post" style="display: inline-block;">
+                    <button type="submit" style="background-color: white;">수정</button>|
+                  </form>
+                  <form action="/temperShop/cart/delete?cartIdx=${cart.cartIdx}" method="post" style="display: inline-block;">
+                    <button type="submit" style="background-color: white; color: #E07F7D;">삭제</button>
+                  </form>
+                </th>
+              </tr>
+              </c:forEach>
+              <c:if test="${cartList eq '[]'}">
+          		<tr>
+          		  <th scope="row">장바구니로 담긴 상품이 없습니다</th>
+	            </tr>
+          	</c:if>
+            </tbody>
+          </table>
+			
+		</main>
+        
       </div>
-
-      <nav aria-label="Page navigation example" style="margin-left: 20%;">
-        <ul class="pagination justify-content-center">
-          <li class="page-item disabled">
-            <a class="page-link">Previous</a>
-          </li>
-          <li class="page-item"><a class="page-link" href="#">1</a></li>
-          <li class="page-item"><a class="page-link" href="#">2</a></li>
-          <li class="page-item"><a class="page-link" href="#">3</a></li>
-          <li class="page-item"><a class="page-link" href="#">4</a></li>
-          <li class="page-item"><a class="page-link" href="#">5</a></li>
-          <li class="page-item">
-            <a class="page-link" href="#">Next</a>
-          </li>
-        </ul>
-      </nav>
-
       <hr>
 
       <footer class="blog-footer">
@@ -183,10 +124,9 @@
         </p>
       </footer>
       
-    </body>
-
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <script src="../js/jquery-3.6.0.min.js"></script>
     <script>
-      $()
     </script>
+      
+    </body>
 </html>

@@ -81,7 +81,7 @@ select {
 }
 
 .prodColor {
-    margin-left: 50px;
+    margin-left: 480px;
 }
 
 .prodPrice {
@@ -109,9 +109,4 @@ select {
     position: absolute;
     top: 77%;
     left: 1%;
-}
-
-li button {
-	border: none;
-	background-color: white;
 }

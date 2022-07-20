@@ -18,18 +18,23 @@ public class DeleteController extends HttpServlet {
 
 		MemberInfo memberInfo = (MemberInfo) session.getAttribute("loginUserInfo");
 		String id = memberInfo.getId();
+		String pw = memberInfo.getPw();
+		
+		String inputPw = request.getParameter("pw");
 
 		// 회원 탈퇴
-		MemberService service = new MemberService();
-		boolean result = service.deleteMemberInfo(id);
-
-		if(result) {
-			// 회원 정보 세션 삭제
-			session.invalidate();
+		if(inputPw.equals(pw)) {
+			MemberService service = new MemberService();
+			boolean result = service.deleteMemberInfo(id);
 			
-			// 정상적으로 회원 탈퇴가 되었다면 200 상태코드 반환
-			response.setStatus(HttpServletResponse.SC_OK);
-		}
+			if(result) {
+				session.invalidate();
+				response.setStatus(HttpServletResponse.SC_OK);
+			}
+		} else {
+			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+		} 
+		
 	}
 
 }

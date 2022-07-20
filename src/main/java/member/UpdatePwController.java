@@ -19,6 +19,7 @@ public class UpdatePwController extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		try {
 			// 현재 비밀번호와 수정할 비밀번호 데이터를 꺼내온다
+			String oldPw = request.getParameter("oldPw");
 			String newPw = request.getParameter("newPw");
 			String newPwChk = request.getParameter("newPwChk");
 			
@@ -31,16 +32,18 @@ public class UpdatePwController extends HttpServlet {
 			MemberInfo loginUserInfo = (MemberInfo) session.getAttribute("loginUserInfo");
 			
 			String id = loginUserInfo.getId();
-			String oldPw = loginUserInfo.getPw();
+			String pw = loginUserInfo.getPw();
 			
 			// 로그인한 비밀번호와 전달 받은 oldPw가 같다면 비밀번호를 변경하도록 한다
-			if(newPw.equals(oldPw)) {
-				response.setStatus(409);
-			} else if(loginUserInfo.getPw().equals(oldPw)) {
+			if(oldPw.equals(pw)) {
 				MemberService service = new MemberService();
 				service.updatePw(id, newPw);
-				
-			} 
+			} else if(newPw.equals(pw)) {
+				response.setStatus(409);
+			} else {
+				response.setStatus(409);
+			}
+			
 		} catch(BadParameterException e) {
 			// 파라미터 검증에 예외가 생겼을 때 400 상태코드 반환 
 			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);

@@ -9,6 +9,12 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
     <link rel="stylesheet" href="../css/member_delete.css">
     <title>Document</title>
+    <style>
+    li button {
+		border: none;
+		background-color: white;
+	}
+    </style>
 </head>
 <body>
     
@@ -33,13 +39,13 @@
               </a>
             </li>
             <li>
-              <a href="/temperShop/myPage/cart.jsp" class="nav-link link-dark">
+              <a href="/temperShop/cart/list?userIdx=${loginUserInfo.userIdx }" class="nav-link link-dark">
                 <i class="bi bi-person-lines-fill"></i>&nbsp;
                 장바구니
               </a>
             </li>
             <li>
-              <a href="/temperShop/myPage/purchase_history.jsp" class="nav-link link-dark">
+              <a href="/temperShop/purchase/history?userIdx=${loginUserInfo.userIdx }" class="nav-link link-dark">
                 <i class="bi bi-bag-check"></i>&nbsp;
                 구매 내역
               </a>
@@ -78,7 +84,7 @@
                   <div class="form-group" id="divPassword">
                     <label for="inputPassword" class="col-lg-2 control-label">아이디</label>
                     <div class="col-lg-10">
-                        <input type="text" class="form-control" id="id" name="id" data-rule-required="true" maxlength="30">
+                        <input type="text" class="form-control" id="id" name="id" data-rule-required="true" maxlength="30" value="${loginUserInfo.id }">
                     </div>
                 </div>
                 <div class="form-group" id="divPasswordCheck">
@@ -88,7 +94,7 @@
                     </div>
                 </div>
                 <div class="form-group" style="margin-left: 23%;">
-                  <button type="submit" class="btn btn-primary">탈퇴하기</button>
+                  <button type="submit" class="btn btn-primary" id="delete_btn">탈퇴하기</button>
                 </div>
                 </form>
               </div>
@@ -108,8 +114,29 @@
       
     </body>
 
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <script src="../js/jquery-3.6.0.min.js"></script>
     <script>
-      $()
+      $("#delete_btn").on("click", function(event){
+    	  event.preventDefault();    	
+    	  
+    	  let password = $("#password").val();
+    	  
+    	  $.ajax({
+				url: "/temperShop/member/delete",
+				type: "POST",
+				data: "pw="+password,
+				success: function() {
+					alert("탈퇴에 성공했습니다.");
+					location.href = "/temperShop/product/list?pageNumber=1";
+				},
+				error: function(response) {
+					if(response.status == 400) {
+						alert("비밀번호가 일치하지 않습니다 재시도해주세요.");	
+						location.reload();
+					}
+					
+				}
+			});
+      })
     </script>
 </html>

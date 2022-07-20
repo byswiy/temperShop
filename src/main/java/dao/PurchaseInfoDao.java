@@ -9,9 +9,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import util.Database;
-import vo.ProductInfo;
 import vo.PurchaseInfo;
-import vo.PurchaseListInfo;
+import vo.ReviewInfo;
 
 public class PurchaseInfoDao {
 
@@ -23,15 +22,21 @@ public class PurchaseInfoDao {
 		PreparedStatement pstmt = null;
 
 		try {
-			String sql = "INSERT INTO purchase_info(member_userIdx, product_prodIdx, cart_cartIdx, cost, message, purchaseDate) VALUES (?, ?, ?, ?, ?, ?)";
+			String sql = "INSERT INTO purchase_info(userIdx, purchaseShopName, purchaseName, purchasePrice, purchaseQuantity, purchaseCost, purchaseSize, "
+					   + "purchaseColor, message, purchaseImg, purchaseDate) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
 			pstmt = conn.prepareStatement(sql);
-			pstmt.setInt(1, purchaseInfo.getMember_userIdx());
-			pstmt.setInt(2, purchaseInfo.getProduct_prodIdx());
-			pstmt.setInt(3, purchaseInfo.getCart_cartIdx());
-			pstmt.setInt(4, purchaseInfo.getCost());
-			pstmt.setString(5, purchaseInfo.getMessage());
-			pstmt.setString(6, purchaseInfo.getPurchaseDate().toString());
+			pstmt.setInt(1, purchaseInfo.getUserIdx());
+			pstmt.setString(2, purchaseInfo.getPurchaseShopName());
+			pstmt.setString(3, purchaseInfo.getPurchaseName());
+			pstmt.setInt(4, purchaseInfo.getPurchasePrice());
+			pstmt.setInt(5, purchaseInfo.getPurchaseQuantity());
+			pstmt.setInt(6, purchaseInfo.getPurchaseCost());
+			pstmt.setString(7, purchaseInfo.getPurchaseSize());
+			pstmt.setString(8, purchaseInfo.getPurchaseColor());
+			pstmt.setString(9, purchaseInfo.getMessage());
+			pstmt.setString(10, purchaseInfo.getPurchaseImg());
+			pstmt.setString(11, purchaseInfo.getPurchaseDate().toString());
 
 			int count = pstmt.executeUpdate();
 
@@ -58,7 +63,36 @@ public class PurchaseInfoDao {
 			pstmt.setInt(1, purchaseIdx);
 
 			int count = pstmt.executeUpdate();
+			
+			return count == 1;
 
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			db.closePstmt(pstmt);
+			db.closeConn(conn);
+		}
+		
+		return false;
+	}
+
+	public boolean updateMessageByProdIdx(String message, String purchaseDate) {
+		Database db = new Database();
+
+		Connection conn = db.getConnection();
+		PreparedStatement pstmt = null;
+
+		try {
+			String sql = "UPDATE purchase_info SET message = ? WHERE purchaseDate = ?";
+
+			pstmt = conn.prepareStatement(sql);
+
+			pstmt.setString(1, message);
+			pstmt.setString(2, purchaseDate);
+
+			int count = pstmt.executeUpdate();
+			
 			return count == 1;
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -67,35 +101,11 @@ public class PurchaseInfoDao {
 			db.closePstmt(pstmt);
 			db.closeConn(conn);
 		}
-
+		
 		return false;
 	}
 
-	public void updateMessageByProdIdx(String message, int product_prodIdx) {
-		Database db = new Database();
-
-		Connection conn = db.getConnection();
-		PreparedStatement pstmt = null;
-
-		try {
-			String sql = "UPDATE purchase_info SET message = ? WHERE product_prodIdx = ?";
-
-			pstmt = conn.prepareStatement(sql);
-
-			pstmt.setString(1, message);
-			pstmt.setInt(2, product_prodIdx);
-
-			pstmt.executeUpdate();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} finally {
-			db.closePstmt(pstmt);
-			db.closeConn(conn);
-		}
-	}
-
-	public PurchaseInfo selectPurchaseInfoByprodIdx(int prodIdx) {
+	public PurchaseInfo selectPurchaseInfoByUseIdx(int userIdx) {
 		Database db = new Database();
 
 		Connection conn = db.getConnection();
@@ -105,26 +115,76 @@ public class PurchaseInfoDao {
 		PurchaseInfo purchaseInfo = null;
 
 		try {
-			String sql = "SELECT * FROM purchase_info WHERE product_prodIdx = ?";
+			String sql = "SELECT * FROM purchase_info WHERE userIdx = ?";
 			pstmt = conn.prepareStatement(sql);
-			pstmt.setInt(1, prodIdx);
+			pstmt.setInt(1, userIdx);
 
 			rs = pstmt.executeQuery();
 
 			if (rs.next()) {
 				int purchaseIdx = rs.getInt("purchaseIdx");
-				int member_userIdx = rs.getInt("member_userIdx");
-				int product_prodIdx = rs.getInt("product_prodIdx");
-				int cart_cartIdx = rs.getInt("cart_cartIdx");
-				int cost = rs.getInt("cost");
+				String purchaseShopName = rs.getString("purchaseShopName");
+				String purchaseName = rs.getString("purchaseName");
+				int purchasePrice = rs.getInt("purchasePrice");
+				int purchaseQuantity = rs.getInt("purchaseQuantity");
+				int purchaseCost = rs.getInt("purchaseCost");
+				String purchaseSize = rs.getString("purchaseSize");
+				String purchaseColor = rs.getString("purchaseColor");
 				String message = rs.getString("message");
+				String purchaseImg = rs.getString("purchaseImg");
 				String date = rs.getString("purchaseDate");
-				date = date.substring(0, 19);
+				date = date.substring(0, date.indexOf('.'));
 				date = date.replace(' ', 'T');
 				LocalDateTime purchaseDate = LocalDateTime.parse(date);
+				
+				purchaseInfo = new PurchaseInfo(purchaseIdx, userIdx, purchaseShopName, purchaseName, purchasePrice, purchaseQuantity, purchaseCost,
+															    purchaseSize, purchaseColor, message, purchaseImg, purchaseDate);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			db.closeResultSet(rs);
+			db.closePstmt(pstmt);
+			db.closeConn(conn);
+		}
 
-				purchaseInfo = new PurchaseInfo(purchaseIdx, member_userIdx, product_prodIdx, cart_cartIdx, cost,
-						message, purchaseDate);
+		return purchaseInfo;
+	}
+	
+	public PurchaseInfo selectBypurchaseIdx(int purchaseIdx) {
+		Database db = new Database();
+
+		Connection conn = db.getConnection();
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+
+		PurchaseInfo purchaseInfo = null;
+
+		try {
+			String sql = "SELECT * FROM purchase_info WHERE purchaseIdx = ?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, purchaseIdx);
+
+			rs = pstmt.executeQuery();
+
+			if (rs.next()) {
+				int userIdx = rs.getInt("userIdx");
+				String purchaseShopName = rs.getString("purchaseShopName");
+				String purchaseName = rs.getString("purchaseName");
+				int purchasePrice = rs.getInt("purchasePrice");
+				int purchaseQuantity = rs.getInt("purchaseQuantity");
+				int purchaseCost = rs.getInt("purchaseCost");
+				String purchaseSize = rs.getString("purchaseSize");
+				String purchaseColor = rs.getString("purchaseColor");
+				String message = rs.getString("message");
+				String purchaseImg = rs.getString("purchaseImg");
+				String date = rs.getString("purchaseDate");
+				date = date.substring(0, date.indexOf('.'));
+				date = date.replace(' ', 'T');
+				LocalDateTime purchaseDate = LocalDateTime.parse(date);
+				
+				purchaseInfo = new PurchaseInfo(purchaseIdx, userIdx, purchaseShopName, purchaseName, purchasePrice, purchaseQuantity, purchaseCost,
+															    purchaseSize, purchaseColor, message, purchaseImg, purchaseDate);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -166,4 +226,83 @@ public class PurchaseInfoDao {
 		}
 		return count;
 	}
+	
+	public List<PurchaseInfo> selectByUserIdx(int userIdx) {
+		Database db = new Database();
+		
+		Connection conn = db.getConnection();
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		
+		List<PurchaseInfo> purchaseInfoList = new ArrayList<>();
+		
+		try {
+			String sql = "SELECT * FROM purchase_info WHERE userIdx = ? ORDER BY  purchaseDate DESC";
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setInt(1, userIdx);
+			
+			rs = pstmt.executeQuery();
+			
+			// 결과가 있을 수도 있고 없을 수도 있기 때문에
+			// while을 사용해서 결과가 있을 때까지 동작하도록 한다
+			while(rs.next()) {
+				int purchaseIdx = rs.getInt("purchaseIdx");
+				String purchaseShopName = rs.getString("purchaseShopName");
+				String purchaseName = rs.getString("purchaseName");
+				int purchasePrice = rs.getInt("purchasePrice");
+				int purchaseQuantity = rs.getInt("purchaseQuantity");
+				int purchaseCost = rs.getInt("purchaseCost");
+				String purchaseSize = rs.getString("purchaseSize");
+				String purchaseColor = rs.getString("purchaseColor");
+				String message = rs.getString("message");
+				String purchaseImg = rs.getString("purchaseImg");
+				String date = rs.getString("purchaseDate");
+				date = date.substring(0, date.indexOf('.'));
+				date = date.replace(' ', 'T');
+				LocalDateTime purchaseDate = LocalDateTime.parse(date);
+				
+				PurchaseInfo nthPurchaseInfo = new PurchaseInfo(purchaseIdx, userIdx, purchaseShopName, purchaseName, purchasePrice, purchaseQuantity, purchaseCost,
+															    purchaseSize, purchaseColor, message, purchaseImg, purchaseDate);
+				
+				purchaseInfoList.add(nthPurchaseInfo);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			db.closeResultSet(rs);
+			db.closePstmt(pstmt);
+			db.closeConn(conn);
+		}
+		
+		return purchaseInfoList;
+	}
+	
+	public boolean deletePurchaseIdx(String purchaseDate) {
+		Database db = new Database();
+
+		Connection conn = db.getConnection();
+		PreparedStatement pstmt = null;
+
+		try {
+			String sql = "DELETE FROM purchase_info WHERE purchaseDate = ?";
+			pstmt = conn.prepareStatement(sql);
+
+			pstmt.setString(1, purchaseDate);
+
+			int count = pstmt.executeUpdate();
+			
+			return count == 1;
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			db.closePstmt(pstmt);
+			db.closeConn(conn);
+		}
+		
+		return false;
+	}
+	
 }

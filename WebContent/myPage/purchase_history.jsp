@@ -1,6 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-${purchaseInfo }
-${purchaseListInfo }
+${review.purchase_idx }
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -11,6 +10,12 @@ ${purchaseListInfo }
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
     <link rel="stylesheet" href="../css/purchase_history.css">
     <title>Document</title>
+    <style>
+    li button {
+		border: none;
+		background-color: white;
+	}
+    </style>
 </head>
 <body>
     
@@ -35,13 +40,13 @@ ${purchaseListInfo }
               </a>
             </li>
             <li>
-              <a href="/temperShop/myPage/cart.jsp" class="nav-link link-dark">
+              <a href="/temperShop/cart/list?userIdx=${loginUserInfo.userIdx }" class="nav-link link-dark">
                 <i class="bi bi-person-lines-fill"></i>&nbsp;
                 장바구니
               </a>
             </li>
             <li>
-              <a href="/temperShop/myPage/purchase_history.jsp" class="nav-link link-dark">
+              <a href="/temperShop/purchase/history?userIdx=${loginUserInfo.userIdx }" class="nav-link link-dark">
                 <i class="bi bi-bag-check"></i>&nbsp;
                 구매 내역
               </a>
@@ -66,49 +71,56 @@ ${purchaseListInfo }
             </li>
           </ul>
         </div>
-
-        <table class="table">
-          <thead>
-            <tr>
-              <th scope="col">상품 이미지</th>
-              <th scope="col">상품 명</th>
-              <th scope="col">상품 가격</th>
-              <th scope="col">구매 수량</th>
-              <th scope="col">구매 가격</th>
-            </tr>
-          </thead>
-          <tbody>
-          	<c:forEach var="purchase" items="${purchaseListInfo }">
-	          	<tr>
-	              <th scope="row">${purchase.purchaseImg }</th>
-	              <td>${purchase.purchaseName }</td>
-	              <td>${purchase.purchasePrice }</td>
-	              <td>${purchase.purchaseQuantity }</td>
-	              <td>${purchaseInfo.cost }</td>
-	              <th scope="row">
-	                <button type="button" class="btn btn-danger" style="width: 65px;">삭제</button>
-	              </th>
+		
+		<main>
+			<div class="main_history">구매 내역</div>
+			
+			<hr>
+			
+			<table class="table" style="width: 100%;">
+			  <thead>
+			    <tr>
+                <th scope="col">상품 이미지</th>
+                <th scope="col">상품 명</th>
+                <th scope="col">상품 가격</th>
+                <th scope="col">구매 수량</th>
+                <th scope="col">구매 가격</th>
+                </tr>
+			  </thead>
+			  <tbody>
+			  	<c:if test="${purchaseList ne null }">
+	          	<c:forEach var="purchase" items="${purchaseList }">
+		          	<tr>
+		              <th scope="row"><img src="http://localhost/temperShop/images/product/${purchase.purchaseImg }" style="width: 145px;"></th>
+		              <td> 
+		              	<span style="vertical-align: middle;">${purchase.purchaseName }</span><br><br>
+		              	<c:if test="${purchase.message ne null}">
+			              	<span>배송 메세지</span><br>
+			              	<span>:${purchase.message }</span>
+		              	</c:if>
+		              	
+		              </td>
+		              <td>${purchase.purchasePrice }</td>
+		              <td>${purchase.purchaseQuantity }</td>
+		              <td>${purchase.purchaseCost }</td>
+		              <th style="text-align: end; vertical-align: middle;">
+			              	<a href="/temperShop/review/info?purchaseIdx=${purchase.purchaseIdx }"><button type="submit" style="width: 86px; background-color: white;" id="add_btn">후기 작성</button></a>
+					          <form action="/temperShop/purchase/cancel?purchaseIdx=${purchase.purchaseIdx }&userIdx=${purchase.userIdx}" method="post">
+					              <button type="submit" style="width: 86px; background-color: white;" id="cancel_btn">구매 취소</button>
+					           </form>
+		              </th>
+		            </tr>
+	          	</c:forEach>
+          	</c:if>
+          	<c:if test="${purchaseList eq '[]' }">
+          		<tr>
+          		  <th scope="row">구매 내역이 없습니다</th>
 	            </tr>
-          	</c:forEach>
-          </tbody>
-        </table>
+          	</c:if>
+			  </tbody>
+			  </table>
+		</main>
       </div>
-
-      <nav aria-label="Page navigation example" style="margin-left: 20%;">
-        <ul class="pagination justify-content-center">
-          <li class="page-item disabled">
-            <a class="page-link">Previous</a>
-          </li>
-          <li class="page-item"><a class="page-link" href="#">1</a></li>
-          <li class="page-item"><a class="page-link" href="#">2</a></li>
-          <li class="page-item"><a class="page-link" href="#">3</a></li>
-          <li class="page-item"><a class="page-link" href="#">4</a></li>
-          <li class="page-item"><a class="page-link" href="#">5</a></li>
-          <li class="page-item">
-            <a class="page-link" href="#">Next</a>
-          </li>
-        </ul>
-      </nav>
 
       <hr>
 
@@ -119,21 +131,8 @@ ${purchaseListInfo }
         </p>
       </footer>
       
-    </body>
-
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
-    <script>
-    	$.ajax({
-    		url: "/temperShop/purchase/history",
-    		type: "get",
-    		data: "member_userIdx="+${purchaseInfo.member_userIdx},
-    		success: function() {
-    			location.href="/temperShop/myPage/purchase_history.jsp?member_userIdx="+${purchaseInfo.member_userIdx};
-    		},
-    		error: function() {
-    			
-    		}
-    		
-    	})
+      <script src="../js/jquery-3.6.0.min.js"></script>
+      <script>
     </script>
+    </body>
 </html>

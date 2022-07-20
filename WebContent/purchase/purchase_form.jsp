@@ -1,7 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 
-${purchaseInfo }
-
 <!DOCTYPE html>
 <html lang="ko"><head>
     <meta charset="utf-8">
@@ -105,8 +103,10 @@ ${purchaseInfo }
             </div>
 
             <div class="col-12">
-                <label for="message" class="form-label">배송 메세지</label><br>
-                <input type="text" class="form-control" id="message" name="message" placeholder="ex. 부재시 경비실에 맡겨주세요" style="display: inline-block;">
+                <label for="message" class="form-label">배송 메세지
+                	<input type="text" class="form-control" id="message" name="message" placeholder="ex. 부재시 경비실에 맡겨주세요" style="display: inline-block;">
+                </label><br>
+                
                 <small>* 배송 메세지가 필요하다면 입력해주세요</small>
                 
               </div>
@@ -115,26 +115,26 @@ ${purchaseInfo }
           <hr class="my-4">
 
           <div class="form-check">
-            <input type="checkbox" class="form-check-input" id="same-address">
-            <label class="form-check-label" for="same-address">[구매 확정] 구매를 하기전 반드시 구매 확정을 체크해주세요</label>
+            <input type="checkbox" class="form-check-input" id="check">
+            <label class="form-check-label" for="same-address">[동의] 실제 구매된 가격은 00시 전에 환불됨을 알려드립니다</label>
           </div>
 
           <hr class="my-4">
 
           <h4 class="mb-3">결제</h4>
           <h5 class="mb-3" style="display: inline-block;">결제 금액 : </h5>
-          <input id="cost" name="cost" type="text" class="form-cost" value="${purchaseInfo.cost }">
+          <input id="cost" name="cost" type="text" class="form-cost" value="${purchaseInfo.purchaseCost }">
 
           <div class="my-3">
             <div class="form-check">
-              <input id="credit" name="paymentMethod" type="radio" class="form-check-input" checked="" required="">
+              <input id="credit" name="paymentMethod" type="radio" class="form-check-input">
               <label class="form-check-label" for="credit">Credit card</label>
             </div>
 		  </div>
 		  
           <hr class="my-4">
 
-          <button class="btn btn-secondary btn-lg" type="submit">목록페이지로 돌아가기</button>
+          <button class="btn btn-secondary btn-lg" type="submit" id="list_btn">목록페이지로 돌아가기</button>
           <button class="w-50 btn btn-primary btn-lg" type="submit" id="pay_btn">결제하기</button>
         </form>
       </div>
@@ -151,18 +151,47 @@ ${purchaseInfo }
 		});
 		
 	</script>
-	<script> 
-		let $message = $("#message");
-		let message = $message.val();
+	<script>
+		$("#list_btn").on("click", function(){
+			$.ajax({
+				url: "/temperShop/purchase/cancel_list?",
+				type: "post",
+				data: "purchaseDate=${purchaseInfo.purchaseDate}",
+				success: function() {
+					alert("구매를 취소하고 목록으로 돌아갑니다");
+					location.href="/temperShop/product/list?pageNumber=1";
+				},
+				error: function(response) {
+					if(response.status == 409) {
+						alert("오류 발생");
+					}
+				}
+			});
+		});
 		
+	</script>
+	<script> 
 		// 배송메세지가 null이 아니라면 메세지 수정 컨트롤러로 이동할 수 있도록 한다
 		$("#pay_btn").on("click", function(event){
+				
+			let check = $("#check").prop("checked");
+			
+			if(!check) {
+ 				alert("동의박스에 체크 해주세요.");
+ 				return false;
+	 		}
+			
 			event.preventDefault();
-			if(message != '') {	
+			
+			let $message = $("#message");
+			let message = $message.val();
+			console.log(message);
+			
+			if(message != "") {	
 				$.ajax({
-					url: "/tempeShop/update/message",
+					url: "/temperShop/update/message",
 					type: "post",
-					data: "message="+message,
+					data: "message="+message+"&purchaseDate=${purchaseInfo.purchaseDate}",
 					success: function() {
 						location.href="/temperShop/purchase/purchase.jsp";
 					}
@@ -172,6 +201,8 @@ ${purchaseInfo }
 			}
 		})
 		
-		
+		$("#list_btn").on("click", function() {
+			location.href="/temperShop/product/list?pageNumber=1";
+		})
 	</script>
 </body></html>

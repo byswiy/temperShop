@@ -5,7 +5,7 @@
 	<header class="blog-header py-3">
 		<div class="row flex-nowrap justify-content-between align-items-center">
 			<div class="col-4 pt-1">
-				<i class="bi bi-thermometer-sun"></i>
+				<a href="/temperShop/index.jsp"><i class="bi bi-thermometer-sun"></i></a> 
 			</div>
 			<div class="col-4 text-center">
 				<a class="blog-header-logo text-dark" href="/temperShop/product/list?pageNumber=1">temperShop</a>
@@ -18,14 +18,14 @@
 						<li><a href="/temperShop/login/login.jsp"><button class="nav-link px-2 link-dark" type="button" name="login" id="login_btn">login</button></a></li>
 						<li><a href="/temperShop/sign_up/terms.jsp"><button class="nav-link px-2 link-dark" type="button" name="sign-up" id="sign-up">sign-up</button></a></li>
 						<li><a href="/temperShop/login/login.jsp"><button class="nav-link px-2 link-dark" type="button" name="cart" id="cart">myPage</button></a></li>
-						<li><a href=""><button class="nav-link px-2 link-dark" type="button" name=review id="review">review</button></a></li>
+						<li><a href="/temperShop/login/login.jsp"><button class="nav-link px-2 link-dark" type="button" name=review id="review">review</button></a></li>
 					</c:if>
 
 					<%-- 로그인이 되어있다면 --%>
 					<c:if test="${loginUserInfo ne null }">
 						<li><a href="/temperShop/member/login"><button class="nav-link px-2 link-dark" type="button" name="logout" id="logout">logout</button></a></li>
-						<li><a href="/temperShop/myPage/cart.jsp"><button class="nav-link px-2 link-dark" type="button" name="myPage" id="myPage">myPage</button></a></li>
-						<li><a><button class="nav-link px-2 link-dark" type="button" name=review id="review">review</button></a></li>
+						<li><a href="/temperShop/cart/list?"><button class="nav-link px-2 link-dark" type="button" name="myPage" id="myPage">myPage</button></a></li>
+						<li><a href="/temperShop/review/list?reviewPage=1"><button class="nav-link px-2 link-dark" type="button" name=review id="review">review</button></a></li>
 
 						<%-- 로그인한 이용자가 관리자일 경우 상품추가 버튼 생성 --%>
 						<c:if test="${loginUserInfo.id eq 'admin00'}">

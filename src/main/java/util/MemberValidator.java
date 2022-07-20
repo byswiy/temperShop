@@ -75,11 +75,11 @@ public class MemberValidator {
 		return correctPostalCode;
 	}
 	
-	// 주소 : 한글과 숫자만 가능
+	// 주소 : 한글과 숫자, 특수문자 -, ()만 가능
 	public boolean addrValidator(String addr) {
 		boolean correctAddre = false;
 
-		correctAddre = addr.matches("^[0-9가-힣\\s]+$");
+		correctAddre = addr.matches("^[0-9가-힣-()\\s]+$");
 		if (!correctAddre) {
 			return false;
 		}

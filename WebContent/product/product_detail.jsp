@@ -34,7 +34,7 @@
             <p class="lead" id="prodSize">사이즈 : ${productInfo.prodSize }</p>
             <p class="lead" id="prodColor">색상 : ${productInfo.prodColor }</p>
             <label for="prodQuantity" >구매 수량 :
-              <input type="number" id="prodQuantity" name="prodQuantity" style="margin-bottom: 30px;">
+              <input type="number" id="purchaseQuantity" name="purchaseQuantity" style="margin-bottom: 30px;">
             </label>
             
             <%-- 로그인이 되어있어 있지 않다면 --%>
@@ -42,6 +42,10 @@
            		<br>
            		<a href="/temperShop/login/login.jsp"><button type="button" class="btn btn-primary btn-lg px-4 me-md-2">구매 하기</button></a>
            		<a href="/temperShop/login/login.jsp"><button type="button" class="btn btn-primary btn-lg px-4 me-md-2">장바구니</button></a>
+<%--            		<c:if test="${param.pageNumber eq null }"> --%>
+<!--            			<a href="/temperShop/product/filter"><button type="button" class="btn btn-secondary btn-lg px-4 me-md-2">목록으로</button></a> -->
+<%--            		</c:if> --%>
+           		<a href="/temperShop/product/list?pageNumber=1"><button type="button" class="btn btn-secondary btn-lg px-4 me-md-2">목록으로</button></a>
            	</c:if>
            	
            	<%-- 로그인이 되어있다면 --%>
@@ -49,6 +53,7 @@
 				<br>
 				<button type="button" class="btn btn-primary btn-lg px-4 " id="buy_btn">구매 하기</button>
 				<button type="button" class="btn btn-primary btn-lg px-4 " id="cart_btn">장바구니</button>
+				<a href="/temperShop/product/list?pageNumber=1"><button type="button" class="btn btn-secondary btn-lg px-4 me-md-2">목록으로</button></a>
 				<c:if test="${loginUserInfo.id eq 'admin00'}">
 					<button type="button" class="btn btn-secondary btn-lg px-4 me-md-2" id="update_btn">상품 수정</button>
            			<button type="button" class="btn btn-danger btn-lg px-4 me-md-2" id="delete_btn">상품 삭제</button>
@@ -72,21 +77,50 @@
     <script>
     	// 상품 구매 페이지로 이동
     	$("#buy_btn").on("click", function() {
-    		let prodQuantity = $("#prodQuantity").val();
+    		let purchaseQuantity = $("#purchaseQuantity").val();
     		
     		$.ajax({
     			url: "/temperShop/purchase",
     			type: "POST",
-    			data: "prodIdx="+${productInfo.prodIdx}+"&prodQuantity="+prodQuantity,
+    			data: "prodIdx="+${productInfo.prodIdx}+"&purchaseQuantity="+purchaseQuantity,
     			success: function() {
     				location.href= "/temperShop/purchase/purchase_form.jsp";
     			},
-    			error: function() {
-    				
+    			error: function(response) {
+    				if(response.status == 409) {
+      					alert("구매 수량은 1개 이상으로 입력해주세요");
+    				} else if(response.status == 403) {
+    					alert("재고가 없는 상품입니다");
+    					
+    				}
     			}
     		});
     		
     	});
+    </script>
+    <script>
+		// 장바구니 페이지로 이동
+		$("#cart_btn").on("click", function() {
+			let purchaseQuantity = $("#purchaseQuantity").val();
+			
+			$.ajax({
+				url: "/temperShop/cart/add",
+				type: "POST",
+				data: "prodIdx="+${productInfo.prodIdx}+"&quantity="+purchaseQuantity,
+				success: function() {
+					alert("장바구니에 추가되었습니다.")
+					location.href="/temperShop/product/list?PageNumber=1";
+				},
+				error: function(response) {
+					if(response.status == 409) {
+      					alert("구매 수량은 1개 이상으로 입력해주세요");
+    				} else if(response.status == 204) {
+    					alert("장바구니에 담겨있는 상품 입니다");
+    				}
+				}
+			});
+			
+		});
     </script>
     <script>
     	let prodIdx = ${param.prodIdx};

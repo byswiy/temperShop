@@ -10,13 +10,14 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import dao.FilterDao;
 import dao.ProductInfoDao;
 import vo.ProductInfo;
 
-@WebServlet("/product/list")
-public class ProductListController extends HttpServlet {
+// 상품 가격에 따른 필터
+@WebServlet("/product/filter3")
+public class ProductFilterController3 extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// 페이지 번호를 꺼내올 때 null이 아니라면 pageNumber를 꺼내오도록 한다
 		int pageNumber = 1;
 		
 		if(request.getParameter("pageNumber") != null) {
@@ -35,15 +36,18 @@ public class ProductListController extends HttpServlet {
 			return;
 		}
 		
-		List<ProductInfo> productInfoList = dao.selectAll(pageNumber);
+		int price = Integer.parseInt(request.getParameter("prodPrice"));
 		
-		// 요청 정보를 가져와 request에 저장하도록 한다
-		request.setAttribute("amount", amountPage);
-		request.setAttribute("productList", productInfoList);
+		FilterDao filterDao = new FilterDao();
+		List<ProductInfo> productInfoList = filterDao.selectPrice(pageNumber, price);
 		
-		RequestDispatcher rd = request.getRequestDispatcher("/product/product_list.jsp");
-		rd.forward(request, response);
+		if(price == 1 || price == 2) {
+			request.setAttribute("amount", amountPage);
+			request.setAttribute("productList", productInfoList);
+			
+			RequestDispatcher rd = request.getRequestDispatcher("/product/product_list.jsp");
+			rd.forward(request, response);
+		}
 		
 	}
-
 }

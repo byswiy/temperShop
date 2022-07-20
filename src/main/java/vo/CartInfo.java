@@ -1,6 +1,6 @@
 package vo;
 
-public class CartInfo {
+public class CartInfo{
 	private int cartIdx;
 	private int member_userIdx;
 	private int product_prodIdx;

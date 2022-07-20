@@ -4,8 +4,8 @@ import java.time.LocalDateTime;
 
 public class ReviewInfo {
 	private int reviewIdx;
-	private int member_userIdx;
-	private int product_prodIdx;
+	private String member_id;
+	private int purchase_idx;
 	private String contents;
 	private LocalDateTime insertDate;
 	
@@ -13,16 +13,16 @@ public class ReviewInfo {
 		
  	}
 	
-	public ReviewInfo(int reviewIdx, int member_userIdx, int product_prodIdx, String contents, LocalDateTime insertDate) {
+	public ReviewInfo(int reviewIdx, String member_id, int purchase_idx, String contents, LocalDateTime insertDate) {
 		this.reviewIdx = reviewIdx;
-		this.member_userIdx = member_userIdx;
-		this.product_prodIdx = product_prodIdx;
+		this.member_id = member_id;
+		this.purchase_idx = purchase_idx;
 		this.contents = contents;
 		this.insertDate = insertDate;
 	}
 	
-	public ReviewInfo(int member_userIdx, int product_prodIdx, String contents, LocalDateTime insertDate) {
-		this(0, member_userIdx, product_prodIdx, contents, insertDate);
+	public ReviewInfo(String member_id, int purchase_idx, String contents, LocalDateTime insertDate) {
+		this(0, member_id, purchase_idx, contents, insertDate);
 	}
 	
 
@@ -32,17 +32,17 @@ public class ReviewInfo {
 	public void setReviewIdx(int reviewIdx) {
 		this.reviewIdx = reviewIdx;
 	}
-	public int getMember_userIdx() {
-		return member_userIdx;
+	public String getMember_id() {
+		return member_id;
 	}
-	public void setMember_userIdx(int member_userIdx) {
-		this.member_userIdx = member_userIdx;
+	public void setMember_id(String member_id) {
+		this.member_id = member_id;
 	}
-	public int getProduct_prodIdx() {
-		return product_prodIdx;
+	public int getPurchase_idx() {
+		return purchase_idx;
 	}
-	public void setProduct_prodIdx(int product_prodIdx) {
-		this.product_prodIdx = product_prodIdx;
+	public void setPurchase_idx(int purchase_idx) {
+		this.purchase_idx = purchase_idx;
 	}
 	public String getContents() {
 		return contents;

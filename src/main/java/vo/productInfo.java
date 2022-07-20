@@ -8,7 +8,6 @@ public class ProductInfo {
 	private String prodName;
 	private int prodPrice;
 	private int prodStock;
-	private int prodQuantity;
 	private String prodSize;
 	private String prodColor;
 	private String prodCategory;
@@ -19,43 +18,29 @@ public class ProductInfo {
 	public ProductInfo() {
 		
 	}
-
-	public ProductInfo(int prodIdx, String prodShopName, String prodName, int prodPrice, int prodStock, int prodQuantity, String prodSize, String prodColor, String prodCategory, String prodType, String prodImg, LocalDateTime regDate) {
+	
+	public ProductInfo(int prodIdx, String prodShopName, String prodName, int prodPrice, int prodStock, String prodSize, String prodColor, String prodCategory, String prodType, String prodImg, LocalDateTime regDate) {
 		this.prodIdx = prodIdx;
 		this.prodShopName = prodShopName;
 		this.prodName = prodName;
 		this.prodPrice = prodPrice;
 		this.prodStock = prodStock;
-		this.prodQuantity = prodQuantity;
 		this.prodSize = prodSize;
 		this.prodColor = prodColor;
 		this.prodCategory = prodCategory;
-		this.prodType = prodType; 
+		this.prodType = prodType;
 		this.prodImg = prodImg;
 		this.regDate = regDate;
 	}
 	
-	public ProductInfo(int prodIdx,  String prodShopName, String prodName, int prodPrice, int prodStock, String prodSize, String prodColor, String prodCategory, String prodType, String prodImg, LocalDateTime regDate) {
-		this(prodIdx, prodShopName, prodName, prodPrice, prodStock, 0, prodSize, prodColor, prodCategory, prodType, prodImg, regDate);
-	}
-	
-	public ProductInfo(int prodIdx,  String prodShopName, String prodName, int prodPrice, int prodStock, String prodSize, String prodColor, String prodCategory, String prodImg, LocalDateTime regDate) {
-		this(prodIdx, prodShopName, prodName, prodPrice, prodStock, 0, prodSize, prodColor, prodCategory, null, prodImg, regDate);
-	}
-	
-	public ProductInfo(int prodIdx,  String prodShopName, String prodName, int prodPrice, int prodStock, String prodSize, String prodColor, String prodCategory, String prodImg) {
-		this(prodIdx, prodShopName, prodName, prodPrice, prodStock, 0, prodSize, prodColor, prodCategory, null, prodImg, null);
+	public ProductInfo(String prodShopName, String prodName, int prodPrice, int prodStock, String prodSize, String prodColor, String prodCategory, String prodType, String prodImg, LocalDateTime regDate) {
+		this(0, prodShopName, prodName, prodPrice, prodStock, prodSize, prodColor, prodCategory, prodType, prodImg, regDate);
 	}
 	
 	public ProductInfo(int prodIdx, String prodName, int prodPrice, int prodStock, String prodSize, String prodColor, String prodCategory, String prodType) {
-		this(prodIdx, null, prodName, prodPrice, prodStock, 0, prodSize, prodColor, prodCategory, prodType, null, null);
+		this(prodIdx, null, prodName, prodPrice, prodStock, prodSize, prodColor, prodCategory, prodType, null, null);
 	}
 
-	public ProductInfo(String prodShopName, String prodName, int prodPrice, int prodStock,  String prodSize, String prodColor, String prodCategory, String prodType, String prodImg, LocalDateTime regDate) {
-		this(0, prodShopName, prodName, prodPrice, prodStock, 0, prodSize, prodColor, prodCategory, prodType, prodImg, regDate);
-	}
-	
-	
 	public String getCategory() {
 		return prodCategory;
 	}
@@ -150,14 +135,6 @@ public class ProductInfo {
 
 	public void setProdType(String prodType) {
 		this.prodType = prodType;
-	}
-
-	public int getProdQuantity() {
-		return prodQuantity;
-	}
-
-	public void setProdQuantity(int prodQuantity) {
-		this.prodQuantity = prodQuantity;
 	}
 	
 	

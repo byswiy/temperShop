@@ -13,6 +13,12 @@
 	href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
 <link rel="stylesheet" href="../css/member_update.css">
 <title>Document</title>
+<style>
+    li button {
+		border: none;
+		background-color: white;
+	}
+    </style>
 </head>
 <body>
 
@@ -34,10 +40,10 @@
 				<li class="nav-item"><a href="/temperShop/product/list?pageNumber=1"
 					class="nav-link link-dark" aria-current="page"> <i class="bi bi-shop"></i>&nbsp; home
 				</a></li>
-				<li><a href="/temperShop/myPage/cart.jsp" class="nav-link link-dark"> <i
+				<li><a href="/temperShop/cart/list?userIdx=${loginUserInfo.userIdx }" class="nav-link link-dark"> <i
 						class="bi bi-person-lines-fill"></i>&nbsp; 장바구니
 				</a></li>
-				<li><a href="/temperShop/myPage/purchase_history.jsp" class="nav-link link-dark"> <i
+				<li><a href="/temperShop/purchase/history?userIdx=${loginUserInfo.userIdx }" class="nav-link link-dark"> <i
 						class="bi bi-bag-check"></i>&nbsp; 구매 내역
 				</a></li>
 				<li><a href="/temperShop/myPage/member_update.jsp" class="nav-link link-dark"> <i

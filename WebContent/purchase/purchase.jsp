@@ -17,8 +17,8 @@
             IMP.init('imp33592445'); //iamport 대신 자신의 "가맹점 식별코드"를 사용하시면 됩니다
             IMP.request_pay({
                 merchant_uid : 'merchant_' + new Date().getTime(),
-                name : '${prodDetail.prodName}',
-                amount : ${purchaseInfo.cost},
+                name : '${purchaseInfo.purchaseName}',
+                amount : ${purchaseInfo.purchaseCost},
                 buyer_email : '${loginUserInfo.email}',
                 buyer_name : '${loginUserInfo.name}',
                 buyer_tel : '${loginUserInfo.tel}',
@@ -33,13 +33,24 @@
 //                 msg += '카드 승인번호 : ' + rsp.apply_num;
 //                 msg += '구매 상품 명 : ' + name;
                 alert("구매 성공! 구매 내역 페이지로 이동합니다");
-                location.href="/temperShop/myPage/purchase_history.jsp";
+//                 location.href="/temperShop/myPage/purchase_history.jsp?userIdx="+${loginUserInfo.userIdx };
+                location.href="/temperShop/purchase/history?userIdx="+${loginUserInfo.userIdx }+"&impUid="+rsp.imp_uid+"&mcUid="+rsp.merchant_uid+"&paid="+rsp.paid_amount;
                 
             } else {
-//                 var msg = '결제에 실패하였습니다.';
-//                 msg += '에러내용 : ' + rsp.error_msg;
-                console.log("결제에 실패했습니다 쇼핑몰 페이지로 이동합니다");
-                location.href="/temperShop/product/list?pageNumber=1";
+        			$.ajax({
+        				url: "/temperShop/purchase/cancel_list?",
+        				type: "post",
+        				data: "purchaseDate=${purchaseInfo.purchaseDate}",
+        				success: function() {
+        					alert("구매를 취소하고 목록으로 돌아갑니다");
+        					location.href="/temperShop/product/list?pageNumber=1";
+        				},
+        				error: function(response) {
+        					if(response.status == 409) {
+        						alert("오류 발생");
+        					}
+        				}
+        			});
             }
         });
         

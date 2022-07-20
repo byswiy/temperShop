@@ -3,7 +3,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <%
-	// 페이지네이션에 사용할 end 속성의 값 계산
 	int amount = (int) request.getAttribute("amount");
 	int end = (int) Math.ceil(amount / 12.0);
 
@@ -20,6 +19,12 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
     <link rel="stylesheet" href="../css/product_list.css">
     <title>Document</title>
+    <style>
+    li button {
+		border: none;
+		background-color: white;
+	}
+    </style>
 </head>
 <body>
     
@@ -31,47 +36,49 @@
 
       <h3 class="filter fst-italic">Filter</h3>
 
-      <a href="">home</a>
+      <a href="/temperShop/product/list?pageNumber=1">home</a>
 
       <span>></span>
 
-      <select class="form-select prodType" aria-label="Default select example">
-          <option selected>구분</option>
-          <option value="top">Top</option>
-          <option value="bottom">Bottom</option>
-          <option value="dress">Dress</option>
-      </select>
+       <select class="form-select" id="prodType" name="prodType">
+         <option>구분</option>
+         <option value="top">Top</option>
+         <option value="bottom">Bottom</option>
+         <option value="dress">Dress</option>
+       </select>
 
       <span>></span>
       
-      <select class="form-select prodType" aria-label="Default select example">
-        <option selected>종류</option>
-        <option value="1">Top</option>
-        <option value="2">Bottom</option>
-        <option value="3">Dress</option>
-    </select>
-
+      <select class="form-select" id="prodCategory" name="prodCategory" disabled>
+      	<option>종류</option>
+        <option value="민소매">민소매</option>
+        <option value="반팔">반팔</option>
+        <option value="얇은 셔츠">얇은 셔츠</option>
+        <option value="얇은 가디건">얇은 가디건</option>
+        <option value="얇은 니트">얇은 니트</option>
+      </select>
+      
     <span>></span>
-
-      <select class="form-select prodSize" aria-label="Default select example">
-        <option selected>사이즈</option>
-        <option value="1">S</option>
-        <option value="2">M</option>
-        <option value="3">L</option>
+<!-- style="visibility: hidden;" -->
+      <select class="form-select" id="prodSize" name="prodSize" disabled>
+        <option>사이즈</option>
+        <option value="s">S</option>
+        <option value="m">M</option>
+        <option value="l">L</option>
       </select>
 
-      <select class="form-select prodColor" aria-label="Default select example">
-        <option selected>색상</option>
-        <option value="1">Red</option>
-        <option value="2">Yellow</option>
-        <option value="4">Green</option>
-        <option value="5">Blue</option>
-        <option value="6">White</option>
-        <option value="7">Black</option>
+      <select class="form-select" id="prodColor" name="prodColor" style="margin-left: 480px;">
+        <option >색상</option>
+        <option value="red">Red</option>
+        <option value="yellow">Yellow</option>
+        <option value="green">Green</option>
+        <option value="blue">Blue</option>
+        <option value="white">White</option>
+        <option value="black">Black</option>
       </select>
 
-      <select class="form-select prodPrice" aria-label="Default select example">
-        <option selected>가격</option>
+      <select class="form-select" id="prodPrice" name="prodPrice">
+        <option >가격</option>
         <option value="1">낮은 순</option>
         <option value="2">높은 순</option>
       </select>
@@ -87,7 +94,7 @@
 	          <p class="card-text">
 	            <span>상품 명 : ${products.prodName }</span><br>
 	            <strong><span>상품 가격 : ${products.prodPrice }원</span><br></strong><br>
-	            <a href="http://localhost/temperShop/product/detail?prodIdx=${products.prodIdx }"><button type="button" class="btn btn-secondary" id="detail_btn">상세정보</button></a>
+	            <a href="http://localhost/temperShop/product/detail?prodIdx=${products.prodIdx }&pageNumber=${param.pageNumber}"><button type="button" class="btn btn-secondary" id="detail_btn">상세정보</button></a>
 	          </p>
 	        </div>
 	      </div>
@@ -95,6 +102,22 @@
 	  
 	  <nav aria-label="Page navigation example">
 	  	<ul class="pagination justify-content-center">
+<%-- 	  		<c:if test="${param.prodType ne null }"> --%>
+<%-- 				<c:forEach begin="1" end="${end }" var="number"> --%>
+<%-- 					<li class="page-item"><a class="page-link" href="http://localhost/temperShop/product/filter?prodType=${param.prodType }&pageNumber=${number }">${number }</a></li> --%>
+<%-- 				</c:forEach>		 --%>
+<%-- 			</c:if> --%>
+<%-- 			<c:if test="${param.prodType ne null }"> --%>
+<%-- 				<c:forEach begin="1" end="${end }" var="number"> --%>
+<%-- 					<li class="page-item"><a class="page-link" href="http://localhost/temperShop/product/filter?prodType=${param.prodType }&pageNumber=${number }">${number }</a></li> --%>
+<%-- 				</c:forEach>		 --%>
+<%-- 			</c:if> --%>
+<%-- 			<c:if test="${param.prodType ne null }"> --%>
+<%-- 				<c:forEach begin="1" end="${end }" var="number"> --%>
+<%-- 					<li class="page-item"><a class="page-link" href="http://localhost/temperShop/product/filter?prodType=${param.prodType }&pageNumber=${number }">${number }</a></li> --%>
+<%-- 				</c:forEach>		 --%>
+<%-- 			</c:if> --%>
+				
 	  		<c:forEach begin="1" end="${end }" var="number">
 				<li class="page-item"><a class="page-link" href="http://localhost/temperShop/product/list?pageNumber=${number }">${number }</a></li>
 			</c:forEach>
@@ -113,8 +136,181 @@
     
     <script src="../js/jquery-3.6.0.min.js"></script>
     <script>
+    	let end = ${end};
+    	
     	$("#detail_btn").on("click", function() {
     		location.href="/temperShop/product/product_detail.jsp";
     	});
+    </script>
+    <script>
+    if(${param.prodType eq '구분'}) {
+    	$("#prodType").val("구분").prop("selected", true);
+    	location.href="/temperShop/product/list?pageNumber=1";
+    } else  if(${param.prodType eq 'top'}) {
+    	$("#prodType").val("top").prop("selected", true);
+    	$('#prodCategory').removeAttr("disabled");
+    	$("#prodCategory").html("<select class=\"form-select\" id=\"prodCategory\" name=\"prodCategory\">" +
+    			"<option>종류</option>" +
+                "<option value=\"민소매\">민소매</option>" +
+                "<option value=\"반팔\">반팔</option>" +
+                "<option value=\"얇은 셔츠\">얇은 셔츠</option>" +
+                "<option value=\"얇은 가디건\">얇은 가디건</option>" +
+                "<option value=\"얇은 니트\">얇은 니트</option>" +
+                "</select>"
+                );
+    } else  if(${param.prodType eq 'bottom'}) {
+    	$("#prodType").val("bottom").prop("selected", true);
+    	$('#prodCategory').removeAttr("disabled");
+    	$("#prodCategory").html("<select class=\"form-select\" id=\"prodCategory\" name=\"prodCategory\">" +
+    			"<option>종류</option>" +
+                "<option value=\"반바지\">반바지</option>" +
+                "<option value=\"면바지\">면바지</option>" +
+                "<option value=\"청바지\">청바지</option>" +
+                "</select>"
+                );
+    } else  if(${param.prodType eq 'dress'}) {
+    	$("#prodType").val("dress").prop("selected", true);
+    	$('#prodCategory').removeAttr("disabled");
+    	$("#prodCategory").html("<select class=\"form-select\" id=\"prodCategory\" name=\"prodCategory\">" +
+    			"<option>종류</option>" +
+                "<option value=\"원피스\">원피스</option>" +
+                "<option value=\"스커트\">스커트</option>" +
+                "</select>"
+                );
+    }
+    
+    // 상품의 구분에 따른 필터 
+    $("select[name=prodType]").change(function(){
+    	let selectProdType = $(this).val();
+    	
+        $.ajax({
+        	url: "/temperShop/product/filter",
+        	type: "get",
+        	data: "prodType="+selectProdType,
+        	success: function() {
+        		location.href="/temperShop/product/filter?prodType="+selectProdType;
+        	},
+        	error: function(response) {
+        		if(response.status == 204) {
+  					alert("구매 수량은 1개 이상으로 입력해주세요");
+				}
+        		console.log(response);
+        	}
+        });
+        
+    });
+    
+    // 상품 종류에 따른 필터
+    $("select[name=prodCategory]").change(function(){
+        let selectProdCategory = $(this).val();
+        console.log(selectProdCategory);
+        
+        $.ajax({
+        	url: "/temperShop/product/filter",
+        	type: "get",
+        	data: "prodType=${param.prodType}&prodCategory="+selectProdCategory,
+        	success: function() {
+        		location.href="/temperShop/product/filter?prodType=${param.prodType}&prodCategory="+selectProdCategory;
+        	},
+        	error: function() {
+        		
+        	}
+        });
+ 	});
+    
+    if(${param.prodType eq 'top'}) {
+    	if(${param.prodCategory eq '민소매'}) {
+    		$('#prodSize').removeAttr("disabled");
+    		$("#prodCategory").val("민소매").prop("selected", true);
+        } else  if(${param.prodCategory eq '반팔'}) {
+        	$('#prodSize').removeAttr("disabled");
+        	$("#prodCategory").val("반팔").prop("selected", true);
+        } else  if(${param.prodCategory eq '얇은 셔츠'}) {
+        	$('#prodSize').removeAttr("disabled");
+        	$("#prodCategory").val("얇은 셔츠").prop("selected", true);
+        } else  if(${param.prodCategory eq '얇은 가디건'}) {
+        	$('#prodSize').removeAttr("disabled");
+        	$("#prodCategory").val("얇은 가디건").prop("selected", true);
+        } else  if(${param.prodCategory eq '얇은 니트'}) {
+        	$('#prodSize').removeAttr("disabled");
+        	$("#prodCategory").val("얇은 니트").prop("selected", true);
+        }
+    } else if(${param.prodType eq 'bottom'}) {
+    	if(${param.prodCategory eq '반바지'}) {
+    		$('#prodSize').removeAttr("disabled");
+        	$("#prodCategory").val("반바지").prop("selected", true);
+        } else  if(${param.prodCategory eq '면바지'}) {
+        	$('#prodSize').removeAttr("disabled");
+        	$("#prodCategory").val("면바지").prop("selected", true);
+        } else  if(${param.prodCategory eq '청바지'}) {
+        	$('#prodSize').removeAttr("disabled");
+        	$("#prodCategory").val("청바지").prop("selected", true);
+        }
+    } else if(${param.prodType eq 'dress'}) {
+    	if(${param.prodCategory eq '원피스'}) {
+    		$('#prodSize').removeAttr("disabled");
+        	$("#prodCategory").val("원피스").prop("selected", true);
+        } else  if(${param.prodCategory eq '스커트'}) {
+        	$('#prodSize').removeAttr("disabled");
+        	$("#prodCategory").val("스커트").prop("selected", true);
+        }
+    }
+     
+    
+    // 상품 사이즈에 따른 필터
+    $("select[name=prodSize]").change(function(){
+        let selectProdSize = $(this).val();
+        
+        $.ajax({
+        	url: "/temperShop/product/filter",
+        	type: "get",
+        	data: "prodType=${param.prodType}&prodCategory=${param.prodCategory}&prodSize"+selectProdSize,
+        	success: function() {
+        		location.href="/temperShop/product/filter?prodType=${param.prodType}&prodCategory=${param.prodCategory}&prodSize="+selectProdSize;
+        	},
+        	error: function() {
+        		
+        	}
+        });
+    });
+    
+    if(${param.prodSize eq 's'}) {
+		$("#prodSize").val("s").prop("selected", true);
+    } else  if(${param.prodSize eq 'm'}) {
+    	$("#prodSize").val("m").prop("selected", true);
+    } else  if(${param.prodSize eq 'l'}) {
+    	$("#prodSize").val("l").prop("selected", true);
+    }
+
+    
+    // 상품 색상에 따른 필터
+    $("select[name=prodColor]").change(function(){
+    	let selectProdColor = $(this).val();
+        
+        location.href="/temperShop/product/filter2?prodColor="+selectProdColor;
+    });
+    
+    if(${param.prodColor eq 'red'}) {
+		$("#prodColor").val("red").prop("selected", true);
+    } else  if(${param.prodColor eq 'yellow'}) {
+    	$("#prodColor").val("yellow").prop("selected", true);
+    } else  if(${param.prodColor eq 'green'}) {
+    	$("#prodColor").val("green").prop("selected", true);
+    } else  if(${param.prodColor eq 'blue'}) {
+    	$("#prodColor").val("blue").prop("selected", true);
+    } else  if(${param.prodColor eq 'white'}) {
+    	$("#prodColor").val("white").prop("selected", true);
+    } else  if(${param.prodColor eq 'black'}) {
+    	$("#prodColor").val("black").prop("selected", true);
+    }
+    
+    // 상품 가격에 따른 필터
+    $("select[name=prodPrice]").change(function(){
+    	let selectProdPrice = $(this).val();
+       	console.log(selectProdPrice);
+        
+        location.href="/temperShop/product/filter3?prodPrice="+selectProdPrice;
+    });
+    
     </script>
 </html>

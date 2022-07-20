@@ -10,7 +10,7 @@ import java.util.List;
 
 import util.Database;
 import vo.CartInfo;
-import vo.ProductInfo;
+import vo.CartJoinProduct;
 
 public class CartInfoDao {
 	// 장바구니 정보를 삽압하는 insert 쿼리
@@ -21,13 +21,12 @@ public class CartInfoDao {
 		PreparedStatement pstmt = null;
 
 		try {
-			String sql = "INSERT INTO cart_info(cartIdx, member_userIdx, product_prodIdx, quantity) VALUES(?, ?, ?, ?)";
+			String sql = "INSERT INTO cart_info(member_userIdx, product_prodIdx, quantity) VALUES(?, ?, ?)";
 			pstmt = conn.prepareStatement(sql);
 
-			pstmt.setInt(1, cartInfo.getCartIdx());
-			pstmt.setInt(2, cartInfo.getMember_userIdx());
-			pstmt.setInt(3, cartInfo.getProduct_prodIdx());
-			pstmt.setInt(4, cartInfo.getQuantity());
+			pstmt.setInt(1, cartInfo.getMember_userIdx());
+			pstmt.setInt(2, cartInfo.getProduct_prodIdx());
+			pstmt.setInt(3, cartInfo.getQuantity());
 
 			int count = pstmt.executeUpdate();
 
@@ -98,48 +97,6 @@ public class CartInfoDao {
 		return false;
 	}
 
-	public List<CartInfo> selectAll(int pageNumber) {
-		Database db = new Database();
-
-		Connection conn = db.getConnection();
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
-
-		List<CartInfo> cartInfoList = new ArrayList<>();
-
-		try {
-			String sql = "SELECT * FROM cart_info ORDER BY cartIdx DESC LIMIT ?, 5";
-
-			int startIndex = (pageNumber - 1) * 5;
-
-			pstmt = conn.prepareStatement(sql);
-
-			pstmt.setInt(1, startIndex);
-
-			rs = pstmt.executeQuery();
-
-			// 결과가 있을 수도 있고 없을 수도 있기 때문에
-			// while을 사용해서 결과가 있을 때까지 동작하도록 한다
-			while (rs.next()) {
-				int member_userIdx = rs.getInt("member_userIdx");
-				int product_prodIdx = rs.getInt("product_prodIdx");
-				int prodQuantity = rs.getInt("quantity");
-
-				CartInfo nthCartInfo = new CartInfo(member_userIdx, product_prodIdx, prodQuantity);
-
-				cartInfoList.add(nthCartInfo);
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			db.closeResultSet(rs);
-			db.closePstmt(pstmt);
-			db.closeConn(conn);
-		}
-
-		return cartInfoList;
-	}
-
 	public CartInfo selectCartIdx(int cartIdx) {
 		Database db = new Database();
 
@@ -200,5 +157,94 @@ public class CartInfoDao {
 			db.closeConn(conn);
 		}
 		return false;
+	}
+	
+	public List<CartJoinProduct> selectUserIdx(int member_userIdx) {
+		Database db = new Database();
+
+		Connection conn = db.getConnection();
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+
+		List<CartJoinProduct> cartInfoList = new ArrayList<>();
+
+		try {
+			String sql = "SELECT * FROM cart_info JOIN product_info ON cart_info.product_prodIdx = product_info.prodIdx WHERE member_userIdx = ? ORDER BY cartIdx DESC";
+			pstmt = conn.prepareStatement(sql);
+
+			pstmt.setInt(1, member_userIdx);
+
+			rs = pstmt.executeQuery();
+
+			while(rs.next()) {
+				int cartIdx = rs.getInt("cartIdx");
+				int product_prodIdx = rs.getInt("product_prodIdx");
+				int quantity = rs.getInt("quantity");
+				int prodIdx = rs.getInt("prodIdx");
+				String prodShopName = rs.getString("prodShopName");
+				String prodName = rs.getString("prodName");
+				int prodPrice = rs.getInt("prodPrice");
+				int prodStock = rs.getInt("prodStock");
+				String prodSize = rs.getString("prodSize");
+				String prodColor = rs.getString("prodColor");
+				String prodCategory = rs.getString("prodCategory");
+				String prodType = rs.getString("prodType");
+				String prodImg = rs.getString("prodImg");
+				String date = rs.getString("regDate");
+				date = date.substring(0, date.indexOf('.'));
+				date = date.replace(' ', 'T');
+				LocalDateTime regDate = LocalDateTime.parse(date);
+
+				CartJoinProduct cartInfo = new CartJoinProduct(cartIdx, member_userIdx, product_prodIdx, quantity, prodIdx, prodShopName, prodName, prodPrice,
+						prodStock, prodSize, prodColor, prodCategory, prodType, prodImg, regDate);
+				
+				cartInfoList.add(cartInfo);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			db.closeResultSet(rs);
+			db.closePstmt(pstmt);
+			db.closeConn(conn);
+		}
+
+		return cartInfoList;
+	}
+	
+	public List<CartInfo> selectCartList(int member_userIdx) {
+		Database db = new Database();
+
+		Connection conn = db.getConnection();
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+
+		List<CartInfo> cartInfoList = new ArrayList<>();
+
+		try {
+			String sql = "SELECT * FROM cart_info WHERE member_userIdx = ?";
+			pstmt = conn.prepareStatement(sql);
+
+			pstmt.setInt(1, member_userIdx);
+
+			rs = pstmt.executeQuery();
+
+			while (rs.next()) {
+				int cartIdx = rs.getInt("cartIdx");
+				int product_prodIdx = rs.getInt("product_prodIdx");
+				int quantity = rs.getInt("quantity");
+
+				CartInfo cartInfo = new CartInfo(cartIdx, member_userIdx, product_prodIdx, quantity);
+				
+				cartInfoList.add(cartInfo);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			db.closeResultSet(rs);
+			db.closePstmt(pstmt);
+			db.closeConn(conn);
+		}
+
+		return cartInfoList;
 	}
 }

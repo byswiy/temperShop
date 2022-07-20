@@ -3,7 +3,6 @@ package Purchase;
 import java.io.IOException;
 import java.time.LocalDateTime;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -24,81 +23,88 @@ public class PurchaseController extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.setCharacterEncoding("UTF-8");
 		// 상품 상세보기에서 구매하기 버튼을 눌렀을 때 (장바구니 거치지 않음)
-		if(request.getParameter("cart_cartIdx") == null) {
+		if(request.getParameter("cartIdx") == null) {
 			// 세션에 담긴 로그인한 사용자의 정보를 가져온다
 			HttpSession session = request.getSession();
-			MemberInfo loginUserInfo = (MemberInfo) session.getAttribute("loginUserInfo");
+			MemberInfo memberInfo = (MemberInfo) session.getAttribute("loginUserInfo");
 			ProductInfo productInfo = (ProductInfo) session.getAttribute("prodDetail");
 			
 			// 상품 구매 시 필요한 데이터
-			int member_userIdx = loginUserInfo.getUserIdx();
-			int product_prodIdx = Integer.parseInt(request.getParameter("prodIdx"));
+			int userIdx = memberInfo.getUserIdx();
+			int prodIdx = Integer.parseInt(request.getParameter("prodIdx"));
 			
 			ProductInfoDao dao = new ProductInfoDao();
-			productInfo = dao.selectProductIdx(product_prodIdx);
+			productInfo = dao.selectProductIdx(prodIdx);
 			// 재고가 0일 경우 403 상태코드를 반환한다
 			if(productInfo.getProdStock() == 0) {
 				response.setStatus(HttpServletResponse.SC_FORBIDDEN);
 				return;
 			}
 			
+			// 저장할 상품의 정보를 꺼내온다
+			String shopName = productInfo.getProdShopName();
+			String name = productInfo.getProdName();
 			int price = productInfo.getProdPrice();
+			int quantity = Integer.parseInt(request.getParameter("purchaseQuantity"));
 			
-			int prodQuantity = Integer.parseInt(request.getParameter("prodQuantity"));
-			int cost = price * prodQuantity;
-			
+			// 구매 수량이 0이하일 경우 409 상태코드 반환
+			if(quantity <= 0) {
+				response.setStatus(HttpServletResponse.SC_CONFLICT);
+				return;
+			}
+			int cost = price * quantity;
+			String size = productInfo.getProdSize();
+			String color = productInfo.getProdColor();
 			String message = request.getParameter("message");
+			String img = productInfo.getProdImg();
 			LocalDateTime purchaseDate = LocalDateTime.now();
 			
-			dao.decreaseStock(product_prodIdx);
+			dao.decreaseStock(prodIdx, quantity);
 			
-			PurchaseInfo purchaseInfo = new PurchaseInfo(member_userIdx, product_prodIdx, cost, message, purchaseDate);
+			PurchaseInfo purchaseInfo = new PurchaseInfo(userIdx, shopName, name, price, quantity, cost, size, color, message, img, purchaseDate);
 			
 			PurchaseInfoDao purchaseDao = new PurchaseInfoDao();
 			purchaseDao.insertPurchaseInfo(purchaseInfo);
 			
 			session.setAttribute("purchaseInfo", purchaseInfo);
 			
-//			RequestDispatcher rd = request.getRequestDispatcher("/purchase/purchase_form.jsp");
-//    		rd.forward(request, response);
-    		
 		} else {
 			// 장바구니에서 구매하기 버튼을 눌렀을 때
-			int cart_cartIdx = Integer.parseInt(request.getParameter("cart_cartIdx"));
+			int cartIdx = Integer.parseInt(request.getParameter("cartIdx"));
 			
 			CartInfoDao cartDao = new CartInfoDao();
-			CartInfo cartInfo = cartDao.selectCartIdx(cart_cartIdx);
+			CartInfo cartInfo = cartDao.selectCartIdx(cartIdx);
 			
-			int member_userIdx = cartInfo.getMember_userIdx();
-			int product_prodIdx = cartInfo.getProduct_prodIdx();
+			int userIdx = cartInfo.getMember_userIdx();
+			int prodIdx = cartInfo.getProduct_prodIdx();
 			
 			ProductInfoDao prodDao = new ProductInfoDao();
-			ProductInfo productInfo = prodDao.selectProductIdx(product_prodIdx);
+			ProductInfo productInfo = prodDao.selectProductIdx(prodIdx);
 			
-			int cost = productInfo.getProdPrice();
+			String shopName = productInfo.getProdShopName();
+			String name = productInfo.getProdName();
+			int price = productInfo.getProdPrice();
+			int quantity = Integer.parseInt(request.getParameter("purchaseQuantity"));
+			String size = productInfo.getProdSize();
+			String color = productInfo.getProdColor();
+			int cost = price * quantity;
 			String message = request.getParameter("message");
+			String img = productInfo.getProdImg();
 			LocalDateTime purchaseDate = LocalDateTime.now();
 			
-			// 재고가 0일 경우 403 상태코드를 반환한다
-			if(productInfo.getProdStock() == 0) {
-				response.setStatus(HttpServletResponse.SC_FORBIDDEN);
-				return;
-			}
-			
-			prodDao.decreaseStock(product_prodIdx);
-			
-			PurchaseInfo purchaseInfo = new PurchaseInfo(member_userIdx, product_prodIdx, cart_cartIdx, cost, message, purchaseDate);
+			PurchaseInfo purchaseInfo = new PurchaseInfo(userIdx, shopName, name, price, quantity, cost, size, color, message, img, purchaseDate);
 			
 			PurchaseInfoDao purchaseDao = new PurchaseInfoDao();
 			purchaseDao.insertPurchaseInfo(purchaseInfo);
+			
+			cartDao.deleteCartIdx(cartIdx);
 			
 			HttpSession session = request.getSession();
 			session.setAttribute("purchaseInfo", purchaseInfo);
 			
-			// 상품 구매에 성공했다면 상태코드 200 반환
-			response.setStatus(HttpServletResponse.SC_OK);
+			response.sendRedirect("http://localhost/temperShop/purchase/purchase_form.jsp");
+			
 		}
-		
 		
 	}
 

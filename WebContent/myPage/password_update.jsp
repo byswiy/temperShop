@@ -9,6 +9,12 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
     <link rel="stylesheet" href="../css/password_update.css">
     <title>Document</title>
+    <style>
+    li button {
+		border: none;
+		background-color: white;
+	}
+    </style>
 </head>
 <body>
     
@@ -75,17 +81,24 @@
         
               <div class="modal-body">
                 <form class="" style="margin-left: 101px;">
-                <div class="form-group" id="divPasswordCheck">
+                <div class="form-group">
+                    <label for="inputPasswordCheck" class="col-lg-2 control-label">현재 비밀번호</label>
+                    <div class="col-lg-10">
+                        <input type="password" class="form-control" id="oldPw" name="oldPw" data-rule-required="true"
+                        	   placeholder="현재 비밀번호" maxlength="30">
+                    </div>
+                </div>
+                <div class="form-group">
                     <label for="inputPasswordCheck" class="col-lg-2 control-label">변경할 비밀번호</label>
                     <div class="col-lg-10">
                         <input type="password" class="form-control" id="newPw" name="newPw" data-rule-required="true"
                         	   placeholder="비밀번호는 8~18자 사이로 영대소문자와 숫자를 혼합하여 입력해주세요" maxlength="30">
                     </div>
                 </div>
-                <div class="form-group" id="divPasswordCheck">
+                <div class="form-group">
                     <label for="inputPasswordCheck" class="col-lg-2 control-label">비밀번호 확인</label>
                     <div class="col-lg-10">
-                        <input type="password" class="form-control" id="newPwChk" name="newPwChk" data-rule-required="true" placeholder="패스워드 확인" maxlength="30">
+                        <input type="password" class="form-control" id="newPwChk" name="newPwChk" data-rule-required="true" placeholder="비밀번호 확인" maxlength="30">
                     </div>
                 </div>
                 <div class="form-group">
@@ -116,6 +129,7 @@
  			// ajax를 통해서 상품 수정 요청이 들어가도록 한다
  			event.preventDefault();
  			
+ 			let oldPw = $("#oldPw").val();
  			let $newPw = $("#newPw");
  			let $newPwChk = $("#newPwChk");
  			
@@ -125,7 +139,7 @@
  			$.ajax({
  				url: "/temperShop/member/update_pw",
  				type: "POST",
- 				data: "newPw="+newPw+"&newPwChk="+newPwChk,
+ 				data: "oldPw="+oldPw+"&newPw="+newPw+"&newPwChk="+newPwChk,
  				success: function() {
  					// 비밀번호가 수정되었을 경우
  					alert("비밀번호가 수정됐습니다 쇼핑몰 페이지로 이동합니다");

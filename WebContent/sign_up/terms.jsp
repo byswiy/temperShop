@@ -96,7 +96,7 @@
     
     <script src="../js/jquery-3.6.0.min.js"></script>
 	<script>
-  	// 체크박스 전체 선택
+  		// 체크박스 전체 선택
   		$(".checkbox_group").on("click", "#check_all", function () {
   		    $(this).parents(".checkbox_group").find('input').prop("checked", $(this).is(":checked"));
   		});
